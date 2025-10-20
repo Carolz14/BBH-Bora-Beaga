@@ -50,6 +50,7 @@ Bora Beagá é um sistema que visa auxiliar turistas e moradores da cidade de Be
 | REQ026 | Sistema | O sistema armazenará as preferências de usuário, para fazer recomendações mais específicas para cada situação. |
 | REQ027 | Estabelecimento e Guia Turístico | Será possível conversar com um suporte do próprio sistema para tirar dúvidas e fazer sugestões. |
 
+
 ## Regras de Negócio
 | Id     | Nome       | Descrição   |
 |:-------|:-----------|:------------|
@@ -85,6 +86,7 @@ Bora Beagá é um sistema que visa auxiliar turistas e moradores da cidade de Be
 | CSU17  | Gestão de relatórios dos estabelecimentos | REQ025 |       |
 | CSU18  | Gestão de preferências de usuário         | REQ026 |       |
 | CSU19  | Suporte ao estabelecimento e guia         | REQ027 |       |
+| CSU20  | Gestão de login                           | REQ001, REQ002, REQ003, REQ004, REQ005, REQ006, REQ007, REQ008  |       |
 
 
 
@@ -92,20 +94,20 @@ Bora Beagá é um sistema que visa auxiliar turistas e moradores da cidade de Be
 | Sprint | Caso de Uso | Desenvolvedor  |
 |:-------|:------------|:---------------|
 | 1      | CSU01       | 1              |
-| 1      | CSU07       | 2              |
+| 1      | CSU20       | 2              |
 | 1      | CSU04       | 3              |
 | 1      | CSU05       | 4              |
 | 1      | CSU03       | 5              |
 | 1      | CSU02       | 6              |
 | 2      | CSU16       | 1              |
-| 2      | CSU08 + CSU09       | 2              |
+| 2      | CSU07       | 2              |
 | 2      | CSU06       | 3              |
 | 2      | CSU11       | 4              |
 | 2      | CSU14       | 5              |
 | 2      | CSU15       | 6              |
 | 3      | CSU12       | 1              |
-| 3      | CSU17       | 2              |
+| 3      | CSU08 + CSU09   | 2          |
 | 3      | CSU13       | 3              |
 | 3      | CSU18       | 4              |
 | 3      | CSU19       | 5              |
-| 3      | CSU10       | 6              |
+| 3      | CSU10 + CSU17   | 6          |
