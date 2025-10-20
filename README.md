@@ -4,12 +4,12 @@ Bora Beagá é um sistema que visa auxiliar turistas e moradores da cidade de Be
 ## Equipe de Desenvolvimento
 | Ordem | Nome          |
 |:------|:--------------|
-| 1     | Artur        |
-| 2     | Carolina        |
-| 3     | Leandro          |
-| 4     | Guilherme          |
-| 5     | Ana Flávia         |
-| 6     | Daniel         |
+| 1     | Artur Dias Alves Pires       |
+| 2     | Carolina Moreira Braga      |
+| 3     | Leandro Mateus Mendes          |
+| 4     | Guilherme Yuri Timoteo Placido    |
+| 5     | Ana Flávia Arrudas de Sousa       |
+| 6     | Daniel Henrique Antunes        |
 
 ## Atores do Sistema
 | Ator      | Definição     |
