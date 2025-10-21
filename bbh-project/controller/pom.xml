@@ -10,6 +10,6 @@
     <packaging>jar</packaging>
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>Controller</exec.mainClass>
+        <exec.mainClass>bbh.dao.Controller</exec.mainClass>
     </properties>
 </project>
