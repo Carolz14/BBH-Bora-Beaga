@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+
+:root {
+    --fonte-logo: "Nunito", sans-serif;
+    --fonte-texto: "Lato", sans-serif;
+    --fonte-cursiva: "Parisienne", cursive;
+    --cor-fundo: #f3f3f3;
+    --cor-primaria: #f9e470;
+    --cor-secundaria: #93c665;
+    --cor-borda: #6c757d;
+}
+
+
+
+
+
+main {
+    padding: 30px 50px;
+    background-color: #f2f2f2;
+    min-height: calc(100vh - 130px);
+}
+
+.eventos {
+    display: grid;
+  grid-template-columns: auto auto; 
+  justify-content: center;
+  overflow: auto;
+  gap: 50px;
+}
+
+.evento {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    text-decoration: none; 
+    color: inherit; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    cursor: pointer;
+}
+
+.evento:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.evento img {
+     width: 140px;       
+    height: 105px; 
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    background: #eaeaea;
+    display: block;
+}
+
+.evento p {
+    margin: 0;
+    font-weight: 600;
+    font-size: 16px;
+    color: #222;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 20, 25, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  opacity: 0;
+  pointer-events: none; 
+  transition: opacity 0.3s ease;
+}
+
+.modal.ativo {
+  opacity: 1;
+  pointer-events: auto; 
+}
+
+.modal-conteudo {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 720px;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.modal.ativo .modal-conteudo {
+  transform: scale(1);
+}
+
+.modal-conteudo img {
+  width: 40%;
+  object-fit: cover;
+  min-height: 100%; 
+}
+
+.modal-texto {
+  width: 60%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+ 
+}
+
+.modal-texto h3 {
+  margin: 0 0 12px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.modal-texto p {
+  margin: 0;
+  font-size: 16px;
+  color: #666666;
+  line-height: 1.65;
+}
+
+.fechar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: 300;
+  color: #333;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+.modal-botao {
+  display: inline-block;
+  background-color: var(--cor-secundaria); 
+  color: #ffffff;
+  padding: 12px 24px;
+  margin-top: 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.modal-botao:hover {
+  background-color: #7eb450; 
+  transform: translateY(-2px); 
+}
+

@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+
+:root {
+    --fonte-logo: "Nunito", sans-serif;
+    --fonte-texto: "Lato", sans-serif;
+    --fonte-cursiva: "Parisienne", cursive;
+    --cor-fundo: #f3f3f3;
+    --cor-primaria: #f9e470;
+    --cor-secundaria: #93c665;
+    --cor-borda: #6c757d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    overflow-x: hidden;
+}
+
+header {
+    background-color: white;
+    border-bottom: 1px black solid;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    justify-content: space-between;
+    width: 98%;
+}
+
+ul {
+    display: inline-flex;
+}
+
+nav {
+    text-align: center;
+}
+
+li a {
+
+    text-decoration: none;
+    color: black;
+    font-family: var(--fonte-texto);
+    padding: 0 10px;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: center;
+}
+
+li {
+    list-style: none;
+}
+
+li a:hover {
+    background-color: var(--cor-secundaria);
+    padding: 5px;
+}
+
+
+#logo {
+    color: var(--cor-primaria);
+    font-family: var(--fonte-logo);
+    margin: 1%;
+}
+
+footer {
+    margin-top: 5%;
+    background-color: white;
+    border-top: 1px black solid;
+    padding: 20px 20px;
+}
+
+
+
+main {
+    padding-top: 20px;
+}
+
+p,
+h2,h1, h3, a{
+    font-family: var(--fonte-texto);
+}
+
+h1 {
+    margin: 2% 5%;
+}

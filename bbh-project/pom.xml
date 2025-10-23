@@ -20,7 +20,6 @@
   <modules>
       
     <module>view</module>
-    <module>controller</module>
     <module>models</module>
   </modules>
 </project>
