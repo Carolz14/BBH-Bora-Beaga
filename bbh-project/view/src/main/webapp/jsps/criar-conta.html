@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bora Beagá</title>
+    <link rel="stylesheet" href="style-login.css">
+</head>
+
+<body>
+    <div id="gradient">
+        <h1 id="welcome"> Bem vindo</h1>
+        <h1 id="logo">Bora Beagá</h1>
+    </div>
+    <div id="container">
+
+        <div id="login">
+            <h1>Criar conta</h1>
+            <div>
+                <select name="Tipo de cadastro" id="">
+                    <option value="" selected disabled hidden>Tipo de cadastro</option>
+                    <option value="Turista" label="Turista"></option>
+                    <option value="Estabelecimento" label="Estabelecimento"></option>
+                    <option value="Guia" label="Guia"></option>
+                    <option value="Administrador" label="Administrador"></option>
+                </select>
+                <select name="Naturalidade" id="">
+                    <option value="" selected disabled hidden>Naturalidade</option>
+                    <option value="MG" label="MG"></option>
+                    <option value="SP" label="SP"></option>
+                    <option value="RJ" label="RJ"></option>
+                    <option value="BA" label="BA"></option>
+                </select>
+                <input type="text" name="Nome" id="em" placeholder="Nome">
+                <input type="email" name="Email" id="em" placeholder="Email">
+                <input type="password" name="Senha" id="sen" placeholder="Senha">
+                <button type="button" onclick="window.location.href='login.html'">Criar conta</button>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>

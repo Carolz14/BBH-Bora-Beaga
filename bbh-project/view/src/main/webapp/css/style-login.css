@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+
+:root {
+    --fonte-logo: "Nunito", sans-serif;
+    --fonte-texto: "Lato", sans-serif;
+    --fonte-cursiva: "Parisienne", cursive;
+    --cor-fundo: #f3f3f3;
+    --cor-primaria: #f9e470;
+    --cor-secundaria: #93c665;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    display: flex;
+}
+
+#gradient {
+    background: linear-gradient(130deg, rgba(235, 211, 141, 1) 0%, rgba(125, 187, 70, 1) 100%);
+    text-align: center;
+    height: 100vh;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#welcome {
+    color: white;
+    font-family: var(--fonte-cursiva);
+    font-weight: normal;
+    font-size: 70px;
+}
+
+#logo {
+    color: white;
+    font-family: var(--fonte-logo);
+    font-size: 50px;
+}
+
+#container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100vh;
+}
+
+#login {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 40px;
+    border-radius: 20px;
+    width: 70%;
+    height: 90%;
+    max-width: 350px;
+    max-height: 400px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#login h1 {
+    font-family: var(--fonte-texto);
+}
+
+#login div {
+    margin-top: 70px;
+}
+
+#login input {
+    font-family: var(--fonte-texto);
+    padding: 5px;
+    border-radius: 15px;
+    font-size: 100%;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    margin: 5px;
+    width: 100%;
+}
+
+#login button {
+    font-family: var(--fonte-texto);
+    padding: 5px;
+    border-radius: 15px;
+    font-size: 100%;
+    border: none;
+    background-color: var(--cor-primaria);
+    margin: 5px;
+    width: 102%;
+}
+
+#login select {
+    font-family: var(--fonte-texto);
+    padding: 5px;
+    border-radius: 15px;
+    font-size: 100%;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    margin: 5px;
+    width: 102%;
+}
