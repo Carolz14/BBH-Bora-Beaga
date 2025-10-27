@@ -1,0 +1,211 @@
+package bbh.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import bbh.common.PersistenciaException; //procurar no bd
+import bbh.domain.Usuario;
+import bbh.domain.util.UsuarioTipo;
+import bbh.service.util.ConexaoBD;
+
+public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
+
+    private static UsuarioDAO usuarioDAO;
+
+    static {
+        UsuarioDAO.usuarioDAO = null;
+    }
+
+    public static UsuarioDAO getInstance() {
+
+        if (usuarioDAO == null) {
+            usuarioDAO = new UsuarioDAO();
+        }
+
+        return usuarioDAO;
+    }
+
+    @Override
+    public void inserir(Usuario usuario) throws PersistenciaException {
+        if (pesquisarEmail(usuario.getEmail()) != null) {
+            throw new PersistenciaException("'" + usuario.getEmail() + "' usuario ja existente");
+        }
+
+        String senha = usuario.getSenha(); //Provisorio/ place holder
+        usuario.setSenha(senha);
+
+        String sql = "INSERT INTO usuario (id, nome, email, senha, naturalidade, endereco, contato, habilitado) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, usuario.getId());
+            ps.setString(2, usuario.getNome());
+            ps.setString(3, usuario.getEmail());
+            ps.setString(4, usuario.getSenha());
+            ps.setString(5, usuario.getNaturalidade());
+            ps.setString(6, usuario.getEndereco());
+            ps.setLong(7, usuario.getContato());
+            ps.setBoolean(8, usuario.getHabilitado());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao inserir usuario: " + e.getMessage(), e);
+        }
+    }
+
+    public Usuario pesquisarEmail(String email) throws PersistenciaException {
+        Usuario usuario = null;
+
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado "
+                + "FROM usuario WHERE email = ?";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) { //cria temporariamente uma instancia de usuario, para poder encontrar se ja tem o mesmo login no bd
+                    usuario = new Usuario(
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("naturalidade")
+                    );
+                    usuario.setId(rs.getLong("id"));
+                    usuario.setEndereco(rs.getString("endereco"));
+                    usuario.setContato(rs.getLong("contato"));
+                    usuario.setHabilitado(rs.getBoolean("habilitado"));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao pesquisar email: " + e.getMessage(), e);
+        }
+
+        return usuario;
+    }
+
+    @Override
+    public Usuario pesquisar(Long id) throws PersistenciaException {
+        Usuario usuario = null;
+
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado "
+                + "FROM usuario WHERE id = ?";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) { //cria temporariamente uma instancia de usuario, para poder encontrar se ja tem o mesmo login no bd
+                    usuario = new Usuario(
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("naturalidade")
+                    );
+                    usuario.setId(rs.getLong("id"));
+                    usuario.setEndereco(rs.getString("endereco"));
+                    usuario.setContato(rs.getLong("contato"));
+                    usuario.setHabilitado(rs.getBoolean("habilitado"));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao pesquisar pelo id: " + e.getMessage(), e);
+        }
+
+        return usuario;
+    }
+
+    public List<Usuario> listarUsuarios() throws PersistenciaException {
+        List<Usuario> usuarios = new ArrayList<>();
+
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado "
+                + "FROM usuario";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("naturalidade")
+                );
+
+                usuario.setId(rs.getLong("id"));
+                usuario.setEndereco(rs.getString("endereco"));
+                usuario.setContato(rs.getLong("contato"));
+                usuario.setHabilitado(rs.getBoolean("habilitado"));
+
+                usuarios.add(usuario);
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao listar usuários: " + e.getMessage(), e);
+        }
+
+        return usuarios;
+    }
+
+    public List<Usuario> listarAtivos() throws PersistenciaException {
+        List<Usuario> usuarios = new ArrayList<>();
+
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado "
+                + "FROM pessoa WHERE habilitado = TRUE";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("naturalidade")
+                );
+
+                usuario.setId(rs.getLong("id"));
+                usuario.setEndereco(rs.getString("endereco"));
+                usuario.setContato(rs.getLong("contato"));
+                usuario.setHabilitado(rs.getBoolean("habilitado"));
+
+                usuarios.add(usuario);
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao listar pessoas ativas: " + e.getMessage(), e);
+        }
+
+        return usuarios;
+    }
+
+    @Override
+    public void delete(Long id) throws PersistenciaException {
+        Usuario usuario = pesquisar(id);
+        if (usuario.getUsuarioTipo() == UsuarioTipo.ADMINISTRADOR) {
+            throw new PersistenciaException("Não pode deletar administradores");
+        }
+
+        String sql = "UPDATE usuario SET habilitado = false WHERE email = ?";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, usuario.getEmail());
+            int linhasAfetadas = ps.executeUpdate();
+
+            if (linhasAfetadas == 0) { //verifica se alguma linha foi alterada
+                throw new PersistenciaException("Usuario não encontrada para deletar");
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao desabilitar usuario: " + e.getMessage(), e);
+        }
+    }
+
+}
