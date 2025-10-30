@@ -17,18 +17,23 @@ public class CriarTabelas {
         statement.executeUpdate(sql);
         System.out.printf("Tabela tag criada (ou já existia previamente).\n");
     }
-
-    public static void criarTabelaEstabelecimento() throws SQLException{
-        String sql = "CREATE TABLE IF NOT EXISTS estabelecimentos("
-                    + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                    + "nome VARCHAR(50) NOT NULL,"
-                    + "endereco VAR CHAR(100) NOT NULL,"
-                    + "telefone VARCHAR(11) NOT NULL,"
-                    + "CNPJ VARCHAR(14) NOT NULL,"
-                    + ");";
+    public static void criarTabelaCorrespondencia() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS usuario_cnpj_tags ("
+            + "id_usuario BIGINT,"
+            + "id_tag INT,"
+            + "PRIMARY KEY (id_usuario, id_tag),"
+            + "FOREIGN KEY (id_usuario) REFERENCES usuario(id) "
+            + "ON DELETE CASCADE ON UPDATE CASCADE,"
+            + "FOREIGN KEY (id_tag) REFERENCES tag(id) "
+            + "ON DELETE CASCADE ON UPDATE CASCADE"
+            +");";
         Connection con = ConexaoBD.getConnection();
         Statement statement = con.createStatement();
         statement.executeUpdate(sql);
-        System.out.printf("Tabela estabelecimentos criada (ou já existia previamente).\n");
+        System.out.printf("Tabela correspondência já criada (ou já existia previamente).\n");
+    }
+    public static void criarTodasAsTabelas() throws SQLException{
+        criarTabelaTag();
+        criarTabelaCorrespondencia();
     }
 }
