@@ -7,7 +7,7 @@ import java.util.List;
 
 public class GestaoUsuariosService {
 
-    private UsuarioDAO usuarioDAO;
+    private final UsuarioDAO usuarioDAO;
 
     public GestaoUsuariosService() {
         this.usuarioDAO = UsuarioDAO.getInstance();
@@ -20,20 +20,24 @@ public class GestaoUsuariosService {
         }
         return null;
     }
-    
+
+    public void cadastrarPessoa(Usuario usuario) throws PersistenciaException {
+        usuarioDAO.inserir(usuario);
+    }
+
     public void excluir(Usuario usuario) throws PersistenciaException {
         usuarioDAO.delete(usuario.getId());
     }
-    
-    public List<Usuario> pesquisarAtivos() throws PersistenciaException{
+
+    public List<Usuario> pesquisarAtivos() throws PersistenciaException {
         return usuarioDAO.listarAtivos();
     }
-    
-    public Usuario pesquisarPorId(Long id) throws PersistenciaException{
+
+    public Usuario pesquisarPorId(Long id) throws PersistenciaException {
         return usuarioDAO.pesquisar(id);
     }
-    
-    public Usuario pesquisarPorEmail(String email)throws PersistenciaException{
+
+    public Usuario pesquisarPorEmail(String email) throws PersistenciaException {
         Usuario resultado = usuarioDAO.pesquisarEmail(email);
         return resultado;
     }

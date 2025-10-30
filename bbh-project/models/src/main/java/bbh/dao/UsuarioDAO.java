@@ -28,6 +28,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
         return usuarioDAO;
     }
 
+    
     @Override
     public void inserir(Usuario usuario) throws PersistenciaException {
         if (pesquisarEmail(usuario.getEmail()) != null) {
@@ -37,8 +38,8 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
         String senha = usuario.getSenha(); //Provisorio/ place holder
         usuario.setSenha(senha);
 
-        String sql = "INSERT INTO usuario (id, nome, email, senha, naturalidade, endereco, contato, habilitado) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -50,7 +51,8 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
             ps.setString(6, usuario.getEndereco());
             ps.setLong(7, usuario.getContato());
             ps.setBoolean(8, usuario.getHabilitado());
-
+            ps.setString(9, usuario.getUsuarioTipo().name());
+            
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -94,7 +96,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
     public Usuario pesquisar(Long id) throws PersistenciaException {
         Usuario usuario = null;
 
-        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado "
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo "
                 + "FROM usuario WHERE id = ?";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -113,6 +115,8 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
                     usuario.setEndereco(rs.getString("endereco"));
                     usuario.setContato(rs.getLong("contato"));
                     usuario.setHabilitado(rs.getBoolean("habilitado"));
+                    String tipoStr = rs.getString("usuario_tipo");
+                    usuario.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
                 }
             }
 
@@ -126,7 +130,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
     public List<Usuario> listarUsuarios() throws PersistenciaException {
         List<Usuario> usuarios = new ArrayList<>();
 
-        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado "
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo "
                 + "FROM usuario";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
@@ -143,7 +147,9 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
                 usuario.setEndereco(rs.getString("endereco"));
                 usuario.setContato(rs.getLong("contato"));
                 usuario.setHabilitado(rs.getBoolean("habilitado"));
-
+                String tipoStr = rs.getString("usuario_tipo");
+                usuario.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
+                
                 usuarios.add(usuario);
             }
 
@@ -157,7 +163,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
     public List<Usuario> listarAtivos() throws PersistenciaException {
         List<Usuario> usuarios = new ArrayList<>();
 
-        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado "
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo "
                 + "FROM pessoa WHERE habilitado = TRUE";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
@@ -174,6 +180,8 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
                 usuario.setEndereco(rs.getString("endereco"));
                 usuario.setContato(rs.getLong("contato"));
                 usuario.setHabilitado(rs.getBoolean("habilitado"));
+                String tipoStr = rs.getString("usuario_tipo");
+                usuario.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
 
                 usuarios.add(usuario);
             }
