@@ -1,0 +1,129 @@
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.back-link {
+    display: block;
+    margin-bottom: 1rem;
+    color: #555;
+    text-decoration: none;
+    font-family: var(--fonte-texto);
+}
+
+input{
+    font-family: var(--fonte-texto);
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 100%;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    margin: 5px;
+    width: 100%;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--cor-secundaria);
+}
+
+
+
+.roteiro {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.roteiro-imagem img {
+    width: 100%;
+    display: block;
+}
+
+.roteiro-detalhes {
+    padding: 25px;
+}
+
+.roteiro-detalhes h1 {
+    font-size: 2.2em;
+    margin: 8px;
+}
+
+.roteiro-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.roteiro-meta p {
+    margin: 0;
+    color: #666;
+    font-size: 1em;
+}
+
+.rating {
+    color: #ffc107;
+    font-size: 1.2em;
+    margin-bottom: 1.5rem;
+}
+
+.roteiro-descricao {
+    color: #333;
+    line-height: 1.6;
+}
+
+
+.roteiro-paradas {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.roteiro-paradas h2 {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.parada {
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7; 
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.parada img {
+    width: 100px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover; 
+    margin-right: 15px;
+}
+
+.parada span {
+    font-weight: 600;
+    color: #333;
+}
+
+.forum-container {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    margin-top: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.forum-container h2 {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 0;
+    color: #333;
+}
