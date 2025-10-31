@@ -22,11 +22,11 @@
             <div id="login">
                 <h1>Login</h1>
                 <div>
-                    <form name="formLogin" method="post" >
-                        <input type="email" name="email" id="email" placeholder="Email">
-                        <input type="password" name="senha" id="senha" placeholder="Senha">
+                    <form name="formLogin" method="post" action="bbh/LoginController" >
+                        <input type="email" name="email" id="email" placeholder="Email" required>
+                        <input type="password" name="senha" id="senha" placeholder="Senha" required>
                         <button type="button"  onclick="validarCamposLogin(document.formLogin)">Entrar</button>
-                        <button type="button" onclick="window.location.href='jsps/criar-conta.html'">Criar conta</button>
+                        <button type="button" onclick="window.location.href='jsps/criar-conta.jsp'">Criar conta</button>
                     </form>
 
                 </div>
