@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class CriarTabelas {
     public static void criarTabelaTag() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS tag("
-                + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                + "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
                 + "nome VARCHAR(50) NOT NULL,"
                 + "slug VARCHAR(50) NOT NULL,"
                 + "contador INT DEFAULT 0"
