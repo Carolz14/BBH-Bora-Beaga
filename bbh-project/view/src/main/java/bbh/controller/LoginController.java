@@ -5,7 +5,7 @@ import java.io.IOException;
 import bbh.common.SenhaHash;
 import bbh.domain.Usuario;
 import bbh.domain.util.UsuarioTipo;
-import bbh.service.GestaoUsuariosService; // tem que colocar o codigo no lugar certo ainda
+import bbh.service.GestaoUsuariosService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +20,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         try {
             String login = request.getParameter("email");
 
@@ -41,10 +41,10 @@ public class LoginController extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/jsps/admin/painel.html");
                         break;
                     case TURISTA:
-                        response.sendRedirect(request.getContextPath() + "/jsps/turista/pagina-principal.html");
+                        response.sendRedirect(request.getContextPath() + "/jsps/turista/pagina-principal.jsp");
                         break;
                     case GUIA:
-                        response.sendRedirect(request.getContextPath() + "/jsps/turista/pagina-principal.html");
+                        response.sendRedirect(request.getContextPath() + "/jsps/turista/pagina-principal.jsp");
                         break;
                     case ESTABELECIMENTO:
                         response.sendRedirect(request.getContextPath() + "/jsps/estabelecimento/painel.html");
@@ -56,17 +56,14 @@ public class LoginController extends HttpServlet {
                 return;
             } else {
 
-                request.setAttribute("erroLogin", "Login ou senha incorretos");
-                RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-                rd.forward(request, response);
+                request.getSession().setAttribute("erroLogin", "Login ou senha incorretos");
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-
-            request.setAttribute("erroLogin", "Ocorreu um erro inesperado: " + e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-            rd.forward(request, response);
+            request.getSession().setAttribute("erroLogin", "Ocorreu um erro inesperado: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
         }
 
     }

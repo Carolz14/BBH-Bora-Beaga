@@ -1,3 +1,11 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page import="bbh.controller.LoginController"%>
+<%@page import="bbh.domain.Usuario"%>
+
+<%
+    LoginController.validarSessao(request, response);
+%>
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -5,8 +13,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bora Beagá</title>
-    <link rel="stylesheet" href="style-principal.css">
-    <link rel="stylesheet" href="../style-geral.css">
+    <link rel="stylesheet" href="../../css/style-geral.css">
+    <link rel="stylesheet" href="../../css/style-principal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,14 +29,14 @@
                 <li><a href="../roteiros/lista-roteiros.html">Roteiros</a></li>
                 <li><a href="../eventos/eventos.html">Eventos</a></li>
                 <li><a href="../lista-interesse/lista-interesses.html">Lista de interesse</a></li>
-                <li><a href="../perfils/perfil-turista.html">Perfil</a></li>
+                <li><a href="../admin/perfil.jsp">Perfil</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <section class="welcome-section">
-            <h1>Bem vindo, Maffort</h1>
+            <h1>Bem vindo, ${sessionScope.usuario.nome}</h1>
             <h2 class="subtitle">Venha explorar Belo Horizonte conosco</h2>
             <div class="search-bar">
                 <input type="text" placeholder="">
