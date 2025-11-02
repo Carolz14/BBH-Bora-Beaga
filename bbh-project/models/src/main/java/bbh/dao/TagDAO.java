@@ -8,6 +8,7 @@ import java.util.List;
 import bbh.common.PersistenciaException;
 
 public class TagDAO {
+    
     public void inserir(Tag tag) throws PersistenciaException {
         String sql = "INSERT INTO tag (nome,slug) VALUES (?,?)";
         try (Connection conn = ConexaoBD.getConnection();

@@ -18,9 +18,9 @@ public class CriarTabelas {
         System.out.printf("Tabela tag criada (ou já existia previamente).\n");
     }
     public static void criarTabelaCorrespondencia() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS usuario_cnpj_tags ("
+        String sql = "CREATE TABLE IF NOT EXISTS tag_correspondencia("
             + "id_usuario BIGINT,"
-            + "id_tag INT,"
+            + "id_tag BIGINT,"
             + "PRIMARY KEY (id_usuario, id_tag),"
             + "FOREIGN KEY (id_usuario) REFERENCES usuario(id) "
             + "ON DELETE CASCADE ON UPDATE CASCADE,"
