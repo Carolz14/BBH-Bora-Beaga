@@ -8,8 +8,8 @@ public class CriarTabelas {
     public static void criarTabelaTag() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS tag("
                 + "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
-                + "nome VARCHAR(50) NOT NULL,"
-                + "slug VARCHAR(50) NOT NULL,"
+                + "nome VARCHAR(50) NOT NULL UNIQUE,"
+                + "slug VARCHAR(50) NOT NULL UNIQUE,"
                 + "contador INT DEFAULT 0"
                 + ");";
         Connection con = ConexaoBD.getConnection();

@@ -9,27 +9,74 @@ import bbh.common.PersistenciaException;
 
 public class TagCorrespondenciaDAO {
 
-    public void associarTagEstabelecimento(Long idUsuario, Long idTag) throws PersistenciaException {
-        String sql = "INSERT INTO tag_correspondencia(id_usuario, id_tag) VALUES (?,?)";
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, idUsuario);
-            ps.setLong(2, idTag);
-            ps.executeUpdate();
+    public void associarTagsAoEstabelecimento(Long idUsuario, List<Long> idsTags) throws PersistenciaException {
+        if (idsTags == null || idsTags.isEmpty())
+            return;
+
+        String sql = "INSERT INTO tag_correspondencia (id_usuario, id_tag) VALUES (?, ?)";
+
+        try (Connection conn = ConexaoBD.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                for (Long idTag : idsTags) {
+                    ps.setLong(1, idUsuario);
+                    ps.setLong(2, idTag);
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+                conn.commit();
+            } catch (SQLException e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new PersistenciaException("Erro no rollback: " + ex.getMessage(), ex);
+                }
+                throw new PersistenciaException("Erro ao executar batch de insert: " + e.getMessage(), e);
+            } finally {
+                try {
+                    conn.setAutoCommit(true);
+                } catch (SQLException ex) {
+
+                }
+            }
+
         } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao associar tag:" + e.getMessage(), e);
+            throw new PersistenciaException("Erro ao associar tags em lote: " + e.getMessage(), e);
         }
     }
 
-    public void removerTagEstabelecimento(Long idUsuario, Long idTag) throws PersistenciaException {
+    public void removerTagEstabelecimento(Long idUsuario, List<Long> idTags) throws PersistenciaException {
+        if (idTags == null || idTags.isEmpty())
+            return;
         String sql = "DELETE FROM tag_correspondencia WHERE id_usuario = ? AND id_tag = ?";
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, idUsuario);
-            ps.setLong(2, idTag);
-            ps.executeUpdate();
+        try (Connection conn = ConexaoBD.getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                for (Long idTag : idTags) {
+                    ps.setLong(1, idUsuario);
+                    ps.setLong(2, idTag);
+                    ps.addBatch();
+                }
+
+                ps.executeBatch();
+                conn.commit();
+            } catch (SQLException e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new PersistenciaException("Erro no rollback: " + ex.getMessage(), ex);
+                }
+                throw new PersistenciaException("Erro ao executar batch de remoção: " + e.getMessage(), e);
+            } finally {
+                try {
+                    conn.setAutoCommit(true);
+                } catch (SQLException ex) {
+
+                }
+            }
         } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao remover tag:" + e.getMessage(), e);
+            throw new PersistenciaException("Erro ao remover tags em lote: " + e.getMessage(), e);
         }
     }
 
