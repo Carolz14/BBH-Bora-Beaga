@@ -1,8 +1,6 @@
-<%@ include file="../seguranca.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="bbh.domain.Usuario"%>
 <%@page import="bbh.domain.util.UsuarioTipo"%>
-<%@page import="bbh.service.ControleAutorizacao"%>
 
 <!DOCTYPE html>
 <html lang="pt">

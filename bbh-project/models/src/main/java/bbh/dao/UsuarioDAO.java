@@ -11,7 +11,7 @@ import bbh.domain.Usuario;
 import bbh.domain.util.UsuarioTipo;
 import bbh.service.util.ConexaoBD;
 
-public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
+public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
 
     private static UsuarioDAO usuarioDAO;
 
@@ -28,50 +28,70 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
         return usuarioDAO;
     }
 
-    
     @Override
     public void inserir(Usuario usuario) throws PersistenciaException {
         if (pesquisarEmail(usuario.getEmail()) != null) {
             throw new PersistenciaException("'" + usuario.getEmail() + "' usuario ja existente");
         }
 
-        String senha = usuario.getSenha(); //Provisorio/ place holder
-        usuario.setSenha(senha);
+       String sql = "INSERT INTO usuarios (nome, email, senha, naturalidade, endereco, contato, cnpj, habilitado, usuario_tipo) "
+               + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String sql = "INSERT INTO usuario (id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    try (Connection conn = ConexaoBD.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, usuario.getNome());
+        ps.setString(2, usuario.getEmail());
+        ps.setString(3, usuario.getSenha());
+        ps.setString(4, usuario.getNaturalidade());
+        ps.setString(5, usuario.getEndereco());
 
-            ps.setLong(1, usuario.getId());
-            ps.setString(2, usuario.getNome());
-            ps.setString(3, usuario.getEmail());
-            ps.setString(4, usuario.getSenha());
-            ps.setString(5, usuario.getNaturalidade());
-            ps.setString(6, usuario.getEndereco());
-            ps.setLong(7, usuario.getContato());
-            ps.setBoolean(8, usuario.getHabilitado());
-            ps.setString(9, usuario.getUsuarioTipo().name());
-            
-            ps.executeUpdate();
+
+        Long contato = usuario.getContato();
+        if (contato != null) {
+            ps.setLong(6, contato);
+        } else {
+            ps.setNull(6, java.sql.Types.BIGINT);
+        }
+
+      
+        Long cnpj = usuario.getCNPJ();
+        if (cnpj != null) {
+            ps.setLong(7, cnpj);
+        } else {
+            ps.setNull(7, java.sql.Types.BIGINT);
+        }
+
+        ps.setBoolean(8, usuario.getHabilitado());
+        ps.setString(9, usuario.getUsuarioTipo().name());
+
+        ps.executeUpdate();
+
+
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+            if (rs.next()) {
+                usuario.setId(rs.getLong(1));
+            }
+        }
 
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao inserir usuario: " + e.getMessage(), e);
         }
     }
 
+
     public Usuario pesquisarEmail(String email) throws PersistenciaException {
         Usuario usuario = null;
 
-        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado "
-                + "FROM usuario WHERE email = ?";
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, cnpj, habilitado, usuario_tipo "
+                + "FROM usuarios WHERE email = ?";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, email);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) { //cria temporariamente uma instancia de usuario, para poder encontrar se ja tem o mesmo login no bd
+                if (rs.next()) {
                     usuario = new Usuario(
                             rs.getString("nome"),
                             rs.getString("email"),
@@ -80,8 +100,13 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
                     );
                     usuario.setId(rs.getLong("id"));
                     usuario.setEndereco(rs.getString("endereco"));
-                    usuario.setContato(rs.getLong("contato"));
+
+                    usuario.setContato(rs.getObject("contato", Long.class));
+                    usuario.setCNPJ(rs.getObject("cnpj", Long.class));
+
                     usuario.setHabilitado(rs.getBoolean("habilitado"));
+                    String tipoStr = rs.getString("usuario_tipo");
+                    usuario.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
                 }
             }
 
@@ -97,7 +122,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
         Usuario usuario = null;
 
         String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo "
-                + "FROM usuario WHERE id = ?";
+                + "FROM usuarios WHERE id = ?";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -131,7 +156,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
         List<Usuario> usuarios = new ArrayList<>();
 
         String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo "
-                + "FROM usuario";
+                + "FROM usuarios";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
@@ -149,7 +174,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
                 usuario.setHabilitado(rs.getBoolean("habilitado"));
                 String tipoStr = rs.getString("usuario_tipo");
                 usuario.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
-                
+
                 usuarios.add(usuario);
             }
 
@@ -164,7 +189,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
         List<Usuario> usuarios = new ArrayList<>();
 
         String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo "
-                + "FROM pessoa WHERE habilitado = TRUE";
+                + "FROM usuarios WHERE habilitado = TRUE";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
@@ -200,7 +225,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long>{
             throw new PersistenciaException("Não pode deletar administradores");
         }
 
-        String sql = "UPDATE usuario SET habilitado = false WHERE email = ?";
+        String sql = "UPDATE usuarios SET habilitado = false WHERE email = ?";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 

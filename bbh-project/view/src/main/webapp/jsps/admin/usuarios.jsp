@@ -3,7 +3,6 @@
 <%@page import="bbh.domain.Usuario"%>
 <%@page import="java.util.List"%>
 
-<%@ include file="../seguranca.jsp" %>
 
 <%
     GestaoUsuariosService service = new GestaoUsuariosService();
@@ -50,7 +49,6 @@
         <div class="container">
             <h1 class="pagina-titulo">Usuários do Sistema</h1>
 
-            <!-- Seção Turistas -->
             <section class="user-section">
                 <h2 class="section-titulo">Turistas</h2>
                 <div class="user-list">
@@ -67,7 +65,6 @@
                 </div>
             </section>
 
-            <!-- Seção Guias -->
             <section class="user-section">
                 <h2 class="section-titulo">Guias</h2>
                 <div class="user-list">
@@ -84,7 +81,6 @@
                 </div>
             </section>
 
-            <!-- Seção Estabelecimentos -->
             <section class="user-section">
                 <h2 class="section-titulo">Estabelecimentos</h2>
                 <div class="user-list">
