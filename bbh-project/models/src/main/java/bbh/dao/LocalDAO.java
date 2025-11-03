@@ -53,7 +53,6 @@ public class LocalDAO {
                     Local local = new Local();
                     local.setId(rs.getLong("id"));
                     local.setNome(rs.getString("nome"));
-                    local.setEndereco(rs.getString("endereco"));
                     local.setCategoria("Estabelecimento");
                     local.setDescricao(rs.getString("descricao"));
                     local.setImagemUrl(rs.getString("imagem_url"));
