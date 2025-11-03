@@ -21,7 +21,7 @@ public class GestaoUsuariosService {
         return null;
     }
 
-    public void cadastrarPessoa(Usuario usuario) throws PersistenciaException {
+    public void cadastrarUsuario(Usuario usuario) throws PersistenciaException {
         usuarioDAO.inserir(usuario);
     }
 

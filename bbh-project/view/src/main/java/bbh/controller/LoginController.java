@@ -38,7 +38,7 @@ public class LoginController extends HttpServlet {
                 UsuarioTipo tipo = usuario.getUsuarioTipo();
                 switch (tipo) {
                     case ADMINISTRADOR:
-                        response.sendRedirect(request.getContextPath() + "/jsps/admin/painel.html");
+                        response.sendRedirect(request.getContextPath() + "/jsps/admin/painel.jsp");
                         break;
                     case TURISTA:
                         response.sendRedirect(request.getContextPath() + "/jsps/turista/pagina-principal.jsp");
@@ -47,7 +47,7 @@ public class LoginController extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/jsps/turista/pagina-principal.jsp");
                         break;
                     case ESTABELECIMENTO:
-                        response.sendRedirect(request.getContextPath() + "/jsps/estabelecimento/painel.html");
+                        response.sendRedirect(request.getContextPath() + "/jsps/estabelecimento/painel.jsp");
                         break;
                     default:
                         response.sendRedirect(request.getContextPath() + "/index.jsp?erro=usuarioSemAcesso");
