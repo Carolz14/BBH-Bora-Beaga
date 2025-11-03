@@ -1,28 +1,67 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/style-geral.css">
-    <link rel="stylesheet" href="../../css/style-estab.css">
-    <link rel="stylesheet" href="../../css/tags.css">
-    <title>Tags</title>
+    <meta charset="UTF-8" />
+    <title>Gerenciar Tags</title>
+    <style>
+        .tag { margin-right: 8px; display:inline-block; }
+        .tag form { display:inline; margin-left:4px; }
+    </style>
 </head>
 <body>
-    <h2>Gerenciamento de Tags</h2>
-   <form action="EditarTagsController" method="post" id="tagForm">
-        <ul class="tag-list">
-            <c:forEach var="tag" items="${tags}">
-                <li>
-                    <label>
-                        <input type="checkbox" name="tagIds" value="${tag.id}">
-                        <span class="tag">${tag.nome}</span>
-                    </label>
-                </li>
-            </c:forEach>
-        </ul>
-        <button type="submit">Salvar</button>
-    </form>
+    <h2>Tags do estabelecimento</h2>
 
+    <c:if test="${empty tagsSelecionadas}">
+        <p>Nenhuma tag associada.</p>
+    </c:if>
+
+    <c:forEach var="tag" items="${tagsSelecionadas}">
+        <div class="tag">
+            <span>${tag.nome}</span>
+
+            <form method="post" action="${pageContext.request.contextPath}/estabelecimento/tags/update">
+                <input type="hidden" name="removerTagId" value="${tag.id}" />
+                <button type="submit" title="Remover ${tag.nome}">x</button>
+            </form>
+        </div>
+    </c:forEach>
+
+    <hr/>
+
+    <h2>Adicionar tags</h2>
+
+    <c:if test="${empty tags}">
+        <p>Não há tags cadastradas.</p>
+    </c:if>
+
+    <c:forEach var="tag" items="${tags}">
+        <!-- inicializa flag selected como false -->
+        <c:set var="selected" value="false" scope="page" />
+        <c:if test="${not empty tagsSelecionadas}">
+            <c:forEach var="sel" items="${tagsSelecionadas}">
+                <c:if test="${sel.id == tag.id}">
+                    <c:set var="selected" value="true" scope="page" />
+                </c:if>
+            </c:forEach>
+        </c:if>
+
+        <div class="tag">
+            <span>${tag.nome}</span>
+
+            <c:choose>
+                <c:when test="${selected}">
+                    <span> (já associado) </span>
+                </c:when>
+                <c:otherwise>
+                    <form method="post" action="${pageContext.request.contextPath}/estabelecimento/tags/update">
+                        <input type="hidden" name="adicionarTagId" value="${tag.id}" />
+                        <button type="submit" title="Adicionar ${tag.nome}">+</button>
+                    </form>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </c:forEach>
 </body>
 </html>
