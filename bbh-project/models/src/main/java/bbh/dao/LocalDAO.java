@@ -11,6 +11,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe responsável por buscar apenas os locais (usuários do tipo ESTABELECIMENTO)
+ * no banco de dados.
+ */
 public class LocalDAO {
 
     private static LocalDAO instancia;
@@ -25,12 +29,19 @@ public class LocalDAO {
     }
 
     /**
-     * Busca locais pelo nome (parcial). Retorna somente locais ativos.
+     * Busca locais (estabelecimentos) cujo nome contenha o termo informado.
+     * Ignora usuários de outros tipos (ADMIN, TURISTA, etc).
      */
     public List<Local> buscarPorNome(String nomeBuscado) throws PersistenciaException {
         List<Local> locais = new ArrayList<>();
-        String sql = "SELECT id, nome, endereco, categoria, descricao, imagem_url FROM locais " +
-                     "WHERE LOWER(nome) LIKE LOWER(?) AND ativo = TRUE";
+
+        String sql = """
+            SELECT id, nome, endereco, pessoa_tipo, descricao, imagem_url
+            FROM usuarios
+            WHERE LOWER(nome) LIKE LOWER(?)
+              AND pessoa_tipo = 'ESTABELECIMENTO'
+              AND ativo = TRUE
+        """;
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -43,14 +54,15 @@ public class LocalDAO {
                     local.setId(rs.getLong("id"));
                     local.setNome(rs.getString("nome"));
                     local.setEndereco(rs.getString("endereco"));
-                    local.setCategoria(rs.getString("categoria"));
+                    local.setCategoria("Estabelecimento");
                     local.setDescricao(rs.getString("descricao"));
                     local.setImagemUrl(rs.getString("imagem_url"));
                     locais.add(local);
                 }
             }
+
         } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao buscar locais por nome: " + e.getMessage(), e);
+            throw new PersistenciaException("Erro ao buscar estabelecimentos: " + e.getMessage(), e);
         }
 
         return locais;

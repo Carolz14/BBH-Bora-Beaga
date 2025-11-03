@@ -1,130 +1,71 @@
-<!DOCTYPE html>
-<html lang="pt">
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="bbh.domain.Usuario"%>
+<%@ page import="bbh.domain.util.UsuarioTipo"%>
+<%@ page import="bbh.domain.Local"%>
+<%@ page import="java.util.List"%>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bora Beagá</title>
-    <link rel="stylesheet" href="style-principal.css">
-    <link rel="stylesheet" href="../style-geral.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+<%@ include file="../includes/header.jsp" %>
 
-<body>
-    <header>
-        <h1 id="logo">Bora Beagá</h1>
-        <nav>
-            <ul>
-                <li><a href="../paginas-principais/pagina-principal.html">Início</a></li>
-                <li><a href="../roteiros/lista-roteiros.html">Roteiros</a></li>
-                <li><a href="../eventos/eventos.html">Eventos</a></li>
-                <li><a href="../lista-interesse/lista-interesses.html">Lista de interesse</a></li>
-                <li><a href="../perfils/perfil-turista.html">Perfil</a></li>
-            </ul>
-        </nav>
-    </header>
+<section class="welcome-section">
+    <%
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        if (usuario == null) {
+            usuario = (Usuario) session.getAttribute("usuario");
+        }
+        String nomeUsuario = (usuario != null && usuario.getNome() != null) ? usuario.getNome() : "Visitante";
+        boolean isEstab = (usuario != null && usuario.getUsuarioTipo() == UsuarioTipo.ESTABELECIMENTO);
+    %>
 
-    <main>
-        <section class="welcome-section">
-            <h1>Bem vindo, Maffort</h1>
-                <h2 class="subtitle">Venha explorar Belo Horizonte conosco</h2>
-                <div class="search-bar">
-                    <input type="text" placeholder="Digite o nome do estabelecimento, ponto turístico ou evento">
-                </div>
-            <div class="quick-filters">
-                <a href="../estabelecimentos/lista-estabelecimento.html" class="category-item">
-                    <i class="fa-solid fa-utensils"></i>
-                    <span>Restaurantes</span>
-                </a>
-                <a href="../estabelecimentos/lista-estabelecimento.html" class="category-item">
-                    <i class="fa-solid fa-landmark"></i>
-                    <span>Museus</span>
-                </a>
-                <a href="../estabelecimentos/lista-estabelecimento.html" class="category-item">
-                    <i class="fa-solid fa-martini-glass"></i>
-                    <span>Bares</span>
-                </a>
-                <a href="../estabelecimentos/lista-estabelecimento.html" class="category-item">
-                    <i class="fa-solid fa-tree"></i>
-                    <span>Parques</span>
-                </a>
-              <a href="../estabelecimentos/lista-estabelecimento.html" class="category-item">
-                   <i class="fa-solid fa-monument"></i>
-                    <span>Monumentos</span>
-                </a>
-            </div>
-        </section>
+    <h1>Bem vindo, <%= nomeUsuario %></h1>
+    <h2 class="subtitle">Venha explorar Belo Horizonte conosco</h2>
 
-        <section class="nearby-section">
-            <h1>Perto de você</h1>
-            <div class="card-grid">
-                
-                    <a href="../estabelecimentos/detalhe-estabelecimento.html" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p></a>
-               
-                <a href="../estabelecimentos/detalhe-estabelecimento.html" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                <a  href="../estabelecimentos/detalhe-estabelecimento.html" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                <a href="../estabelecimentos/detalhe-estabelecimento.html"  class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                  <a href="../estabelecimentos/detalhe-estabelecimento.html" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                <a href="../estabelecimentos/detalhe-estabelecimento.html" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-            </div>
-        </section>
-
-      <section class="ranking">
-    <h1>Locais do momento</h1>
-    <div class="ranking-list">
-        <a href="#" class="ranking-item">
-            <span class="rank-number">1</span>
-            <img src="../imgs/restaurante.jpeg" alt="Imagem do local 1" class="rank-img">
-            <p class="rank-name">Nome do Estabelecimento 1</p>
-            <div class="rank-rating">
-                <i class="fas fa-star"></i>
-                <span>4.9</span>
-            </div>
-        </a>
-        <a href="#" class="ranking-item">
-            <span class="rank-number">2</span>
-            <img src="../imgs/restaurante.jpeg" alt="Imagem do local 2" class="rank-img">
-            <p class="rank-name">Nome do Estabelecimento 2</p>
-            <div class="rank-rating">
-                <i class="fas fa-star"></i>
-                <span>4.8</span>
-            </div>
-        </a>
-        <a href="#" class="ranking-item">
-            <span class="rank-number">3</span>
-            <img src="../imgs/restaurante.jpeg" alt="Imagem do local 3" class="rank-img">
-            <p class="rank-name">Nome do Estabelecimento 3</p>
-            <div class="rank-rating">
-                <i class="fas fa-star"></i>
-                <span>4.7</span>
-            </div>
-        </a>
+    <div class="search-bar">
+        <% if (isEstab) { %>
+            <form action="<%= request.getContextPath() %>/pesquisarLocais" method="get">
+                <input type="text" name="nome" placeholder="Digite o nome do estabelecimento, ponto turístico ou evento"
+                       value="<%= request.getAttribute("nomeBusca") != null ? request.getAttribute("nomeBusca") : "" %>">
+                <button type="submit">🔍</button>
+            </form>
+        <% } else { %>
+            <p style="text-align:center;color:#444;">
+                <% if (usuario == null) { %>
+                    Você precisa <a href="<%= request.getContextPath() %>/login.jsp">entrar</a> para usar a pesquisa.
+                <% } else { %>
+                    A aba de pesquisa está disponível apenas para usuários do tipo <strong>ESTABELECIMENTO</strong>.
+                <% } %>
+            </p>
+        <% } %>
     </div>
 </section>
-    </main>
-    <footer>
-        <p>Bora Beagá 2025 - Informática 2A</p>
-    </footer>
 
-</body>
 
-</html>
+<%-- exemplo de renderização de resultados em outra section (não faça lógica de busca aqui) --%>
+<section class="resultados-section">
+    <%
+        List<Local> resultados = (List<Local>) request.getAttribute("resultados");
+        String erro = (String) request.getAttribute("erro");
+        String nomeBusca = (String) request.getAttribute("nomeBusca");
+    %>
+
+    <% if (erro != null) { %>
+        <p style="color:red;text-align:center;"><%= erro %></p>
+    <% } %>
+
+    <% if (isEstab) {
+         if (resultados != null && !resultados.isEmpty()) { %>
+             <div class="card-grid">
+                 <% for (Local l : resultados) { %>
+                     <a class="card" href="<%= request.getContextPath() %>/detalheLocal?cnpj=<%= l.getCnpj() %>">
+                         <img src="<%= l.getImagemUrl() != null ? l.getImagemUrl() : '../imgs/restaurante.jpeg' %>" alt="imagem">
+                         <div>
+                             <p style="margin:0;font-weight:700;"><%= l.getNome() %></p>
+                             <small style="color:#666;"><%= l.getCategoria() %> • <%= l.getEndereco() %></small>
+                         </div>
+                     </a>
+                 <% } %>
+             </div>
+         <% } else if (nomeBusca != null) { %>
+             <p style="text-align:center;">Nenhum local encontrado para "<%= nomeBusca %>".</p>
+         <% }
+    } %>
+</section>
