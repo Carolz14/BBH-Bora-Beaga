@@ -1,6 +1,7 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@page import="bbh.domain.Usuario"%>
-<%@page import="bbh.domain.util.UsuarioTipo"%>
+
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -20,9 +21,10 @@
     
     <%@ include file="../header.jsp" %>
 
+
     <main>
         <section class="welcome-section">
-            <h1>Bem vindo, <%= usuario.getNome() %></h1>
+            <h1>Bem vindo, ${sessionScope.usuario.nome}</h1>
             <h2 class="subtitle">Venha explorar Belo Horizonte conosco</h2>
             <div class="search-bar">
                 <input type="text" placeholder="">
