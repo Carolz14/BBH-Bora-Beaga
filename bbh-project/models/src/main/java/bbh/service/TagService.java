@@ -4,6 +4,8 @@ import bbh.dao.TagCorrespondenciaDAO;
 import bbh.dao.TagDAO;
 import bbh.domain.Tag;
 import java.util.List;
+
+import bbh.common.NaoEncontradoException;
 import bbh.common.PersistenciaException;
 
 public class TagService {
@@ -22,9 +24,9 @@ public class TagService {
         return tagCorrespondenciaDAO.listarTagsDoEstabelecimento(idUsuario);
     }
 
-    public void removerTagsEstabelecimento(Long idUsuario, List<Long> idTags) throws PersistenciaException {
+    public void removerTagsEstabelecimento(Long idUsuario, List<Long> idTags) throws PersistenciaException, NaoEncontradoException {
         if (idUsuario == null)
-            throw new IllegalArgumentException("idUsuario não pode ser null");
+            throw new NaoEncontradoException("idUsuario não pode ser null");
         if (idTags == null || idTags.isEmpty())
             return;
 
@@ -38,16 +40,15 @@ public class TagService {
             }
         }
     }
-    public void adicionarTagsEstabelecimento(Long idUsuario, List<Long> idsTags) throws PersistenciaException {
+    public void adicionarTagsEstabelecimento(Long idUsuario, List<Long> idsTags) throws PersistenciaException, NaoEncontradoException {
         if (idUsuario == null)
-            throw new IllegalArgumentException("idUsuario não pode ser null");
+            throw new NaoEncontradoException("idUsuario não pode ser null");
         if (idsTags == null || idsTags.isEmpty())
             return;
 
         try {
             tagCorrespondenciaDAO.associarTagsAoEstabelecimento(idUsuario, idsTags);
         } catch (NoSuchMethodError | AbstractMethodError e) {
-            // fallback: itera chamando o método single
             for (Long idTag : idsTags) {
                 if (idTag == null)
                     continue;

@@ -63,6 +63,8 @@ public class UpdateTagsServlet extends BaseServlet {
             response.sendRedirect(request.getContextPath() + "/estabelecimento/tags?sucesso=1");
         } catch (PersistenciaException e) {
             throw new ServletException("Erro ao atualizar tags: " + e.getMessage(), e);
+        } catch(NaoEncontradoException e){
+            throw new ServletException("Erro ao tentar acessar o id do usuário: " + e.getMessage(), e);
         }
     }
 } 
