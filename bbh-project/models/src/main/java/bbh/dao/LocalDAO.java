@@ -1,14 +1,15 @@
 package bbh.dao;
 
+import bbh.common.PersistenciaException;
+import bbh.domain.Local;
+import bbh.service.util.ConexaoBD;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import bbh.domain.Local;
-
 
 public class LocalDAO {
 
@@ -23,26 +24,35 @@ public class LocalDAO {
         return instancia;
     }
 
-   public List<Local> buscarPorNome(String nomeBuscado) throws SQLException {
-    List<Local> locais = new ArrayList<>();
-    String sql = "SELECT id, nome, endereco FROM locais WHERE nome LIKE ?";
+    /**
+     * Busca locais pelo nome (parcial). Retorna somente locais ativos.
+     */
+    public List<Local> buscarPorNome(String nomeBuscado) throws PersistenciaException {
+        List<Local> locais = new ArrayList<>();
+        String sql = "SELECT id, nome, endereco, categoria, descricao, imagem_url FROM locais " +
+                     "WHERE LOWER(nome) LIKE LOWER(?) AND ativo = TRUE";
 
-    try (Connection conn = ConexaoBD.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        stmt.setString(1, "%" + nomeBuscado + "%");
+            ps.setString(1, "%" + nomeBuscado + "%");
 
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            while (resultSet.next()) {
-                Local local = new Local();
-                local.setId(resultSet.getLong("id"));
-                local.setNome(resultSet.getString("nome"));
-                local.setEndereco(resultSet.getString("endereco"));
-                locais.add(local);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Local local = new Local();
+                    local.setId(rs.getLong("id"));
+                    local.setNome(rs.getString("nome"));
+                    local.setEndereco(rs.getString("endereco"));
+                    local.setCategoria(rs.getString("categoria"));
+                    local.setDescricao(rs.getString("descricao"));
+                    local.setImagemUrl(rs.getString("imagem_url"));
+                    locais.add(local);
+                }
             }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao buscar locais por nome: " + e.getMessage(), e);
         }
-    }
-    return locais;
+
+        return locais;
     }
 }
-
