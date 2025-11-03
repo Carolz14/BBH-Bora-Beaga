@@ -15,7 +15,7 @@ public class InicializadorDB implements ServletContextListener {
             System.out.println("Tabelas verificadas/criadas com sucesso.");
 
         } catch (SQLException e) {
-            throw new RuntimeException("Falha ao criar tabelas do DB na inicialização" + e.getMessage(), e);
+            System.out.println("Erro ao criar as tabelas do DB na inicialização");
         }
     }
 

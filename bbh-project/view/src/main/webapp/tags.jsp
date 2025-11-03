@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +38,6 @@
     </c:if>
 
     <c:forEach var="tag" items="${tags}">
-        <!-- inicializa flag selected como false -->
         <c:set var="selected" value="false" scope="page" />
         <c:if test="${not empty tagsSelecionadas}">
             <c:forEach var="sel" items="${tagsSelecionadas}">

@@ -2,7 +2,7 @@ package bbh.controller;
 
 import bbh.common.PersistenciaException;
 import bbh.domain.Tag;
-import bbh.service.TagService; 
+import bbh.service.TagService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,8 +30,8 @@ public class ListTagsServlet extends BaseServlet {
                 request.setAttribute("tagsSelecionadas", selecionadas);
             } catch (Exception e) {
             }
-            request.getRequestDispatcher("/jsps/estabelecimento/tags.jsp")
-                   .forward(request, response);
+            request.getRequestDispatcher("/teste.jsp")
+                    .forward(request, response);
 
         } catch (PersistenciaException e) {
             throw new ServletException("Erro ao carregar tags: " + e.getMessage(), e);
