@@ -3,10 +3,6 @@
 <%@page import="bbh.domain.Usuario"%>
 <%@taglib uri="jakarta.tags.core" prefix="c" %>
 
-<%
-    LoginController.validarSessao(request, response);
-%>
-
 
 <!DOCTYPE html>
 <html lang="pt">
