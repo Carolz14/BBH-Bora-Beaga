@@ -41,6 +41,7 @@ public class LocalDAO {
             WHERE LOWER(nome) LIKE LOWER(?)
               AND pessoa_tipo = 'ESTABELECIMENTO'
               AND ativo = TRUE
+            LIMIT 10 
         """;
 
         try (Connection conn = ConexaoBD.getConnection();

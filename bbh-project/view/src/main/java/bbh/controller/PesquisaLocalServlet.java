@@ -24,44 +24,41 @@ public class PesquisaLocalServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
+        // sessão e usuário
         HttpSession session = request.getSession(false);
-        Usuario usuarioLogado = (session != null)
-                ? (Usuario) session.getAttribute("usuarioLogado")
-                : null;
+        Usuario usuarioLogado = null;
+        if (session != null) {
+            usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        }
 
-        String termoBusca = request.getParameter("nome");
+        String nome = request.getParameter("nome");
         List<Local> resultados = null;
         String erro = null;
 
-  
-        if (termoBusca != null) {
-            termoBusca = termoBusca.trim();
-
-            if (termoBusca.length() < 3) {
+        if (nome != null && !nome.trim().isEmpty()) {
+            String termo = nome.trim();
+            if (termo.length() < 3) {
                 erro = "Digite pelo menos 3 letras para pesquisar.";
             } else {
                 try {
-                    resultados = localService.pesquisarPorNome(termoBusca);
-                    if (resultados == null || resultados.isEmpty()) {
-                        erro = "Nenhum estabelecimento encontrado para o termo: " + termoBusca;
-                    }
+                    resultados = localService.pesquisarPorNome(termo);
                 } catch (PersistenciaException e) {
-                    erro = "Erro ao pesquisar estabelecimentos: " + e.getMessage();
-                    e.printStackTrace();
+                    erro = "Erro ao pesquisar locais: " + e.getMessage();
                 }
             }
+        } else if (nome != null) { // caso o parâmetro tenha sido enviado vazio
+           
         }
 
-
         request.setAttribute("resultados", resultados);
-        request.setAttribute("nomeBusca", termoBusca);
+        request.setAttribute("nomeBusca", nome);
         request.setAttribute("erro", erro);
         request.setAttribute("usuarioLogado", usuarioLogado);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/paginas-principais/pagina-principal.jsp");
-        dispatcher.forward(request, response);
+        RequestDispatcher rd = request.getRequestDispatcher("/paginas-principais/pagina-principal.jsp");
+        rd.forward(request, response);
     }
 
     @Override
