@@ -8,11 +8,10 @@ import java.util.List;
 import bbh.common.PersistenciaException;
 
 public class TagDAO {
-    
-    public void inserir(Tag tag) throws PersistenciaException {
-        String sql = "INSERT INTO tag (nome,slug) VALUES (?,?)";
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+    public void inserirUnidade(Tag tag) throws PersistenciaException {
+        String sql = "INSERT IGNORE INTO tag (nome,slug) VALUES (?,?)";
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tag.getNome());
             ps.setString(2, tag.getSlug());
             ps.executeUpdate();
@@ -21,11 +20,59 @@ public class TagDAO {
         }
     }
 
+    public void inserirEmLote(List<Tag> tags) throws PersistenciaException {
+        if (tags == null || tags.isEmpty()) {
+            return;
+        }
+
+        String sql = "INSERT IGNORE INTO tag (nome, slug) VALUES (?, ?)";
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            conn.setAutoCommit(false);
+
+            for (Tag t : tags) {
+                if (t == null)
+                    continue;
+                String nome = t.getNome();
+                String slug = t.getSlug();
+                if (nome == null || slug == null)
+                    continue;
+                nome = nome.trim();
+                slug = slug.trim();
+                if (nome.isEmpty() || slug.isEmpty())
+                    continue;
+                ps.setString(1, nome);
+                ps.setString(2, slug);
+                ps.addBatch();
+            }
+
+            try {
+                int[] resultados = ps.executeBatch();
+                conn.commit();
+            } catch (java.sql.BatchUpdateException bue) {
+                int[] counts = bue.getUpdateCounts();
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                }
+                throw new PersistenciaException("Erro ao executar batch ao inserir tags. Update counts: " + java.util.Arrays.toString(counts), bue);
+            } catch (SQLException e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                }
+                throw new PersistenciaException("Erro ao inserir as tags em lote: " + e.getMessage(), e);
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao inserir as tags em lote: " + e.getMessage(), e);
+        }
+    }
+
     public Tag pesquisarPorId(Long id) throws PersistenciaException {
         String sql = "SELECT id, nome, slug FROM tag WHERE id = ?";
         Tag tag = null;
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -42,8 +89,7 @@ public class TagDAO {
     public Tag pesquisarPorSlug(String slug) throws PersistenciaException {
         String sql = "SELECT id, nome, slug from tag WHERE slug = ?";
         Tag tag = null;
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, slug);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -60,9 +106,7 @@ public class TagDAO {
     public List<Tag> listarTodasAsTags() throws PersistenciaException {
         List<Tag> tags = new ArrayList<>();
         String sql = "SELECT id, nome, slug FROM tag";
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Long id = rs.getLong("id");
                 String nome = rs.getString("nome");
@@ -78,8 +122,7 @@ public class TagDAO {
 
     public void atualizar(Tag tag) throws PersistenciaException {
         String sql = "UPDATE tag SET nome = ?, slug = ? WHERE id = ?";
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tag.getNome());
             ps.setString(2, tag.getSlug());
             ps.setLong(3, tag.getId());
@@ -91,8 +134,7 @@ public class TagDAO {
 
     public void excluir(Long id) throws PersistenciaException {
         String sql = "DELETE FROM tag WHERE id = ?";
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {

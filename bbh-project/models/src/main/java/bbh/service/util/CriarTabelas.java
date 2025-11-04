@@ -1,8 +1,14 @@
 package bbh.service.util;
 
+import bbh.common.PersistenciaException;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.SQLException;
+import bbh.service.TagService;
+import java.util.ArrayList;
+import bbh.domain.Tag;
+import java.util.List;
+
 
 public class CriarTabelas {
 
@@ -19,7 +25,8 @@ public class CriarTabelas {
         System.out.printf("Tabela tag criada (ou já existia previamente).\n");
     }
 
-    public static void criarTabelaUsuario() throws SQLException { /// apenas pro teste do meu csu
+    public static void criarTabelaUsuario() throws SQLException {
+        /// apenas pro teste do meu csu
         String sql = "CREATE TABLE IF NOT EXISTS usuario("
                 + "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
                 + "nome VARCHAR(100) NOT NULL,"
@@ -47,9 +54,44 @@ public class CriarTabelas {
         System.out.printf("Tabela correspondência já criada (ou já existia previamente).\n");
     }
 
-    public static void criarTodasAsTabelas() throws SQLException {
+    public static void inserirTagsPadroes() throws PersistenciaException {
+        String[][] stringTagsPadroes = {
+            {"Bar", "bar"},
+            {"Restaurante", "restaurante"},
+            {"Lazer", "lazer"},
+            {"Cultural", "cultural"},
+            {"Cafeteria", "cafeteria"},
+            {"Comida mineira", "comida-mineira"},
+            {"Parque", "parque"},
+            {"Família", "familia"},
+            {"Arte", "arte"},
+            {"Hotel", "hotel"},
+            {"Shopping", "shopping"},
+            {"Música ao vivo", "musicao-ao-vivo"},
+            {"Noturno", "noturno"},
+            {"Pagode", "pagode"},
+            {"Teatro", "teatro"},
+            {"Zoológico", "zoologico"},
+            {"Esportes", "esportes"},
+            {"Igrejas", "igrejas"},
+            {"Natureza", "natureza"},
+            {"Cultura mineira", "cultura-mineira"}
+        };
+        List<Tag> listaTags = new ArrayList(stringTagsPadroes.length);
+        for(String[] tagDados : stringTagsPadroes){
+            String nome = tagDados[0];
+            String slug = tagDados[1];
+            listaTags.add(new Tag(nome,slug,null));
+        }
+        TagService tagService = new TagService();
+        tagService.inserirTagsEmLote(listaTags);
+        System.out.println("Tags padrão inseridas com sucesso!");
+    }
+
+    public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
         criarTabelaTag();
         criarTabelaUsuario();
         criarTabelaCorrespondencia();
+        inserirTagsPadroes();
     }
 }
