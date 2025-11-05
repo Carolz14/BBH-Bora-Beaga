@@ -36,10 +36,10 @@ public class LocalDAO {
         List<Local> locais = new ArrayList<>();
 
         String sql = """
-            SELECT id, nome, endereco, pessoa_tipo, descricao, imagem_url
+            SELECT id, nome, endereco, usuario_tipo, descricao
             FROM usuarios
             WHERE LOWER(nome) LIKE LOWER(?)
-              AND pessoa_tipo = 'ESTABELECIMENTO'
+              AND usuario_tipo = 'ESTABELECIMENTO'
               AND ativo = TRUE
             LIMIT 10 
         """;
@@ -56,7 +56,6 @@ public class LocalDAO {
                     local.setNome(rs.getString("nome"));
                     local.setCategoria("Estabelecimento");
                     local.setDescricao(rs.getString("descricao"));
-                    local.setImagemUrl(rs.getString("imagem_url"));
                     locais.add(local);
                 }
             }
