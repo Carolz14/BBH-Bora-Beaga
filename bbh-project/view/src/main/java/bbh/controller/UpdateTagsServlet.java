@@ -8,63 +8,83 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "UpdateTagsServlet", urlPatterns = { "/estabelecimento/tags/update" })
+@WebServlet(name = "UpdateTagsServlet", urlPatterns = {"/estabelecimento/tags/update"})
 public class UpdateTagsServlet extends BaseServlet {
 
-    private final TagService tagService = new TagService();
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(UpdateTagsServlet.class.getName());
+
+    /**
+     * Fábrica de TagService — sobrescreva em testes para injetar mocks.
+     */
+    protected TagService createTagService() {
+        return new TagService();
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        Long idUsuario;
-        try {
-            idUsuario = getIdUsuario(request);
-        } catch (NaoEncontradoException e) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Usuário não autenticado");
-            return;
-        }
-
-        String adicionar = request.getParameter("adicionarTagId");
-        String remover = request.getParameter("removerTagId");
-        List<Long> idsParaAdicionar = new ArrayList<>();
-        List<Long> idsParaRemover = new ArrayList<>();
-
-        if (adicionar != null && !adicionar.isBlank()) {
-            try {
-                idsParaAdicionar.add(Long.parseLong(adicionar.trim()));
-            } catch (NumberFormatException ignore) {
-            }
-        }
-        if (remover != null && !remover.isBlank()) {
-            try {
-                idsParaRemover.add(Long.parseLong(remover.trim()));
-            } catch (NumberFormatException ignore) {
-            }
-        }
-
-        if (idsParaAdicionar.isEmpty() && idsParaRemover.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Nenhuma tag válida informada.");
-            return;
-        }
+        TagService tagService = createTagService();
 
         try {
-            if (!idsParaRemover.isEmpty()) {
-                tagService.removerTagsEstabelecimento(idUsuario, idsParaRemover);
+            Long idUsuario = getIdUsuario(request);
+            String adicionarParam = request.getParameter("adicionarTagId");
+            String removerParam = request.getParameter("removerTagId");
+
+            List<Long> toAdd = parseIds(adicionarParam);
+            List<Long> toRemove = parseIds(removerParam);
+
+            if (!toAdd.isEmpty()) {
+                tagService.adicionarTagsEstabelecimento(idUsuario, toAdd);
             }
-            if (!idsParaAdicionar.isEmpty()) {
-                tagService.adicionarTagsEstabelecimento(idUsuario, idsParaAdicionar);
+            if (!toRemove.isEmpty()) {
+                tagService.removerTagsEstabelecimento(idUsuario, toRemove);
             }
+
             response.sendRedirect(request.getContextPath() + "/estabelecimento/tags?sucesso=1");
-        } catch (PersistenciaException e) {
-            throw new ServletException("Erro ao atualizar tags: " + e.getMessage(), e);
-        } catch(NaoEncontradoException e){
-            throw new ServletException("Erro ao tentar acessar o id do usuário: " + e.getMessage(), e);
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Erro ao atualizar tags", e);
+            if (e instanceof PersistenciaException) {
+                throw new ServletException("Erro ao atualizar tags: problema de persistência.", e);
+            }
+            throw new ServletException("Erro ao atualizar tags.", e);
         }
     }
-} 
+
+    private List<Long> parseIds(String string ) {
+        List<Long> resultados = new ArrayList<>();
+        if (string == null) {
+            return resultados;
+        }
+        string = string.trim();
+        if (string.isEmpty()) {
+            return resultados;
+        }
+
+        String[] parts = string.split(",");
+        for (String p : parts) {
+            if (p == null) {
+                continue;
+            }
+            p = p.trim();
+            if (p.isEmpty()) {
+                continue;
+            }
+            try {
+                long v = Long.parseLong(p);
+                resultados.add(v);
+            } catch (NumberFormatException ex) {
+
+                LOGGER.log(Level.FINE, "id inválido ignorado: " + p);
+            }
+        }
+        return resultados;
+    }
+}

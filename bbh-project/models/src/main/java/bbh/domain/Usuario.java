@@ -36,7 +36,6 @@ public class Usuario {
         this.senha = senha;
         this.contato = contato;
     }
-    
     public UsuarioTipo getUsuarioTipo(){
         return this.perfil;
     }

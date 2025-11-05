@@ -22,7 +22,11 @@ public class TagService {
     public List<Tag> listarTodasAsTags() throws PersistenciaException {
         return tagDAO.listarTodasAsTags();
     }
-
+    
+    protected TagService createTagService(){
+        return new TagService();
+    }
+    
     public List<Tag> listarTagsDoUsuario(Long idUsuario) throws PersistenciaException {
         if (idUsuario == null) {
             throw new PersistenciaException("Erro na inserção do id do usuário");

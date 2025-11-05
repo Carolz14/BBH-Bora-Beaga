@@ -12,7 +12,7 @@ public class ConexaoBD {
 
     public static Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // garante que o driver está carregado
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new SQLException("Driver MySQL não encontrado!", e);
         }
