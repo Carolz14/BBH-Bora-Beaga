@@ -8,9 +8,9 @@ import java.util.List;
 import bbh.common.PersistenciaException;
 
 public class TagDAO {
-    
-    public void inserir(Tag tag) throws PersistenciaException {
-        String sql = "INSERT INTO tag (nome,slug) VALUES (?,?)";
+
+    public void inserirUnidade(Tag tag) throws PersistenciaException {
+        String sql = "INSERT INTO tag (nome,slug,contador) VALUES (?,?)";
         try (Connection conn = ConexaoBD.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tag.getNome());
@@ -18,6 +18,38 @@ public class TagDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao inserir tag:" + e.getMessage(), e);
+        }
+    }
+
+    public void inserirEmLote(List<Tag> tags) throws PersistenciaException {
+        if (tags == null || tags.isEmpty())
+            return;
+        String sql = "INSERT INTO tag (nome,slug,contador) VALUES (?,?)";
+        try (Connection conn = ConexaoBD.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            conn.setAutoCommit(false);
+            for (Tag t : tags) {
+                if (t == null)
+                    continue;
+                ps.setString(1, t.getNome());
+                ps.setString(2, t.getSlug());
+                ps.setInt(3, 0);
+            }
+            try {
+                ps.executeUpdate();
+            } catch (SQLIntegrityConstraintViolationException duplicata) {
+
+            } catch (SQLException e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+
+                }
+                throw new PersistenciaException("Erro ao inserir as tags em lote" + e.getMessage(), e);
+            }
+            conn.commit();
+        } catch (Exception e) {
+            throw new PersistenciaException("Erro ao inserir as tags em lote" + e.getMessage(), e);
         }
     }
 
