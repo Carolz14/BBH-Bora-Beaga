@@ -2,12 +2,7 @@ package bbh.controller;
 
 import bbh.common.NaoEncontradoException;
 import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
-
 import bbh.domain.Usuario;
-import bbh.common.NaoEncontradoException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
