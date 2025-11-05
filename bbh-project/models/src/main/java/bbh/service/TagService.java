@@ -12,7 +12,13 @@ public class TagService {
 
     private final TagDAO tagDAO = new TagDAO();
     private final TagCorrespondenciaDAO tagCorrespondenciaDAO = new TagCorrespondenciaDAO();
-
+    
+    public void inserirTagsEmLote(List<Tag> tags) throws PersistenciaException{
+        if(tags == null || tags.isEmpty())
+            return;
+        tagDAO.inserirEmLote(tags);
+    }
+    
     public List<Tag> listarTodasAsTags() throws PersistenciaException {
         return tagDAO.listarTodasAsTags();
     }

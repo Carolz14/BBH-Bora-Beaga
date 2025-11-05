@@ -1,5 +1,6 @@
 package bbh.service.util; // Adapte o pacote conforme a localização da classe
 
+import bbh.common.PersistenciaException;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -15,7 +16,9 @@ public class InicializadorDB implements ServletContextListener {
             System.out.println("Tabelas verificadas/criadas com sucesso.");
 
         } catch (SQLException e) {
-            System.out.println("Erro ao criar as tabelas do DB na inicialização");
+            System.out.println("Erro ao criar as tabelas do DB na inicialização" + e.getMessage() + e);
+        } catch (PersistenciaException ex) {
+            System.out.println("Erro ao criar tabelas do DB na inicialização" + ex.getMessage() + ex);
         }
     }
 
