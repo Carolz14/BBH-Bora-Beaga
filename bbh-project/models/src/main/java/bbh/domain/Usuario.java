@@ -5,7 +5,7 @@ import bbh.domain.util.UsuarioTipo;
 
 public class Usuario {
     
-    private long CNPJ;
+    private Long CNPJ;
     private Long id;
     private String nome;
     private String naturalidade;
@@ -14,7 +14,7 @@ public class Usuario {
     private boolean habilitado;
     private UsuarioTipo perfil;
     private String endereco;
-    private long contato;
+    private Long contato;
     
     public Usuario(String email, String senha){
         this.email = email;
@@ -29,7 +29,7 @@ public class Usuario {
         this.senha = senha;
     }
     
-    public Usuario(String nome, String email, String senha, String endereco, long contato){
+    public Usuario(String nome, String email, String senha, String endereco, Long contato){
         this.email = email;
         this.nome = nome;
         this.endereco = endereco;
@@ -57,7 +57,7 @@ public class Usuario {
         return CNPJ;
     }
     
-    public void setCNPJ(long CNPJ) {
+    public void setCNPJ(Long CNPJ) {
         this.CNPJ = CNPJ;
     }
 
@@ -101,7 +101,7 @@ public class Usuario {
         this.endereco = endereco;
     }
     
-    public long getContato(){
+    public Long getContato(){
         return this.contato;
     }
     
