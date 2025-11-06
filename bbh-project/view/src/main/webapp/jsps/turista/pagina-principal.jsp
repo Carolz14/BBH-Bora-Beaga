@@ -1,7 +1,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@page import="bbh.domain.Usuario"%>
-
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -35,22 +35,27 @@
             </div>
 
              <!-- Resultados da busca (se houver, claro) -->
-        <section class="resultados-section ${not empty resultados ? 'mostrar' : ''}">
-            <c:if test="${not empty resultados}">
-                <h2 class="resultados-titulo">Resultados da pesquisa</h2>
-                <div class="resultados-grid">
-                    <c:forEach var="local" items="${resultados}">
-                        <a href="detalhe-estabelecimento.jsp" class="resultado-card">
-                            <img src="../imgs/liberdade.jpeg" alt="Imagem do local">
-                            <p>${local.nome}</p>
-                        </a>
-                    </c:forEach>
-                </div>
-             </c:if>
-            <c:if test="${empty resultados && not empty nomeBusca}">
-                <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
-            </c:if>
-        </section>
+     
+<section class="resultados-section ${not empty resultados || not empty erro ? 'mostrar' : ''}">
+    <c:if test="${not empty resultados}">
+        
+        <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
+        <div class="resultados-grid">
+            <c:forEach var="local" items="${resultados}">
+                <a href="detalhe-estabelecimento.jsp" class="resultado-card">
+        
+                    <p>${local.nome}</p>
+                </a>
+            </c:forEach>
+        </div>
+    
+    </c:if>
+    
+    <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
+        <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
+    </c:if>
+</section>
+        
 
             <div class="quick-filters">
                 <a href="lista-estabelecimento.jsp" class="category-item">

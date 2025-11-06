@@ -27,19 +27,19 @@ public class PesquisaLocalServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // sessão e usuário
-        HttpSession session = request.getSession(false);
-        Usuario usuarioLogado = null;
-        if (session != null) {
-            usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-        }
+        HttpSession session = request.getSession();
 
         String nome = request.getParameter("nome");
         List<Local> resultados = null;
-        String erro = null;
+        String erro = null, termo = null;
 
-        if (nome != null && !nome.trim().isEmpty()) {
-            String termo = nome.trim();
-            if (termo.length() < 3) {
+                if (nome != null) {
+            termo = nome.trim();
+            session.setAttribute("nomeBusca", termo); 
+
+            if (termo.isEmpty()) {
+                session.removeAttribute("resultados"); // Limpa da sessão
+            } else if (termo.length() < 3) {
                 erro = "Digite pelo menos 3 letras para pesquisar.";
             } else {
                 try {
@@ -48,17 +48,14 @@ public class PesquisaLocalServlet extends HttpServlet {
                     erro = "Erro ao pesquisar locais: " + e.getMessage();
                 }
             }
-        } else if (nome != null) { // caso o parâmetro tenha sido enviado vazio
-           
         }
 
-        request.setAttribute("resultados", resultados);
-        request.setAttribute("nomeBusca", nome);
-        request.setAttribute("erro", erro);
-        request.setAttribute("usuarioLogado", usuarioLogado);
+        session.setAttribute("resultados", resultados);
+        session.setAttribute("erro", erro);
 
-        RequestDispatcher rd = request.getRequestDispatcher("/paginas-principais/pagina-principal.jsp");
-        rd.forward(request, response);
+        String contextPath = request.getContextPath();
+        response.sendRedirect(contextPath + "/jsps/turista/pagina-principal.jsp");
+    }
     }
 
     @Override
