@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import bbh.domain.Tag;
 import java.util.List;
 
-
 public class CriarTabelas {
 
     public static void criarTabelaTag() throws SQLException {
@@ -39,19 +38,53 @@ public class CriarTabelas {
     }
 
     public static void criarTabelaCorrespondencia() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS tag_correspondencia("
-                + "id_usuario BIGINT,"
-                + "id_tag BIGINT,"
-                + "PRIMARY KEY (id_usuario, id_tag),"
-                + "FOREIGN KEY (id_usuario) REFERENCES usuario(id) "
-                + "ON DELETE CASCADE ON UPDATE CASCADE,"
-                + "FOREIGN KEY (id_tag) REFERENCES tag(id) "
-                + "ON DELETE CASCADE ON UPDATE CASCADE"
-                + ");";
-        Connection con = ConexaoBD.getConnection();
-        Statement statement = con.createStatement();
-        statement.executeUpdate(sql);
-        System.out.printf("Tabela correspondência já criada (ou já existia previamente).\n");
+        String sqlTabela = """
+            CREATE TABLE IF NOT EXISTS tag_correspondencia (
+                id_usuario BIGINT,
+                id_tag BIGINT,
+                PRIMARY KEY (id_usuario, id_tag),
+                FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+                    ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (id_tag) REFERENCES tag(id)
+                    ON DELETE CASCADE ON UPDATE CASCADE
+            );
+        """;
+
+        String sqlDropTrigger = "DROP TRIGGER IF EXISTS before_insert_tag_corr;";
+        String sqlTrigger = """
+            CREATE TRIGGER before_insert_tag_corr
+            BEFORE INSERT ON tag_correspondencia
+            FOR EACH ROW
+            BEGIN
+                DECLARE tipo_usuario VARCHAR(50);
+                SELECT usuario_tipo INTO tipo_usuario
+                FROM usuario
+                WHERE id = NEW.id_usuario;
+
+                IF tipo_usuario IS NULL THEN
+                    SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'Usuário não encontrado.';
+                END IF;
+
+                IF tipo_usuario <> 'ESTABELECIMENTO' THEN
+                    SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'Somente usuários do tipo ESTABELECIMENTO podem ter correspondências de tags.';
+                END IF;
+            END;
+        """;
+
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+
+            stmt.executeUpdate(sqlTabela);
+            System.out.println("Tabela 'tag_correspondencia' criada (ou já existia).");
+
+            stmt.executeUpdate(sqlDropTrigger);
+            stmt.executeUpdate(sqlTrigger);
+            System.out.println("Trigger 'before_insert_tag_corr' criada com sucesso.");
+
+        } catch (SQLException e) {
+            throw new SQLException("Erro ao criar tabela/trigger: " + e.getMessage(), e);
+        }
     }
 
     public static void inserirTagsPadroes() throws PersistenciaException {
@@ -75,13 +108,14 @@ public class CriarTabelas {
             {"Esportes", "esportes"},
             {"Igrejas", "igrejas"},
             {"Natureza", "natureza"},
-            {"Cultura mineira", "cultura-mineira"}
+            {"Cultura mineira", "cultura-mineira"},
+            {"Monumentos", "monumentos"}
         };
         List<Tag> listaTags = new ArrayList(stringTagsPadroes.length);
-        for(String[] tagDados : stringTagsPadroes){
+        for (String[] tagDados : stringTagsPadroes) {
             String nome = tagDados[0];
             String slug = tagDados[1];
-            listaTags.add(new Tag(nome,slug,null));
+            listaTags.add(new Tag(nome, slug, null));
         }
         TagService tagService = new TagService();
         tagService.inserirTagsEmLote(listaTags);

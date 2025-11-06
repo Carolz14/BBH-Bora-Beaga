@@ -4,7 +4,7 @@ import bbh.dao.TagCorrespondenciaDAO;
 import bbh.dao.TagDAO;
 import bbh.domain.Tag;
 import java.util.List;
-
+import java.util.ArrayList;
 import bbh.common.NaoEncontradoException;
 import bbh.common.PersistenciaException;
 
@@ -65,6 +65,12 @@ public class TagService {
                 tagCorrespondenciaDAO.associarTagsAoEstabelecimento(idUsuario, idsTags);
             }
         }
+    }
+    public List<Long> listarEstabelecimentosViaTag(String nomeTag) throws PersistenciaException{
+        if(nomeTag == null || nomeTag.isEmpty()){
+            return new ArrayList<>();
+        }
+        return tagCorrespondenciaDAO.listarEstabelecimentosPorTag(nomeTag);
     }
 
     public static String gerarSlug(String nome) {

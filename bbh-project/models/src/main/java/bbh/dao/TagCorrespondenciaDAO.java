@@ -6,12 +6,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import bbh.common.PersistenciaException;
+import bbh.domain.Usuario;
 
 public class TagCorrespondenciaDAO {
 
     public void associarTagsAoEstabelecimento(Long idUsuario, List<Long> idsTags) throws PersistenciaException {
-        if (idsTags == null || idsTags.isEmpty())
+        if (idsTags == null || idsTags.isEmpty()) {
             return;
+        }
 
         String sql = "INSERT INTO tag_correspondencia (id_usuario, id_tag) VALUES (?, ?)";
 
@@ -47,8 +49,9 @@ public class TagCorrespondenciaDAO {
     }
 
     public void removerTagEstabelecimento(Long idUsuario, List<Long> idTags) throws PersistenciaException {
-        if (idTags == null || idTags.isEmpty())
+        if (idTags == null || idTags.isEmpty()) {
             return;
+        }
         String sql = "DELETE FROM tag_correspondencia WHERE id_usuario = ? AND id_tag = ?";
         try (Connection conn = ConexaoBD.getConnection()) {
             conn.setAutoCommit(false);
@@ -81,13 +84,12 @@ public class TagCorrespondenciaDAO {
     }
 
     public List<Tag> listarTagsDoEstabelecimento(Long idUsuario) throws PersistenciaException {
-        String sql = "SELECT t.id, t.nome, t.slug " +
-                "FROM tag t " +
-                "JOIN tag_correspondencia tg ON t.id = tg.id_tag " +
-                "WHERE tg.id_usuario = ?";
+        String sql = "SELECT t.id, t.nome, t.slug "
+                + "FROM tag t "
+                + "JOIN tag_correspondencia tg ON t.id = tg.id_tag "
+                + "WHERE tg.id_usuario = ?";
         List<Tag> tags = new ArrayList<>();
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, idUsuario);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -109,8 +111,7 @@ public class TagCorrespondenciaDAO {
     public List<Long> listarEstabelecimentosPorTag(Long idTag) throws PersistenciaException {
         String sql = "SELECT id_usuario FROM tag_correspondencia WHERE id_tag = ?";
         List<Long> ids = new ArrayList<>();
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, idTag);
             try (ResultSet rs = ps.executeQuery()) {
 
@@ -121,6 +122,28 @@ public class TagCorrespondenciaDAO {
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao tentar listar os estabelecimentos com essa tag:"
                     + e.getMessage(), e);
+        }
+        return ids;
+    }
+
+    public List<Long> listarEstabelecimentosPorTag(String nomeTag) throws PersistenciaException {
+        if (nomeTag == null || nomeTag.isEmpty()) {
+            return new ArrayList<>();
+        }
+        String sql = "SELECT tc id.usuario"
+                + "FROM tag_correspondencia tc"
+                + "JOIN tag t ON tc.id_tag = t.id"
+                + "WHERE LOWER(t.slug) = LOWER(?)";
+        List<Long> ids = new ArrayList<>();
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nomeTag.trim());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ids.add(rs.getLong("id_usuario"));
+                }
+            }
+        } catch (Exception e) {
+            throw new PersistenciaException("Erro ao tentar listar os estabelecimentos com essa tag: " + e.getMessage(), e);
         }
         return ids;
     }
