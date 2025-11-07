@@ -30,23 +30,23 @@
                 <input type="text" placeholder="">
             </div>
             <div class="quick-filters">
-                <a href="lista-estabelecimento.jsp" class="category-item">
-                    <i class="fa-solid fa-utensils"></i>
-                    <span>Restaurantes</span>
+                <a href="lista-estabelecimento.jsp?categoria=Restaurantes" class="category-item">
+                        <i class="fa-solid fa-utensils"></i>
+                        <span>Restaurantes</span>
                 </a>
-                <a href="lista-estabelecimento.jsp" class="category-item">
-                    <i class="fa-solid fa-landmark"></i>
-                    <span>Museus</span>
+                <a href="lista-estabelecimento.jsp?categoria=Museus" class="category-item">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span>Museus</span>
                 </a>
-                <a href="lista-estabelecimento.jsp" class="category-item">
+                <a href="lista-estabelecimento.jsp?categoria=Bares" class="category-item">
                     <i class="fa-solid fa-martini-glass"></i>
                     <span>Bares</span>
                 </a>
-                <a href="lista-estabelecimento.jsp" class="category-item">
+                <a href="lista-estabelecimento.jsp?categoria=Parques" class="category-item">
                     <i class="fa-solid fa-tree"></i>
                     <span>Parques</span>
                 </a>
-                <a href="lista-estabelecimento.jsp" class="category-item">
+                <a href="lista-estabelecimento.jsp?categoria=Monumentos" class="category-item">
                     <i class="fa-solid fa-monument"></i>
                     <span>Monumentos</span>
                 </a>

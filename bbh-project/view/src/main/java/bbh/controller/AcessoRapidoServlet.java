@@ -33,6 +33,6 @@ public class AcessoRapidoServlet extends HttpServlet {
         }
         req.setAttribute("categoriaSelecionada", categoria);
         req.setAttribute("idsEstabelecimentos", ids);
-        req.getRequestDispatcher("/jsps/lista-estabelecimento.jsp").forward(req, resp);
+        req.getRequestDispatcher("/jsps/lista-estabelecimento.jsp").forward(req, resp); ///ignora 
     }
 }
