@@ -32,9 +32,9 @@ public class DetalheEstabelecimentoController extends HttpServlet {
 
             if (estabelecimento != null) {
                 request.setAttribute("estabelecimento", estabelecimento);
-                request.getRequestDispatcher("/jsp/turista/detalhe-estabelecimento.jsp").forward(request, response);
+               response.sendRedirect(request.getContextPath() + "/jsps/turista/detalhe-estabelecimento.jsp?id=" + id);
             } else {
-                response.sendRedirect(request.getContextPath() + "/jsp/turista/lista-estabelecimento.jsp");
+                response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
             }
 
         } catch (NumberFormatException | PersistenciaException e) {

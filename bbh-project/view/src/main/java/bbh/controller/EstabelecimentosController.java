@@ -5,7 +5,6 @@ import java.util.List;
 
 import bbh.domain.Usuario;
 import bbh.service.GestaoEstabelecimentosService;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,13 +23,13 @@ public class EstabelecimentosController extends HttpServlet {
 
             List<Usuario> estabelecimentos = pesquisarEstabelecimentos.listarEstabelecimentos();
             request.setAttribute("estabelecimentos", estabelecimentos);
-
-            RequestDispatcher rd = request.getRequestDispatcher("/jsps/turista/lista-estabelecimento.jsp");
-            System.out.println("Encaminhando " + estabelecimentos.size() + " estabelecimentos para o JSP");
-            rd.forward(request, response);
+          
+            request.getSession().setAttribute("estabelecimentos", estabelecimentos);
+            response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
+          
 
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao listar estabelecimentos");
         }
 

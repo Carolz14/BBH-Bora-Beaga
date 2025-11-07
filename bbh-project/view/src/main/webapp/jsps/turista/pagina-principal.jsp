@@ -30,23 +30,23 @@
                 <input type="text" placeholder="">
             </div>
             <div class="quick-filters">
-                <a href="lista-estabelecimento.jsp" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
                     <i class="fa-solid fa-utensils"></i>
                     <span>Restaurantes</span>
                 </a>
-                <a href="lista-estabelecimento.jsp" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
                     <i class="fa-solid fa-landmark"></i>
                     <span>Museus</span>
                 </a>
-                <a href="lista-estabelecimento.jsp" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
                     <i class="fa-solid fa-martini-glass"></i>
                     <span>Bares</span>
                 </a>
-                <a href="lista-estabelecimento.jsp" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
                     <i class="fa-solid fa-tree"></i>
                     <span>Parques</span>
                 </a>
-                <a href="lista-estabelecimento.jsp" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
                     <i class="fa-solid fa-monument"></i>
                     <span>Monumentos</span>
                 </a>
@@ -58,28 +58,28 @@
             <div class="card-grid">
                 
                 <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
                     <p>Nome do Estabelecimento</p>
                 </a>
                 
                 <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
                     <p>Nome do Estabelecimento</p>
                 </a>
                 <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
                     <p>Nome do Estabelecimento</p>
                 </a>
                 <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
                     <p>Nome do Estabelecimento</p>
                 </a>
                 <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
                     <p>Nome do Estabelecimento</p>
                 </a>
                 <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
                     <p>Nome do Estabelecimento</p>
                 </a>
             </div>
@@ -90,7 +90,7 @@
             <div class="ranking-list">
                 <a href="detalhe-estabelecimento.jsp" class="ranking-item">
                     <span class="rank-number">1</span>
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local 1" class="rank-img">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 1" class="rank-img">
                     <p class="rank-name">Nome do Estabelecimento 1</p>
                     <div class="rank-rating">
                         <i class="fas fa-star"></i>
@@ -99,7 +99,7 @@
                 </a>
                 <a href="detalhe-estabelecimento.jsp" class="ranking-item">
                     <span class="rank-number">2</span>
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local 2" class="rank-img">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 2" class="rank-img">
                     <p class="rank-name">Nome do Estabelecimento 2</p>
                     <div class="rank-rating">
                         <i class="fas fa-star"></i>
@@ -108,7 +108,7 @@
                 </a>
                 <a href="detalhe-estabelecimento.jsp" class="ranking-item">
                     <span class="rank-number">3</span>
-                    <img src="../imgs/restaurante.jpeg" alt="Imagem do local 3" class="rank-img">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 3" class="rank-img">
                     <p class="rank-name">Nome do Estabelecimento 3</p>
                     <div class="rank-rating">
                         <i class="fas fa-star"></i>

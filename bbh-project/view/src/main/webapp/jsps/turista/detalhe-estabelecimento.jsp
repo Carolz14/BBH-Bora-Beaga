@@ -7,12 +7,10 @@
 
 <%
     String idParam = request.getParameter("id");
-    Usuario estab = null;
     if (idParam != null) {
-        Long id = Long.parseLong(idParam);
-        GestaoUsuariosService service = new GestaoUsuariosService();
-        estab = service.pesquisarPorId(id);
-        request.setAttribute("estabelecimento", estab);
+        bbh.service.GestaoUsuariosService service = new bbh.service.GestaoUsuariosService();
+        bbh.domain.Usuario estabelecimento = service.pesquisarPorId(Long.parseLong(idParam));
+        request.setAttribute("estabelecimento", estabelecimento);
     }
 %>
 
@@ -39,17 +37,12 @@
                 <div class="estabelecimento">
 
                     <div class="estabelecimento-imagem">
-                        <img src="${pageContext.request.contextPath}/uploads/${estabelecimento.imagem}" 
+                        <img src="${pageContext.request.contextPath}/imagens/restaurante.jpeg"
                              alt="Imagem do estabelecimento">
                     </div>
 
                     <div class="estabelecimento-detalhes">
-                        <div class="tags">
-                            <c:forEach var="tag" items="${estabelecimento.tags}">
-                                <span>${tag}</span>
-                            </c:forEach>
-                        </div>
-
+                
                         <h1>${estabelecimento.nome}</h1>
 
                         <div class="rating">
@@ -61,7 +54,7 @@
                         </div>
 
                         <div class="informacao">
-                            <p>${estabelecimento.descricao}</p>
+                            
                             <p><strong>Contato:</strong> ${estabelecimento.contato}</p>
                             <p><strong>Endereço:</strong> ${estabelecimento.endereco}</p>
                         </div>
@@ -76,7 +69,7 @@
                         </div>
 
                         <div class="map">
-                            <img src="../imgs/mapa.jpeg" alt="Mini mapa da localização">
+                            <img src="${pageContext.request.contextPath}/imagens/mapa.jpeg" alt="Mini mapa da localização">
                         </div>
                     </div>
                 </div>

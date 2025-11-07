@@ -182,39 +182,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
         return usuarios;
     }
 
-    public List<Usuario> listarEstabelecimentos() throws PersistenciaException {
-        List<Usuario> estabelecimentos = new ArrayList<>();
-
-        String sql = "SELECT id, nome, endereco, contato, habilitado, usuario_tipo "
-                + "FROM usuarios WHERE usuario_tipo = 'ESTABELECIMENTO' AND habilitado = TRUE";
-
-        try (Connection conn = ConexaoBD.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                Usuario estabelecimento = new Usuario(
-                        rs.getString("nome"));
-
-                estabelecimento.setId(rs.getLong("id"));
-                estabelecimento.setEndereco(rs.getString("endereco"));
-                estabelecimento.setContato(rs.getObject("contato", Long.class));
-           
-                estabelecimento.setHabilitado(rs.getBoolean("habilitado"));
-
-                String tipoStr = rs.getString("usuario_tipo");
-                estabelecimento.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
-
-                estabelecimentos.add(estabelecimento);
-            }
-             System.out.println("Qtd de estabelecimentos encontrados: " + estabelecimentos.size());
-
-        } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao listar estabelecimentos: " + e.getMessage(), e);
-        }
-
-        return estabelecimentos;
-    }
+  
 
     public List<Usuario> listarAtivos() throws PersistenciaException {
         List<Usuario> usuarios = new ArrayList<>();
