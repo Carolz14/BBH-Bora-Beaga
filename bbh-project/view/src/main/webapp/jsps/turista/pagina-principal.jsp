@@ -34,21 +34,20 @@
                 </form>
             </div>
 
-             <!-- Resultados da busca (se houver, claro) -->
-     
-<section class="resultados-section ${not empty resultados || not empty erro ? 'mostrar' : ''}">
-    <c:if test="${not empty resultados}">
-        
-        <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
-        <div class="resultados-grid">
-            <c:forEach var="local" items="${resultados}">
-                <a href="detalhe-estabelecimento.jsp?id=${local.id}" class="resultado-card">
-                    <p>${local.nome}</p>
-                </a>
-            </c:forEach>
-        </div>
-    
-    </c:if>
+        <!-- Resultados da busca (se houver) -->
+         
+        <section class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
+            <c:if test="${not empty sessionScope.resultados}">
+                <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
+                <div class="resultados-grid">
+                    <c:forEach var="local" items="${sessionScope.resultados}">
+                        <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${local.id}" class="resultado-card">
+                            <p>${local.nome}</p>
+                        </a>
+                    </c:forEach>
+                </div>
+            </c:if>
+
     
     <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
         <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
