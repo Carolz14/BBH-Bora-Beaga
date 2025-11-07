@@ -24,18 +24,18 @@ public class CriarTabelas {
         System.out.printf("Tabela tag criada (ou já existia previamente).\n");
     }
 
-    public static void criarTabelaUsuario() throws SQLException {
+    ///public static void criarTabelaUsuario() throws SQLException {
         /// apenas pro teste do meu csu
-        String sql = "CREATE TABLE IF NOT EXISTS usuario("
-                + "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
-                + "nome VARCHAR(100) NOT NULL,"
-                + "email VARCHAR(100) UNIQUE NOT NULL"
-                + ");";
-        Connection con = ConexaoBD.getConnection();
-        Statement statement = con.createStatement();
-        statement.executeUpdate(sql);
-        System.out.printf("Tabela usuario criada (ou já existia previamente).\n");
-    }
+        ///String sql = "CREATE TABLE IF NOT EXISTS usuario("
+                ///+ "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
+                ///+ "nome VARCHAR(100) NOT NULL,"
+                ///+ "email VARCHAR(100) UNIQUE NOT NULL"
+                ///+ ");";
+        ///Connection con = ConexaoBD.getConnection();
+        ///Statement statement = con.createStatement();
+       // statement.executeUpdate(sql);
+        //System.out.printf("Tabela usuario criada (ou já existia previamente).\n");
+    //}
 
     public static void criarTabelaCorrespondencia() throws SQLException {
         String sqlTabela = """
@@ -58,7 +58,7 @@ public class CriarTabelas {
             BEGIN
                 DECLARE tipo_usuario VARCHAR(50);
                 SELECT usuario_tipo INTO tipo_usuario
-                FROM usuario
+                FROM usuarios
                 WHERE id = NEW.id_usuario;
 
                 IF tipo_usuario IS NULL THEN
@@ -124,7 +124,7 @@ public class CriarTabelas {
 
     public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
         criarTabelaTag();
-        criarTabelaUsuario();
+        ///criarTabelaUsuario();
         criarTabelaCorrespondencia();
         inserirTagsPadroes();
     }

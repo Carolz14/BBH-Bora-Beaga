@@ -4,6 +4,7 @@
 <%@page import="bbh.autorizacao.ControleAutorizacao"%>
 
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
     LoginController.validarSessao(request, response);
