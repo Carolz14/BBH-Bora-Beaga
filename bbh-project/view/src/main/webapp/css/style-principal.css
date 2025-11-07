@@ -32,8 +32,8 @@
     width: 100%;
     max-width: 900px;
     margin: 0 auto 20px auto;
+    box-sizing: border-box;
 }
-
 .search-bar input {
     width: 100%;
     padding: 15px;
@@ -41,8 +41,8 @@
     border: 1px solid var(--cor-borda);
     font-size: 1rem;
     outline: none;
+    box-sizing: border-box;
 }
-
 .search-bar::before {
     content: '';
     position: absolute;
@@ -55,72 +55,128 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
-
 /* ===++=== RESULTADOS DE PESQUISA (abaixo da barra de pesquisa) ===++=== */
 
 .resultados-section {
     width: 100%;
     max-width: 900px;
-    margin: 0 auto 40px auto;
-    padding: 10px 0;
-    display: none; /* começa escondida e será exibida quando tiver resultados) */
+    margin: 12px auto 36px auto; /* espaçamento coerente */
+    padding: 8px 6px;
+    box-sizing: border-box;
+    display: none;              /* oculta por padrão - JSP adiciona .mostrar para exibir */
     flex-direction: column;
-    gap: 20px;
-    transition: all 0.3s ease;
+    gap: 18px;
+    transition: all 0.18s ease;
 }
 
+/* quando JSP define 'mostrar', a seção é exibida em fluxo normal (empurra abaixo) */
 .resultados-section.mostrar {
-    display: flex; /* quando houver resultados, empurra o resto */
+    display: flex;
 }
 
-.resultados-titulo {
+/* título e subtítulo */
+.resultados-titulo,
+.resultados-section h2 {
     font-family: var(--fonte-texto);
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #333;
-    margin-bottom: 10px;
+    margin: 0;
     text-align: center;
 }
 
-/* grid dos cards de resultados */
+/* grid responsivo que ocupa espaço normal */
 .resultados-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
     width: 100%;
+    margin-top: 8px;
 }
 
-/* cards de resultados  */
+/* CARD de resultado - sem imagem por padrão: texto centralizado */
 .resultado-card {
     background-color: white;
-    border-radius: 20px;
-    padding: 15px;
+    border-radius: 14px;
+    padding: 14px;
     display: flex;
     align-items: center;
-    gap: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    justify-content: center; /* centraliza texto quando não há mini-thumb */
+    text-align: center;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     text-decoration: none;
     color: inherit;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform .15s ease, box-shadow .15s ease;
+    min-height: 76px;
 }
 
-.resultado-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+/* hover e foco para cartão */
+.resultado-card:hover,
+.resultado-card:focus {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    outline: none;
 }
 
-.resultado-card img {
-    width: 100px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 10px;
-    flex-shrink: 0;
-}
-
+/* texto do card */
 .resultado-card p {
+    margin: 0;
     font-weight: 700;
     font-family: var(--fonte-texto);
-    margin: 0;
+}
+
+/* ------------------------- Thumb (não visível) -------------------------
+   - Se no futuro nosso grupo resolver mostrar imagens, adicionar a classe "has-thumb" ao anchor .resultado-card
+     dentro do JSP para ativar o espaço reservado.
+   - Sem essa classe, a mini-thumb não ocupa espaço nem altera o layout.
+   ---------------------------------------------------------------------------------------------- */
+
+   .resultado-card .thumb {
+    display: none; /* invisível */
+}
+
+/* Quando a classe 'has-thumb' for adicionada, o layout vai se ajustar e mostrar a thumb na esquerda e o seu alinhamento à esquerda */
+.resultado-card.has-thumb {
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.resultado-card.has-thumb .thumb {
+    display: block;
+    width: 96px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    margin-right: 12px;
+}
+
+.resultado-card.has-thumb .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* --------- Responsividade  */
+@media (max-width: 720px) {
+    .resultados-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .resultado-card {
+        padding: 12px;
+        min-height: 64px;
+    }
+    .resultado-card.has-thumb .thumb {
+        width: 84px;
+        height: 64px;
+    }
+}
+
+/* garante espaçamento coerente entre seções do layout */
+.welcome-section, .resultados-section, .quick-filters, .nearby-section, .ranking {
+    margin-bottom: 24px;
 }
 
 

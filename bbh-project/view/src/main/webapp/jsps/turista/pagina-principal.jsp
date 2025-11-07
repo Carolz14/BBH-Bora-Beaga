@@ -42,8 +42,7 @@
         <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
         <div class="resultados-grid">
             <c:forEach var="local" items="${resultados}">
-                <a href="detalhe-estabelecimento.jsp" class="resultado-card">
-        
+                <a href="detalhe-estabelecimento.jsp?id=${local.id}" class="resultado-card">
                     <p>${local.nome}</p>
                 </a>
             </c:forEach>

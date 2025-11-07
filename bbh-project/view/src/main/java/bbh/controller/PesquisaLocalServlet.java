@@ -5,7 +5,6 @@ import bbh.domain.Local;
 import bbh.domain.Usuario;
 import bbh.service.LocalService;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -56,7 +55,7 @@ public class PesquisaLocalServlet extends HttpServlet {
         String contextPath = request.getContextPath();
         response.sendRedirect(contextPath + "/jsps/turista/pagina-principal.jsp");
     }
-    }
+    
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
