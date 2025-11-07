@@ -1,7 +1,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@page import="bbh.domain.Usuario"%>
-
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -26,9 +26,35 @@
         <section class="welcome-section">
             <h1>Bem vindo, ${sessionScope.usuario.nome}</h1>
             <h2 class="subtitle">Venha explorar Belo Horizonte conosco</h2>
+
+            <!-- Barra de pesquisa -->
             <div class="search-bar">
-                <input type="text" placeholder="">
+                <form action="${pageContext.request.contextPath}/pesquisarLocais" method="get">
+                    <input type="text" name="nome" placeholder= "Pesquise locais de toda a grande BH!" value="${param.nome != null ? param.nome : ''}">
+                </form>
             </div>
+
+        <!-- Resultados da busca (se houver) -->
+         
+        <section class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
+            <c:if test="${not empty sessionScope.resultados}">
+                <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
+                <div class="resultados-grid">
+                    <c:forEach var="local" items="${sessionScope.resultados}">
+                        <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${local.id}" class="resultado-card">
+                            <p>${local.nome}</p>
+                        </a>
+                    </c:forEach>
+                </div>
+            </c:if>
+
+    
+    <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
+        <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
+    </c:if>
+</section>
+        
+
             <div class="quick-filters">
                 <a href="lista-estabelecimento.jsp" class="category-item">
                     <i class="fa-solid fa-utensils"></i>
