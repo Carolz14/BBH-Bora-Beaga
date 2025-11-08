@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="<c:url value='/css/style-geral.css' />">
 </head>
 <body>
+    <jsp:include page="/jsps/header.jsp" />
     <h2>Tags do estabelecimento</h2>
     <c:if test="${empty tagsSelecionadas}">
         <p>Nenhuma tag associada.</p>
@@ -60,5 +61,6 @@
             </c:choose>
         </div>
     </c:forEach>
+    <jsp:include page="/jsps/header.jsp" />
 </body>
 </html>
