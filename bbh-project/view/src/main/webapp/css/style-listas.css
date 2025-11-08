@@ -38,7 +38,7 @@ h3{
 
 .selecao {
   display: grid;
-  grid-template-columns: auto auto; 
+  grid-template-columns: auto auto auto; 
   justify-content: center;
   overflow: auto;
   gap: 50px;
