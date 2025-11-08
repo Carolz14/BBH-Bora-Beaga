@@ -18,7 +18,7 @@ public class CriarTabelas {
                 + "slug VARCHAR(50) NOT NULL UNIQUE,"
                 + "contador INT DEFAULT 0"
                 + ");";
-        Connection con = ConexaoBD.getConnection();
+        Connection con = ConexaoBD.getServerConnection();
         Statement statement = con.createStatement();
         statement.executeUpdate(sql);
         System.out.printf("Tabela tag criada (ou já existia previamente).\n");
@@ -60,7 +60,7 @@ public class CriarTabelas {
             END;
         """;
 
-        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+        try (Connection con = ConexaoBD.getServerConnection(); Statement stmt = con.createStatement()) {
 
             stmt.executeUpdate(sqlTabela);
             System.out.println("Tabela 'tag_correspondencia' criada (ou já existia).");

@@ -1,7 +1,6 @@
 package bbh.controller;
 
 import bbh.common.PersistenciaException;
-import bbh.common.NaoEncontradoException;
 import bbh.service.TagService;
 
 import jakarta.servlet.ServletException;
