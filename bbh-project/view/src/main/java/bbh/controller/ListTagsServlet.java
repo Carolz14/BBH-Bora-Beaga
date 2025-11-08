@@ -30,7 +30,7 @@ public class ListTagsServlet extends BaseServlet {
                 request.setAttribute("tagsSelecionadas", selecionadas);
             } catch (Exception e) {
             }
-            request.getRequestDispatcher("/teste.jsp")
+            request.getRequestDispatcher("/jsps/estabelecimento/tags.jsp")
                     .forward(request, response);
 
         } catch (PersistenciaException e) {

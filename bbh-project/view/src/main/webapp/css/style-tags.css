@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+
+:root {
+    --fonte-logo: "Nunito", sans-serif;
+    --fonte-texto: "Lato", sans-serif;
+    --fonte-cursiva: "Parisienne", cursive;
+    --cor-fundo: #f3f3f3;
+    --cor-primaria: #f9e470;
+    --cor-secundaria: #93c665;
+    --cor-borda: #6c757d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  font-family: var(--fonte-texto);
+  background: var(--cor-fundo);
+  overflow-x: hidden;
+  color: #222;
+  margin: 0;
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+}
+
+.tags-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 18px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(30, 40, 60, 0.06);
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: linear-gradient(180deg, #fff 0%, #fbfbff 100%);
+  border: 1px solid #ececf6;
+}
+
+.tag > span {
+  flex: 1;
+  font-weight: 600;
+  color: #2b2b2b;
+}
+
+.tag form {
+  margin: 0;
+}
+
+.tag button {
+  background: var(--cor-secundaria);
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: transform .08s ease, background-color .12s ease;
+}
+
+.tag button[title^="Remover"] {
+  background: #e55353;
+}
+
+.tag button:hover {
+  transform: translateY(-1px);
+  filter: brightness(.96);
+}
+
+/* texto de "já associado" */
+.tag span.associated {
+  color: #6b6b6b;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* separador */
+hr {
+  border: none;
+  border-top: 1px solid #efeff5;
+  margin: 18px 0;
+}
+
+/* responsividade simples */
+@media (max-width: 600px) {
+  .tags-container {
+    padding: 12px;
+  }
+  .tag {
+    gap: 8px;
+    padding: 8px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .tag button {
+    width: 48px;
+    align-self: flex-end;
+  }
+}

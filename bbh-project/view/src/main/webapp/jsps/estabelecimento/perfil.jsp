@@ -47,8 +47,11 @@
                         <p>CNPJ: ${sessionScope.usuario.CNPJ}</p>
                         <p>Endereço: ${sessionScope.usuario.endereco}</p>
                         <p>Contato: ${sessionScope.usuario.contato}</p>
-
+                        <a href="${pageContext.request.contextPath}/estabelecimento/tags" class="botao-tags">
+                            Gerenciar Tags
+                        </a>
                     </div>
+                         
                 </div>
             </div>
         </main>

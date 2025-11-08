@@ -6,14 +6,11 @@
 <head>
     <meta charset="UTF-8" />
     <title>Gerenciar Tags</title>
-    <style>
-        .tag { margin-right: 8px; display:inline-block; }
-        .tag form { display:inline; margin-left:4px; }
-    </style>
+    <link rel="stylesheet" href="<c:url value='/css/style-tags.css' />">
+    <link rel="stylesheet" href="<c:url value='/css/style-geral.css' />">
 </head>
 <body>
     <h2>Tags do estabelecimento</h2>
-
     <c:if test="${empty tagsSelecionadas}">
         <p>Nenhuma tag associada.</p>
     </c:if>
