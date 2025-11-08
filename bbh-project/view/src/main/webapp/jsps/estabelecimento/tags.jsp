@@ -61,6 +61,6 @@
             </c:choose>
         </div>
     </c:forEach>
-    <jsp:include page="/jsps/header.jsp" />
+    <jsp:include page="/jsps/footer.jsp" />
 </body>
 </html>
