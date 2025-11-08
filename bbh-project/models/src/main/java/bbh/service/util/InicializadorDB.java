@@ -1,4 +1,4 @@
-package bbh.service.util; // Adapte o pacote conforme a localização da classe
+package bbh.service.util;
 
 import bbh.common.PersistenciaException;
 import jakarta.servlet.ServletContextEvent;

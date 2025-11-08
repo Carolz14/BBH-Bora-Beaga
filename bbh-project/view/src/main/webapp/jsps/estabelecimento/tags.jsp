@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="<c:url value='/css/style-geral.css' />">
 </head>
 <body>
-    <jsp:include page="/jsps/header.jsp" />
+    <%@ include file="../header.jsp" %>
     <h2>Tags do estabelecimento</h2>
     <c:if test="${empty tagsSelecionadas}">
         <p>Nenhuma tag associada.</p>
@@ -61,6 +61,6 @@
             </c:choose>
         </div>
     </c:forEach>
-    <jsp:include page="/jsps/footer.jsp" />
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>

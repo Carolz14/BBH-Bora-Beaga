@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bbh.service.TagService; // seu service/dao que contém listarEstabelecimentosPorTagNome
+import bbh.service.TagService;
 import bbh.common.PersistenciaException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import bbh.domain.Usuario;
 
 @WebServlet("/lista-estabelecimento")
 public class AcessoRapidoServlet extends HttpServlet {
@@ -33,6 +32,6 @@ public class AcessoRapidoServlet extends HttpServlet {
         }
         req.setAttribute("categoriaSelecionada", categoria);
         req.setAttribute("idsEstabelecimentos", ids);
-        req.getRequestDispatcher("/jsps/lista-estabelecimento.jsp").forward(req, resp); ///ignora 
+        req.getRequestDispatcher("/jsps/lista-estabelecimento.jsp").forward(req, resp);
     }
 }

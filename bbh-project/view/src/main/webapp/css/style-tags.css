@@ -90,14 +90,13 @@ h2 {
   font-size: 0.95rem;
 }
 
-/* separador */
 hr {
   border: none;
   border-top: 1px solid #efeff5;
   margin: 18px 0;
 }
 
-/* responsividade simples */
+
 @media (max-width: 600px) {
   .tags-container {
     padding: 12px;

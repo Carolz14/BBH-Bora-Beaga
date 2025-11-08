@@ -24,19 +24,6 @@ public class CriarTabelas {
         System.out.printf("Tabela tag criada (ou já existia previamente).\n");
     }
 
-    ///public static void criarTabelaUsuario() throws SQLException {
-        /// apenas pro teste do meu csu
-        ///String sql = "CREATE TABLE IF NOT EXISTS usuario("
-                ///+ "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
-                ///+ "nome VARCHAR(100) NOT NULL,"
-                ///+ "email VARCHAR(100) UNIQUE NOT NULL"
-                ///+ ");";
-        ///Connection con = ConexaoBD.getConnection();
-        ///Statement statement = con.createStatement();
-       // statement.executeUpdate(sql);
-        //System.out.printf("Tabela usuario criada (ou já existia previamente).\n");
-    //}
-
     public static void criarTabelaCorrespondencia() throws SQLException {
         String sqlTabela = """
             CREATE TABLE IF NOT EXISTS tag_correspondencia (
@@ -124,7 +111,6 @@ public class CriarTabelas {
 
     public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
         criarTabelaTag();
-        ///criarTabelaUsuario();
         criarTabelaCorrespondencia();
         inserirTagsPadroes();
     }
