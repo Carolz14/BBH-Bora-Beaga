@@ -1,14 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib uri="jakarta.tags.core" prefix="c" %>
-<%@page import="bbh.controller.ListTagsServlet"%>
-<%@page import="bbh.controller.UpdateTagsServlet"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
     <title>Gerenciar Tags</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value='/css/style-tags.css' />">
     <link rel="stylesheet" href="<c:url value='/css/style-geral.css' />">
+    <link rel="stylesheet" href="../../css/style-geral.css">
+    <link rel="stylesheet" href="../../css/style-tags.css">
 </head>
 <body>
     <h2>Tags do estabelecimento</h2>
@@ -50,7 +51,7 @@
 
             <c:choose>
                 <c:when test="${selected}">
-                    <span> (já associado) </span>
+                    <span></span>
                 </c:when>
                 <c:otherwise>
                     <form method="post" action="${pageContext.request.contextPath}/estabelecimento/tags/update">
@@ -62,10 +63,10 @@
         </div>
     </c:forEach>
     <div style="margin-top: 20px;">
-    <a href="<c:url value='/jsps/estabelecimento/perfil.jsp' />">
-    <button class="botao-perfil" type="button">Voltar para o Perfil</button>
-</a>
-</div>
+        <a class="botao-voltar-perfil" href="${pageContext.request.contextPath}/jsps/estabelecimento/perfil.jsp">
+            Voltar para o Perfil
+        </a>
+     </div>
 
     <%@ include file="../footer.jsp" %>
 </body>
