@@ -1,7 +1,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@page import="bbh.domain.Usuario"%>
 <%@taglib uri="jakarta.tags.core" prefix="c" %>
+<%@page import="bbh.domain.Usuario"%>
+
 
 <!DOCTYPE html>
 <html lang="pt">
