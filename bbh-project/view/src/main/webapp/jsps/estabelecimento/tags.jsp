@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
+<%@page import="bbh.controller.ListTagsServlet"%>
+<%@page import="bbh.controller.UpdateTagsServlet"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,6 @@
     <link rel="stylesheet" href="<c:url value='/css/style-geral.css' />">
 </head>
 <body>
-    <%@ include file="../header.jsp" %>
     <h2>Tags do estabelecimento</h2>
     <c:if test="${empty tagsSelecionadas}">
         <p>Nenhuma tag associada.</p>
@@ -61,6 +61,12 @@
             </c:choose>
         </div>
     </c:forEach>
+    <div style="margin-top: 20px;">
+    <a href="<c:url value='/jsps/estabelecimento/perfil.jsp' />">
+    <button class="botao-perfil" type="button">Voltar para o Perfil</button>
+</a>
+</div>
+
     <%@ include file="../footer.jsp" %>
 </body>
 </html>

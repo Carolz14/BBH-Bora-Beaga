@@ -18,7 +18,7 @@ public class CriarTabelas {
                 + "slug VARCHAR(50) NOT NULL UNIQUE,"
                 + "contador INT DEFAULT 0"
                 + ");";
-        Connection con = ConexaoBD.getServerConnection();
+        Connection con = ConexaoBD.getConnection();
         Statement statement = con.createStatement();
         statement.executeUpdate(sql);
         System.out.printf("Tabela tag criada (ou já existia previamente).\n");
@@ -30,7 +30,7 @@ public class CriarTabelas {
                 id_usuario BIGINT,
                 id_tag BIGINT,
                 PRIMARY KEY (id_usuario, id_tag),
-                FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+                FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
                     ON DELETE CASCADE ON UPDATE CASCADE,
                 FOREIGN KEY (id_tag) REFERENCES tag(id)
                     ON DELETE CASCADE ON UPDATE CASCADE
@@ -60,7 +60,7 @@ public class CriarTabelas {
             END;
         """;
 
-        try (Connection con = ConexaoBD.getServerConnection(); Statement stmt = con.createStatement()) {
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
 
             stmt.executeUpdate(sqlTabela);
             System.out.println("Tabela 'tag_correspondencia' criada (ou já existia).");

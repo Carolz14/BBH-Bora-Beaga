@@ -3,8 +3,7 @@
 <%@page import="bbh.controller.LoginController"%>
 <%@page import="bbh.autorizacao.ControleAutorizacao"%>
 
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
 
 <%
     LoginController.validarSessao(request, response);

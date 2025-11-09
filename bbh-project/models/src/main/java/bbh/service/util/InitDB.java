@@ -1,5 +1,6 @@
 package bbh.service.util;
 
+import bbh.common.PersistenciaException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,7 +8,7 @@ import java.sql.Statement;
 
 public class InitDB {
 
-    public static void inicializar() {
+    public static void inicializar(){
         //Conecta no servidor e cria o DB
         try (Connection conn = ConexaoBD.getServerConnection();
              Statement stmt = conn.createStatement()) {
@@ -19,11 +20,10 @@ public class InitDB {
             System.err.println("Erro ao criar banco de dados: " + e.getMessage());
             return;
         }
-
+        
        //Conecta no banco e cria a tabela, se não exisitir
         try (Connection conn = ConexaoBD.getConnection();
              Statement stmt = conn.createStatement()) {
-
             String sqlUsuarios = """
                 CREATE TABLE IF NOT EXISTS usuarios (
                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
