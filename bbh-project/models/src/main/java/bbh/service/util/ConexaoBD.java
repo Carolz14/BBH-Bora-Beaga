@@ -21,7 +21,6 @@ public class ConexaoBD {
         return DriverManager.getConnection(URL_BASE + "?useSSL=false&serverTimezone=UTC", USER, PASSWORD);
     }
 
-    // Conecta diretamente ao banco 'bbh'
     public static Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
