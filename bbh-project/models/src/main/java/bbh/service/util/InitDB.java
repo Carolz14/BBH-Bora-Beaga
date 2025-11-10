@@ -1,6 +1,5 @@
 package bbh.service.util;
 
-import bbh.common.PersistenciaException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,10 +49,10 @@ public class InitDB {
                     String insert = """
                         INSERT INTO usuarios (nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo, cnpj)
                         VALUES
-                        ('Administrador do Sistema', 'admin@sistema.com', SHA2('admin123', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ADMINISTRADOR', NULL),
-                        ('Max', 'max@email.com', SHA2('3333', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'TURISTA', NULL),
-                        ('Oscar', 'oscar@email.com', SHA2('8181', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'GUIA', NULL),
-                        ('George', 'george@email.com', SHA2('6363', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ESTABELECIMENTO', NULL);
+                        ('Administrador do Sistema', 'admin@email.com', SHA2('123', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ADMINISTRADOR', NULL),
+                        ('Carol', 'carol@email.com', SHA2('1414', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'TURISTA', NULL),
+                        ('Artur', 'artur@email.com', SHA2('2525', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'GUIA', NULL),
+                        ('Cozinha Legal', 'george@email.com', SHA2('6363', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ESTABELECIMENTO', NULL);
                         """;
                     stmt.executeUpdate(insert);
                     System.out.println("Usuários padrão inseridos com sucesso!");
