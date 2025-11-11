@@ -37,7 +37,7 @@
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('usuario', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="../admin/usuarios.jsp">Usuários</a></li>
+                <li><a href="${pageContext.request.contextPath}/bbh/usuarios">Usuários</a></li>
             </c:if>
             <c:if test="${ControleAutorizacao.checkPermissao('perfil', sessionScope.usuario.usuarioTipo)}">
                 <li><a href="../admin/perfil.jsp">Perfil</a></li>
