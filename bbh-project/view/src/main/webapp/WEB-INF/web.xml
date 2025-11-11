@@ -8,4 +8,14 @@
             30
         </session-timeout>
     </session-config>
+    <servlet>
+    <servlet-name>BuscarLocalServlet</servlet-name>
+    <servlet-class>bbh.servlet.BuscarLocalServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>BuscarLocalServlet</servlet-name>
+    <url-pattern>/buscarLocais</url-pattern>
+</servlet-mapping>
+
 </web-app>

@@ -16,6 +16,9 @@ public class Usuario {
     private String endereco;
     private Long contato;
     
+    public Usuario(String nome) {
+    this.nome = nome;
+}
     public Usuario(String email, String senha){
         this.email = email;
         this.senha = senha;
@@ -36,7 +39,6 @@ public class Usuario {
         this.senha = senha;
         this.contato = contato;
     }
-    
     public UsuarioTipo getUsuarioTipo(){
         return this.perfil;
     }

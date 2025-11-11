@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class InitDB {
 
-    public static void inicializar() {
+    public static void inicializar(){
         //Conecta no servidor e cria o DB
         try (Connection conn = ConexaoBD.getServerConnection();
              Statement stmt = conn.createStatement()) {
@@ -19,11 +19,10 @@ public class InitDB {
             System.err.println("Erro ao criar banco de dados: " + e.getMessage());
             return;
         }
-
+        
        //Conecta no banco e cria a tabela, se não exisitir
         try (Connection conn = ConexaoBD.getConnection();
              Statement stmt = conn.createStatement()) {
-
             String sqlUsuarios = """
                 CREATE TABLE IF NOT EXISTS usuarios (
                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -50,10 +49,10 @@ public class InitDB {
                     String insert = """
                         INSERT INTO usuarios (nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo, cnpj)
                         VALUES
-                        ('Administrador do Sistema', 'admin@sistema.com', SHA2('admin123', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ADMINISTRADOR', NULL),
-                        ('Max', 'max@email.com', SHA2('3333', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'TURISTA', NULL),
-                        ('Oscar', 'oscar@email.com', SHA2('8181', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'GUIA', NULL),
-                        ('George', 'george@email.com', SHA2('6363', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ESTABELECIMENTO', NULL);
+                        ('Administrador do Sistema', 'admin@email.com', SHA2('123', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ADMINISTRADOR', NULL),
+                        ('Carol', 'carol@email.com', SHA2('1414', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'TURISTA', NULL),
+                        ('Artur', 'artur@email.com', SHA2('2525', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'GUIA', NULL),
+                        ('Cozinha Legal', 'george@email.com', SHA2('6363', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ESTABELECIMENTO', NULL);
                         """;
                     stmt.executeUpdate(insert);
                     System.out.println("Usuários padrão inseridos com sucesso!");

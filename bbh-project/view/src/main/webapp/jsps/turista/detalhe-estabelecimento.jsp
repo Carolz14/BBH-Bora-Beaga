@@ -1,5 +1,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="bbh.domain.util.UsuarioTipo"%>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
+
+<%@ page import="bbh.service.GestaoUsuariosService" %>
+<%@ page import="bbh.domain.Usuario" %>
+
+<%
+    String idParam = request.getParameter("id");
+    if (idParam != null) {
+        bbh.service.GestaoUsuariosService service = new bbh.service.GestaoUsuariosService();
+        bbh.domain.Usuario estabelecimento = service.pesquisarPorId(Long.parseLong(idParam));
+        request.setAttribute("estabelecimento", estabelecimento);
+    }
+%>
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -18,34 +31,32 @@
 
         <main>
             <div class="container">
-                <a href="../paginas-principais/pagina-principal.html" class="back-link">Voltar</a>
+              <a href="pagina-principal.jsp" class="back-link">Voltar</a>
+
+            <c:if test="${not empty estabelecimento}">
                 <div class="estabelecimento">
 
                     <div class="estabelecimento-imagem">
-                        <img src="../imgs/restaurante.jpeg" alt="Imagem estabelecimento">
+                        <img src="${pageContext.request.contextPath}/imagens/restaurante.jpeg"
+                             alt="Imagem do estabelecimento">
                     </div>
 
                     <div class="estabelecimento-detalhes">
-                        <div class="tags">
-                            <span>Tags</span>
-                            <span>Tags</span>
-                            <span>Tags</span>
-                        </div>
-
-                        <h1>Nome<br>estabelecimento</h1>
+                
+                        <h1>${estabelecimento.nome}</h1>
 
                         <div class="rating">
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
                         </div>
 
                         <div class="informacao">
-                            <p>Restaurante em zona nobre de Belo Horizonte....</p>
-                            <p>Telefone para contato: (31) 12345-6789</p>
-                            <p>Rua Alameda, 134 - Belo Horizonte</p>
+                            
+                            <p><strong>Contato:</strong> ${estabelecimento.contato}</p>
+                            <p><strong>Endereço:</strong> ${estabelecimento.endereco}</p>
                         </div>
 
                         <div class="action-buttons">
@@ -53,49 +64,22 @@
                                 <i class="fa-solid fa-check"></i> Já visitei
                             </button>
                             <button class="btn btn-lista-interesse">
-                                <i class="fa-regular fa-lista-interesse"></i> Salvar na lista de interesse
+                                <i class="fa-regular fa-bookmark"></i> Salvar na lista de interesse
                             </button>
                         </div>
 
                         <div class="map">
-                            <img src="../imgs/mapa.jpeg" alt="Mini mapa da localização">
+                            <img src="${pageContext.request.contextPath}/imagens/mapa.jpeg" alt="Mini mapa da localização">
                         </div>
                     </div>
                 </div>
+            </c:if>
 
-                <div class="comentarios-container">
-                    <h2>Comentários</h2>
+            <c:if test="${empty estabelecimento}">
+                <p>Estabelecimento não encontrado.</p>
+            </c:if>
 
-                    <div class="comentario-item">
-                        <div class="comentario-avatar">
-                            <img src="../imgs/avatar1.jpeg" alt="Avatar do usuário">
-                        </div>
-                        <div class="comentario-conteudo">
-                            <div class="comentario-header">
-                                <strong>João Silva</strong>
-                                <span class="timestamp">· há 2 horas</span>
-                            </div>
-                            <p class="comentario-texto">
-                                Adorei !
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="comentario-item">
-                        <div class="comentario-avatar">
-                            <img src="../imgs/avatar2.jpeg" alt="Avatar do usuário">
-                        </div>
-                        <div class="comentario-conteudo">
-                            <div class="comentario-header">
-                                <strong>Maria Oliveira</strong>
-                                <span class="timestamp">· ontem</span>
-                            </div>
-                            <p class="comentario-texto">
-                                Ótima sugestão!
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </main>
 
