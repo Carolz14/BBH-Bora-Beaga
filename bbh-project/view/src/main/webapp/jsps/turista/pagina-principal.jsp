@@ -39,7 +39,7 @@
          
         <section class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
             <c:if test="${not empty sessionScope.resultados}">
-                <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
+                
                 <div class="resultados-grid">
                     <c:forEach var="local" items="${sessionScope.resultados}">
                         <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${local.id}" class="resultado-card">

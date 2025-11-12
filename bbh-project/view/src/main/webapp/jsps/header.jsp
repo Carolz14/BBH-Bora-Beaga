@@ -13,7 +13,9 @@
 <!DOCTYPE html>
 <html>
     <header>
-        <h1 id="logo">Bora Beagá</h1>
+        <div id="logo"><img src="../../imagens/icon.png" alt="" id="icon">
+        <h1 id="logo-texto">Bora Beagá</h1></div>
+
         <nav>
             <ul>
                <c:if test="${ControleAutorizacao.checkPermissao('inicio', sessionScope.usuario.usuarioTipo)}">
