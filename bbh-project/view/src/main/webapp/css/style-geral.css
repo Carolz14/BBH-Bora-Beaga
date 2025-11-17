@@ -88,3 +88,12 @@ h2,h1, h3, a{
 h1 {
     margin: 2% 5%;
 }
+
+.back-link {
+     margin: 2% 5%;
+    display: block;
+    margin-bottom: 1rem;
+    color: #555;
+    text-decoration: none;
+    font-family: var(--fonte-texto);
+}
