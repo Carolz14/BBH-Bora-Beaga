@@ -18,7 +18,7 @@
         <main>
             <div class="conteudo-promo-event">
                 <h1 class="texto-apresentacao">Gerenciar Promoções</h1>
-                <div class="display-gerenciar-promocoes">
+               
 
                     <div class="conteudo-promo-event">
                         <h1 class="texto-apresentacao">Gerenciar Promoções</h1>
@@ -26,19 +26,14 @@
                             <p>Nenhuma promoção cadastrada</p>
                         </div>
 
-                    </div>
-
+                 
                     <h1 class="texto-apresentacao">Nova Promoção</h1>
                     <div class="display-cadastro-promocao">
 
-                        <form method="POST" action="GerenciarPromocoes" enctype="multipart/form-data">
-                            <input type="hidden" name="acao" value="criar">
+                        <form method="POST" action="CadastroPromocao">
 
                             <label for="nomePromocao">Nome:</label>
                             <input id="nomePromocao" type="text" name="nomePromocao" required>
-
-                            <label for="enderecoPromocao">Endereço:</label>
-                            <input id="enderecoPromocao" type="text" name="enderecoPromocao">
 
                             <label for="imagemPromocao">Selecione uma imagem para a promoção:</label>
                             <input type="file" id="imagemPromocao" name="imagemPromocao" accept="image/*">
@@ -50,6 +45,7 @@
                         </form>
                     </div>  
                 </div>
+          
         </main>
 
         <%@ include file="../footer.jsp" %>
