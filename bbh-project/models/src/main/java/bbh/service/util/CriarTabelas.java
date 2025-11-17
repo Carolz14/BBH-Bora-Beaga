@@ -24,6 +24,77 @@ public class CriarTabelas {
         System.out.printf("Tabela tag criada (ou já existia previamente).\n");
     }
 
+    public static void criarTabelaAvaliacao() throws SQLException {
+        String sqlTabela = """
+        CREATE TABLE IF NOT EXISTS avaliacao (
+        id_avaliacao BIGINT AUTO_INCREMENT PRIMARY KEY,
+        id_usuario BIGINT NOT NULL,
+        id_estabelecimento BIGINT NOT NULL,
+        avaliacao INT CHECK (avaliacao BETWEEN 1 AND 5),
+        comentario TEXT,
+        data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+            ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (id_estabelecimento) REFERENCES usuarios(id)
+            ON DELETE CASCADE ON UPDATE CASCADE
+    );
+    """;
+
+        String sqlDropTrigger = "DROP TRIGGER IF EXISTS before_insert_avaliacao;";
+
+        String sqlTrigger = """
+    CREATE TRIGGER before_insert_avaliacao
+    BEFORE INSERT ON avaliacao
+    FOR EACH ROW
+    BEGIN
+        DECLARE tipo_autor VARCHAR(50);
+        DECLARE tipo_alvo VARCHAR(50);
+
+        -- Verifica se autor existe e é TURISTA
+        SELECT usuario_tipo INTO tipo_autor
+        FROM usuarios
+        WHERE id = NEW.id_usuario;
+
+        IF tipo_autor IS NULL THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Usuário autor não encontrado.';
+        END IF;
+
+        IF UPPER(tipo_autor) <> 'TURISTA' THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Somente TURISTAS podem criar avaliações.';
+        END IF;
+
+        -- Verifica se alvo existe e é ESTABELECIMENTO
+        SELECT usuario_tipo INTO tipo_alvo
+        FROM usuarios
+        WHERE id = NEW.id_estabelecimento;
+
+        IF tipo_alvo IS NULL THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Estabelecimento não encontrado.';
+        END IF;
+
+        IF UPPER(tipo_alvo) <> 'ESTABELECIMENTO' THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Somente ESTABELECIMENTOS podem receber avaliações.';
+        END IF;
+    END;
+    """;
+
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sqlTabela);
+            System.out.println("Tabela 'avaliacao' criada (ou já existia).");
+
+            stmt.executeUpdate(sqlDropTrigger);
+            stmt.executeUpdate(sqlTrigger);
+            System.out.println("Trigger 'before_insert_avaliacao' criada com sucesso.");
+
+        } catch (SQLException e) {
+            throw new SQLException("Erro ao criar tabela/trigger de avaliacao: " + e.getMessage(), e);
+        }
+    }
+
     public static void criarTabelaCorrespondencia() throws SQLException {
         String sqlTabela = """
             CREATE TABLE IF NOT EXISTS tag_correspondencia (
@@ -113,5 +184,6 @@ public class CriarTabelas {
         criarTabelaTag();
         criarTabelaCorrespondencia();
         inserirTagsPadroes();
+        criarTabelaAvaliacao();
     }
 }

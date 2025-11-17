@@ -4,13 +4,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import bbh.common.PersistenciaException;
+
 
 public class InitDB {
 
-    public static void inicializar(){
+    public static void inicializar() {
         //Conecta no servidor e cria o DB
-        try (Connection conn = ConexaoBD.getServerConnection();
-             Statement stmt = conn.createStatement()) {
+        try (Connection conn = ConexaoBD.getServerConnection(); Statement stmt = conn.createStatement()) {
 
             stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS bbh");
             System.out.println("Banco de dados 'bbh' verificado/criado com sucesso.");
@@ -19,10 +20,10 @@ public class InitDB {
             System.err.println("Erro ao criar banco de dados: " + e.getMessage());
             return;
         }
-        
-       //Conecta no banco e cria a tabela, se não exisitir
-        try (Connection conn = ConexaoBD.getConnection();
-             Statement stmt = conn.createStatement()) {
+
+        //Conecta no banco e cria a tabela, se não exisitir
+        try (Connection conn = ConexaoBD.getConnection(); Statement stmt = conn.createStatement()) {
+            CriarTabelas.criarTodasAsTabelas();
             String sqlUsuarios = """
                 CREATE TABLE IF NOT EXISTS usuarios (
                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -60,8 +61,7 @@ public class InitDB {
                     System.out.println("Tabela 'usuarios' já possui registros.");
                 }
             }
-
-        } catch (SQLException e) {
+        } catch (SQLException | PersistenciaException e) {
             System.err.println("Erro ao criar tabela ou inserir dados: " + e.getMessage());
         }
     }
