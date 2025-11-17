@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 public class Avaliacao { 
     private final long idUsuario;
-    private final long idAvaliacao;
+    private long idAvaliacao;
     private final long idEstabelecimento;
     private int notaAvaliacao;
     private String comentario;
@@ -21,6 +21,12 @@ public class Avaliacao {
         notaAvaliacao = nA;
         comentario = c;
         dataAvaliacao = dA;
+    }
+    public Avaliacao(long idU, long idE, int nA, String c){
+        idUsuario = idU;
+        idEstabelecimento = idE;
+        notaAvaliacao = nA;
+        comentario = c;
     }
     
     public void setDataAvaliacao(Timestamp d) {
