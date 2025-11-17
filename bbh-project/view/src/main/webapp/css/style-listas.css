@@ -4,8 +4,6 @@ h3{
     line-height: 1.2;
 }
 
-
-
 .estabelecimentos, .roteiros, .interesses {
     background-color: white;
     border-radius: 20px;
@@ -14,9 +12,9 @@ h3{
     align-items: center;
     gap: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    text-decoration: none; 
-    color: inherit; 
-    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .estabelecimentos:hover {
@@ -28,20 +26,25 @@ h3{
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
+
+.roteiros:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
 .ilustracao {
-     width: 140px;       
-    height: 105px;        
+    width: 140px;
+    height: 105px;
     object-fit: cover;
     border-radius: 10px;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 .selecao {
-  display: grid;
-  grid-template-columns: auto auto auto; 
-  justify-content: center;
-  overflow: auto;
-  gap: 50px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    overflow: auto;
+    gap: 50px;
 }
 
 
@@ -56,9 +59,9 @@ h3{
 
 .cabecalho-pagina {
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    margin: 2% 5%; 
+    justify-content: space-between;
+    align-items: center;
+    margin: 2% 5%;
 }
 
 
@@ -76,12 +79,77 @@ h3{
     font-size: 16px;
     text-decoration: none;
     border-radius: 8px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    border: none;
 }
 
 .btn-criar:hover {
-    background-color: #7bab54; 
-    transform: translateY(-2px);
+    background-color: #7bab54;
 }
 
 
+
+.modal-roteiro {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 25, 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display:none; 
+}
+
+.ativo {
+    display:block;
+    pointer-events: auto;
+}
+
+.modal-conteudo {
+    background: #ffffff;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 720px;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.modal.ativo .modal-conteudo {
+    transform: scale(1);
+}
+
+
+
+.modal-texto {
+    width: 60%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.fechar {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: 300;
+    color: #333;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.2s ease;
+}

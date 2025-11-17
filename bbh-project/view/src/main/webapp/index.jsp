@@ -10,7 +10,7 @@
         <title>Bora Beagá</title>
         <link rel="stylesheet" href="css/style-login.css">
        <link rel="icon" href="imagens/icon-page.png">
-        <script src="js/script.js" defer></script>
+        <script src="js/validacao.js" defer></script>
     </head>
 
     <body>

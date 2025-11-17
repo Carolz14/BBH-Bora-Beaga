@@ -7,63 +7,44 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bora Beagá</title>
+        <title>Roteiros</title>
 
         <link rel="stylesheet" href="../../css/style-geral.css">
-        <link rel="stylesheet" href="../../css/lista-roteiros.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="../../css/style-listas.css">
+        <link rel="icon" href="../../imagens/icon-page.png">
+         <script src="../../js/modal.js" defer></script>
+        
     </head>
     <body>
 
         <%@ include file="../header.jsp" %>
+        <div class="cabecalho-pagina">
+            <h1>Roteiros</h1>
+            <button type="button" onclick="abrirModal()" class="btn-criar">Criar Roteiro</button>
+        </div>
 
-        <main>
-            <div class="container">
-                <div class="header-com-botao">
-                    <h1>Roteiros</h1>
-                    <a href="roteiroGuia.jsp" class="btn">Guia</a>
-                </div>
-
-                <div class="grid-container">
-
-                    <div class="card-item">
-                        <img src="../imgs/roteiro.jpeg" alt="Imagem roteiro">
-                        <h3>Nome do roteiro</h3>
-                        <a href="detalhe-roteiro.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/roteiro.jpeg" alt="Imagem roteiro">
-                        <h3>Nome do roteiro</h3>
-                        <a href="detalhe-roteiro.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/roteiro.jpeg" alt="Imagem roteiro">
-                        <h3>Nome do roteiro</h3>
-                        <a href="detalhe-roteiro.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/roteiro.jpeg" alt="Imagem roteiro">
-                        <h3>Nome do roteiro</h3>
-                        <a href="detalhe-roteiro.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/roteiro.jpeg" alt="Imagem roteiro">
-                        <h3>Nome do roteiro</h3>
-                        <a href="detalhe-roteiro.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/roteiro.jpeg" alt="Imagem roteiro">
-                        <h3>Nome do roteiro</h3>
-                        <a href="detalhe-roteiro.jsp" class="btn">Ver mais</a>
-                    </div>
-
+        <div class="modal-roteiro">
+            <div class="modal-conteudo">
+                <span class="fechar">&times;</span>
+                <div class="modal-texto">
+                    <h3 id="modal-nome">teste</h3>
+                    <p id="modal-desc">teste</p>
                 </div>
             </div>
+        </div>
+
+        <main class="selecao">
+
+            <c:forEach var="roteiro" items="${sessionScope.roteiros}">
+                <a href="${pageContext.request.contextPath}/bbh/DetalheRoteiroController?id=${roteiro.id}" class="roteiros">
+                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local" class="ilustracao">
+                    <h3>${roteiro.nome}</h3>
+                </a>
+            </c:forEach>
+            <c:if test="${empty roteiros}">
+                <p>Nenhum roteiro cadastrado.</p>
+            </c:if>
+
         </main>
 
         <%@ include file="../footer.jsp" %>

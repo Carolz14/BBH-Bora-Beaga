@@ -12,6 +12,7 @@
 
 <!DOCTYPE html>
 <html>
+ 
     <header>
         <div id="logo"><img src="../../imagens/icon.png" alt="" id="icon">
         <h1 id="logo-texto">Bora Beagá</h1></div>
