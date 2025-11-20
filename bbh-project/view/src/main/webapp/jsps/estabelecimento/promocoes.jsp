@@ -10,6 +10,8 @@
         <title>Bora Beagá</title>
         <link rel="stylesheet" href="../../css/style-geral.css">
         <link rel="stylesheet" href="../../css/style-estab.css">
+        <script src="<%= request.getContextPath()%>/js/validarPromocao.js" defer></script>
+
     </head>
     <body>
 
@@ -18,19 +20,19 @@
         <main>
             <div class="conteudo-promo-event">
                 <h1 class="texto-apresentacao">Gerenciar Promoções</h1>
-               
 
-                    <div class="conteudo-promo-event">
-                        <h1 class="texto-apresentacao">Gerenciar Promoções</h1>
-                        <div class="display-gerenciar-promocoes">
-                            <p>Nenhuma promoção cadastrada</p>
-                        </div>
 
-                 
+                <div class="conteudo-promo-event">
+                    <h1 class="texto-apresentacao">Gerenciar Promoções</h1>
+                    <div class="display-gerenciar-promocoes">
+                        <p>Nenhuma promoção cadastrada</p>
+                    </div>
+
+
                     <h1 class="texto-apresentacao">Nova Promoção</h1>
                     <div class="display-cadastro-promocao">
 
-                        <form method="POST" action="CadastroPromocao">
+                        <form name="formPromocao" method="POST" action="<%= request.getContextPath()%>/bbh/CadastroPromocao">
 
                             <label for="nomePromocao">Nome:</label>
                             <input id="nomePromocao" type="text" name="nomePromocao" required>
@@ -41,11 +43,19 @@
                             <label for="descricaoPromocao">Descrição:</label>
                             <input id="descricaoPromocao" type="text" name="descricaoPromocao">
 
-                            <button class="botao-submit" type="submit">Criar Promoção</button>
+                            <label for="dataPromocao">Duração:</label>
+                            <input id="dataPromocao" type="date" name="dataPromocao" required>
+
+
+
+                            <button class="botao-submit" type="button" onclick="validarCamposPromocao(document.formPromocao)">
+                                Criar Promoção
+                            </button>
                         </form>
+
                     </div>  
                 </div>
-          
+
         </main>
 
         <%@ include file="../footer.jsp" %>
