@@ -4,6 +4,7 @@ import bbh.dao.AvaliacaoDAO;
 import bbh.domain.Avaliacao;
 import bbh.common.PersistenciaException;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class AvaliacaoService {
 
@@ -48,5 +49,8 @@ public class AvaliacaoService {
 
     public double calcularMedia(long idEstabelecimento) throws PersistenciaException {
         return avaliacaoDAO.calcularNotaMedia(idEstabelecimento);
+    }
+    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException{
+        return avaliacaoDAO.buscarAvaliacoesPorEstabelecimento(idEstabelecimento);
     }
 }

@@ -37,6 +37,10 @@ public class Avaliacao {
         comentario = c;
     }
 
+    public void setIdAvaliação(long idA){
+        idAvaliacao = idA;
+    }
+
     public void setNotaAvaliacao(int n) {
         notaAvaliacao = n;
     }
@@ -64,4 +68,7 @@ public class Avaliacao {
     public long getIdEstabelecimento() {
         return idEstabelecimento;
     }
+
+    
+
 }
