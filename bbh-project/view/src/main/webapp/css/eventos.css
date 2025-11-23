@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
 :root {
@@ -13,22 +12,108 @@
     --cor-borda: #6c757d;
 }
 
-
-
-
+/* ESTILOS GERAIS */
 
 main {
     padding: 30px 50px;
-    background-color: #f2f2f2;
+    background-color: var(--cor-fundo); 
     min-height: calc(100vh - 130px);
 }
 
+h1 {
+    font-family: var(--fonte-logo);
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+h2 {
+    font-family: var(--fonte-texto);
+    font-weight: 700;
+    color: #444;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* Ajustes no botão 'Criar evento' para ESTABELECIMENTO */
+.btn.criar-evento-btn {
+    background-color: var(--cor-secundaria);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 20px;
+}
+
+.btn.criar-evento-btn:hover {
+    background-color: #7eb450;
+}
+
+/* LAYOUT DE GERENCIAMENTO (ESTABELECIMENTO) */
+
+.card-gerenciar {
+    background-color: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto; 
+}
+
+.card-gerenciar h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.card-gerenciar h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.form-evento {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-evento input[type="text"],
+.form-evento input[type="date"],
+.form-evento input[type="time"],
+.form-evento textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.form-evento input:focus,
+.form-evento textarea:focus {
+    border-color: var(--cor-primaria);
+    outline: none;
+}
+
+.form-evento textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* LISTAGEM DE EVENTOS (TURISTA E ESTABELECIMENTO) */
+
 .eventos {
     display: grid;
-  grid-template-columns: auto auto; 
-  justify-content: center;
-  overflow: auto;
-  gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    justify-content: center;
+    gap: 30px;
+    padding: 10px 0;
 }
 
 .evento {
@@ -50,128 +135,169 @@ main {
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-.evento img {
-     width: 140px;       
+/* Placeholder da Imagem */
+.evento-fakeimg {
+    width: 140px; 
     height: 105px; 
-    object-fit: cover;
+    background-color: #d1e7c5; 
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23d1e7c5"/><path fill="%2393c665" d="M0 70 L20 50 L40 60 L60 40 L100 80 V100 H0 Z"/><circle cx="75" cy="25" r="10" fill="%23f9e470"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
     border-radius: 8px;
     flex-shrink: 0;
-    background: #eaeaea;
     display: block;
 }
 
-.evento p {
+
+.evento h3 {
     margin: 0;
-    font-weight: 600;
-    font-size: 16px;
-    color: #222;
+    font-weight: 700;
+    font-size: 18px;
+    color: #1a1a1a;
 }
 
+.evento p {
+    margin: 4px 0 0 0;
+    font-weight: 400;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Estilos para formulário de edição dentro do card (Se aplicável) */
+.form-editar {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.form-editar input, .form-editar textarea {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-remover {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
+/* MODAL */
+
 .modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(20, 20, 25, 0.8);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  opacity: 0;
-  pointer-events: none; 
-  transition: opacity 0.3s ease;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 25, 0.8);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    opacity: 0;
+    pointer-events: none; 
+    transition: opacity 0.3s ease;
 }
 
 .modal.ativo {
-  opacity: 1;
-  pointer-events: auto; 
+    opacity: 1;
+    pointer-events: auto; 
 }
 
 .modal-conteudo {
-  background: #ffffff;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 720px;
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    background: #ffffff;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 720px;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 
-  transform: scale(0.95);
-  transition: transform 0.3s ease;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
 }
 
 .modal.ativo .modal-conteudo {
-  transform: scale(1);
+    transform: scale(1);
 }
 
-.modal-conteudo img {
-  width: 40%;
-  object-fit: cover;
-  min-height: 100%; 
+/* Imagem maior no Modal */
+.evento-fakeimg.grande {
+    width: 40%;
+    min-height: 100%; 
+    background-size: 60%; 
 }
 
 .modal-texto {
-  width: 60%;
-  padding: 40px;
-  display: flex;
-  flex-direction: column; 
-  justify-content: center;
- 
+    width: 60%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    
 }
 
 .modal-texto h3 {
-  margin: 0 0 12px 0;
-  font-size: 28px;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1.2;
+    margin: 0 0 12px 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.2;
 }
 
 .modal-texto p {
-  margin: 0;
-  font-size: 16px;
-  color: #666666;
-  line-height: 1.65;
+    margin: 0;
+    font-size: 16px;
+    color: #666666;
+    line-height: 1.65;
 }
 
 .fechar {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  font-size: 24px;
-  font-weight: 300;
-  color: #333;
-  cursor: pointer;
-  z-index: 2;
-  transition: all 0.2s ease;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: 300;
+    color: #333;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.2s ease;
 }
 
 .modal-botao {
-  display: inline-block;
-  background-color: var(--cor-secundaria); 
-  color: #ffffff;
-  padding: 12px 24px;
-  margin-top: 25px;
-  border-radius: 8px;
-  text-decoration: none;
-  text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+    background-color: var(--cor-secundaria); 
+    color: #ffffff;
+    padding: 12px 24px;
+    margin-top: 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .modal-botao:hover {
-  background-color: #7eb450; 
-  transform: translateY(-2px); 
+    background-color: #7eb450; 
+    transform: translateY(-2px); 
 }
-

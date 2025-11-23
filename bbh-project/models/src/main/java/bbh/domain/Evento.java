@@ -1,16 +1,18 @@
 package bbh.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Evento {
 
     private Long id;
-    private Long idEstabelecimento;
+    private Long estabelecimentoId;
     private String nome;
     private String descricao;
     private LocalDate data;
     private LocalTime horario;
+    private LocalDateTime criadoEm;
     private Boolean ativo;
 
     public Evento() {
@@ -25,12 +27,12 @@ public class Evento {
         this.id = id;
     }
 
-    public Long getIdEstabelecimento() {
-        return idEstabelecimento;
+    public Long getEstabelecimentoId() {
+        return estabelecimentoId;
     }
 
-    public void setIdEstabelecimento(Long idEstabelecimento) {
-        this.idEstabelecimento = idEstabelecimento;
+    public void setEstabelecimentoId(Long estabelecimentoId) {
+        this.estabelecimentoId = estabelecimentoId;
     }
 
     public String getNome() {
@@ -63,6 +65,14 @@ public class Evento {
 
     public void setHorario(LocalTime horario) {
         this.horario = horario;
+    }
+
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
+    }
+
+    public void setCriadoEm(LocalDateTime criadoEm) {
+        this.criadoEm = criadoEm;
     }
 
     public Boolean getAtivo() {
