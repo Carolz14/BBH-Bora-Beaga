@@ -10,10 +10,12 @@ public class Roteiro {
     private String imagemUrl;
     private List<Local> paradas;
     private Long usuarioId;
+    private boolean habilitado;
 
-    public Roteiro(String nome, String descricao) {
+    public Roteiro(String nome, String descricao, String imagemUrl) {
         this.nome = nome;
         this.descricao = descricao;
+        this.imagemUrl = imagemUrl;
     }
 
     public Long getId() {
@@ -62,5 +64,13 @@ public class Roteiro {
 
     public void setUsuarioId(Long usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+    
+    public boolean getHabilitado() {
+        return habilitado;
     }
 }

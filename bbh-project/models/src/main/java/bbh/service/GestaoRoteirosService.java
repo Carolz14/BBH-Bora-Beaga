@@ -1,12 +1,10 @@
 package bbh.service;
 
-import bbh.dao.RoteiroDAO;
-import bbh.domain.Roteiro;
-import bbh.domain.Usuario;
-
 import java.util.List;
 
 import bbh.common.PersistenciaException;
+import bbh.dao.RoteiroDAO;
+import bbh.domain.Roteiro;
 
 public class GestaoRoteirosService {
 
@@ -32,7 +30,7 @@ public class GestaoRoteirosService {
         return roteiroDAO.listar();
     }
 
-    public Usuario pesquisarPorId(Long id) throws PersistenciaException {
+    public Roteiro pesquisarPorId(Long id) throws PersistenciaException {
         return roteiroDAO.pesquisar(id);
     }
 }
