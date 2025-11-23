@@ -1,43 +1,44 @@
 package bbh.controller;
 
-import bbh.common.NaoEncontradoException;
-import bbh.common.PersistenciaException;
 import bbh.domain.Avaliacao;
 import bbh.service.AvaliacaoService;
-import jakarta.servlet.*;
+import bbh.common.NaoEncontradoException;
+import bbh.common.PersistenciaException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet("/avaliacao/inserir")
 public class InserirAvaliacaoServlet extends BaseServlet {
 
-    private AvaliacaoService service = new AvaliacaoService();
+    private final AvaliacaoService service = new AvaliacaoService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-                req.setCharacterEncoding("UTF-8");
+
+        req.setCharacterEncoding("UTF-8");
         try {
-            Long idUsuario = getIdUsuario(req);
-            long idEstabelecimento = Long.parseLong(req.getParameter("id_estabelecimento"));
-            String comentario = req.getParameter("comentario");
+            long usuarioId = getIdUsuario(req);
+            long estabelecimentoId = Long.parseLong(req.getParameter("id"));
             int nota = Integer.parseInt(req.getParameter("nota"));
+            String comentario = req.getParameter("comentario");
 
             if (nota < 1 || nota > 5) {
-                req.setAttribute("erro", "Nota inválida: deve ser entre 1 e 5.");
-                req.getRequestDispatcher("/WEB-INF/avaliacoes/erro.jsp").forward(req, resp);
-                return;
+                throw new ServletException("Nota inválida (1..5).");
             }
-            Avaliacao avaliacao = new Avaliacao(idUsuario, idEstabelecimento, nota, comentario);
+
+            Avaliacao avaliacao = new Avaliacao(usuarioId, estabelecimentoId, nota, comentario);
             service.inserirAvaliacao(avaliacao);
-            resp.sendRedirect(req.getContextPath() + "/avaliacao/listar?id_estabelecimento=" + idEstabelecimento);
+            resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + estabelecimentoId);
+
         } catch (NumberFormatException e) {
-            throw new ServletException("Erro ao inserir a avaliação, problema de formato de parâmetros." + e.getMessage());
-        } catch(PersistenciaException e){
-            throw new ServletException("Erro ao inserir a avaliação, problema de persistência." + e.getMessage());
-        } catch (NaoEncontradoException e) {
-            throw new ServletException("Erro ao inserir a avaliação, id do usuario não encontrado." + e.getMessage());
+            throw new ServletException("Parâmetros numéricos inválidos." + e.getMessage());
+        } catch (PersistenciaException e) {
+            throw new ServletException("Erro ao inserir avaliação." + e.getMessage());
+        } catch(NaoEncontradoException e){
+            throw new ServletException("Id do usuario não encontrado" + e.getMessage());
         }
     }
 }

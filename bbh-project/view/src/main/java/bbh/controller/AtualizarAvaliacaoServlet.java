@@ -9,36 +9,38 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-
 @WebServlet("/avaliacao/atualizar")
 public class AtualizarAvaliacaoServlet extends BaseServlet {
 
     private final AvaliacaoService service = new AvaliacaoService();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         req.setCharacterEncoding("UTF-8");
         try {
-            long idUsuario = getIdUsuario(req);
-            long idAvaliacao = Long.parseLong(req.getParameter("id"));
-            long idEstabelecimento = Long.parseLong(req.getParameter("id_estabelecimento"));
-            String comentario = req.getParameter("comentario");
+            long usuarioId = getIdUsuario(req);
+            long idAvaliacao = Long.parseLong(req.getParameter("id_avaliacao"));
+            long estabelecimentoId = Long.parseLong(req.getParameter("id")); // PADRÃO: id
             int nota = Integer.parseInt(req.getParameter("nota"));
-            
+            String comentario = req.getParameter("comentario");
+
             if (nota < 1 || nota > 5) {
-                throw new ServletException("Erro ao atualizar avaliação, nota invalida");
+                throw new ServletException("Nota inválida (1..5).");
             }
 
-            Avaliacao avaliacao = new Avaliacao(idAvaliacao, idUsuario, idEstabelecimento, nota, comentario, null);
-            service.atualizarAvaliacao(avaliacao);
-            resp.sendRedirect(req.getContextPath() + "/avaliacao/listar?estabelecimentoId=" + idEstabelecimento);
+            Avaliacao a = new Avaliacao(idAvaliacao, usuarioId, estabelecimentoId, nota, comentario, null);
+            service.atualizarAvaliacao(a);
+
+            resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + estabelecimentoId);
 
         } catch (NumberFormatException e) {
-            throw new ServletException("Erro ao atualziar avaliação, erro no formato dos parâmetros." + e.getMessage());
+            throw new ServletException("Parâmetros numéricos inválidos." + e.getMessage());
         } catch (PersistenciaException e) {
-            throw new ServletException("Erro ao atualizar avaliação, erro de persistência." + e.getMessage());
+            throw new ServletException("Erro ao atualizar avaliação." + e.getMessage());
         } catch(NaoEncontradoException e){
-            throw new ServletException("Erro ao atualizar avaliação, usuario não encontrado" + e.getMessage());
+            throw new ServletException("ID do usuario não encontrado" + e.getMessage());
         }
     }
 }

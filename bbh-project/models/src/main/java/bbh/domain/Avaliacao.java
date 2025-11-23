@@ -6,7 +6,7 @@ package bbh.domain;
 
 import java.sql.Timestamp;
 
-public class Avaliacao { 
+public class Avaliacao {
     private final long idUsuario;
     private long idAvaliacao;
     private final long idEstabelecimento;
@@ -14,7 +14,7 @@ public class Avaliacao {
     private String comentario;
     private Timestamp dataAvaliacao;
 
-    public Avaliacao(long idA, long idU, long idE, int nA, String c, Timestamp dA ){
+    public Avaliacao(long idA, long idU, long idE, int nA, String c, Timestamp dA) {
         idAvaliacao = idA;
         idUsuario = idU;
         idEstabelecimento = idE;
@@ -22,13 +22,14 @@ public class Avaliacao {
         comentario = c;
         dataAvaliacao = dA;
     }
-    public Avaliacao(long idU, long idE, int nA, String c){
+
+    public Avaliacao(long idU, long idE, int nA, String c) {
         idUsuario = idU;
         idEstabelecimento = idE;
         notaAvaliacao = nA;
         comentario = c;
     }
-    
+
     public void setDataAvaliacao(Timestamp d) {
         dataAvaliacao = d;
     }
@@ -37,7 +38,7 @@ public class Avaliacao {
         comentario = c;
     }
 
-    public void setIdAvaliação(long idA){
+    public void setIdAvaliação(long idA) {
         idAvaliacao = idA;
     }
 
@@ -68,7 +69,4 @@ public class Avaliacao {
     public long getIdEstabelecimento() {
         return idEstabelecimento;
     }
-
-    
-
 }

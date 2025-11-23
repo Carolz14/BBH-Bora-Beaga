@@ -17,17 +17,15 @@ public class RemoverAvaliacaoServlet extends BaseServlet {
         req.setCharacterEncoding("UTF-8");
         try {
             long idAvaliacao = Long.parseLong(req.getParameter("id_avaliacao"));
-            long idEstabelecimento = Long.parseLong(req.getParameter("id_estabelecimento"));
+            long idEstabelecimento = Long.parseLong(req.getParameter("id")); // PADRÃO: id
 
-            // opcional: verificar usuario dono antes de remover no service
             service.removerAvaliacao(idAvaliacao);
 
-            resp.sendRedirect(req.getContextPath() + "/avaliacao/listar?estabelecimentoId=" + idEstabelecimento);
+            resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + idEstabelecimento);
         } catch (NumberFormatException e) {
-            throw new ServletException(
-                    "Erro ao remover avaliação, problema de formato nos parâmetros" + e.getMessage());
+            throw new ServletException("Parâmetros numéricos inválidos.", e);
         } catch (PersistenciaException e) {
-            throw new ServletException("Erro ao remover avaliação, erro de persistência" + e.getMessage());
+            throw new ServletException("Erro ao remover avaliação.", e);
         }
     }
 }
