@@ -54,30 +54,28 @@ Bora Beagá é um sistema que visa auxiliar turistas e moradores da cidade de Be
 ## Regras de Negócio
 | Id     | Nome       | Descrição   |
 |:-------|:-----------|:------------|
-| RN001  | CPF válido  | O CPF deve ter 11 dígitos e ser verdadeiro.    |
-| RN002  | CNPJ válido  | O CNPJ deve ter 14 dígitos e estar ativo.    |
-| RN003  | E-mail válido e confirmado    | O e-mail deve ser válido e ter sido confirmado pelo usuário.     |
-| RN004  | Data válida  | O evento deve ser cadastrada em uma data válida (do futuro)    |
-| RN005  | Avaliação em estrelas    | A avaliação deverá ser feita em um sistema de 1 a 5 estrelas   |
-| RN006  |Roteiros com distâncias válidas    | Os roteiros de passeio deverão ser feitos com locais que estejam próximos um do outro, sendo possível visitá-los em um dia.    |
-| RN007  | E-mail válido e confirmado    | O usuário deverá permitir o envio de notificações    |
+| RN001  | CNPJ válido  | O CNPJ deve ter 14 dígitos e estar ativo.    |
+| RN002  | E-mail válido e confirmado    | O e-mail deve ser válido e ter sido confirmado pelo usuário.     |
+| RN003  | Data válida  | O evento deve ser cadastrada em uma data válida (do futuro)    |
+| RN004  | Avaliação em estrelas    | A avaliação deverá ser feita em um sistema de 1 a 5 estrelas   |
+| RN005  |Roteiros com distâncias válidas    | Os roteiros de passeio deverão ser feitos com locais que estejam próximos um do outro, sendo possível visitá-los em um dia.    |
 
 
 
 ## Casos de Uso
 | Id     | Nome       | Requisitos     | Regras de Negócio  |
 |:-------|:-----------|:---------------|:-------------------|
-| CSU01  | Gestão de perfis de usuários              | REQ001, REQ002, REQ003, REQ004, REQ005, REQ006, REQ007, REQ008  | RN001, RN002, RN003  |
+| CSU01  | Gestão de perfis de usuários              | REQ001, REQ002, REQ003, REQ004, REQ005, REQ006, REQ007, REQ008  | RN001, RN002  |
 | CSU02  | Registro de pontos turísticos             | REQ009 |       |
 | CSU03  | Visualização de perfil dos usuários       | REQ010 |       |
 | CSU04  | Categorizar localidades                   | REQ011 |       |
 | CSU05  | Pesquisa de locais                        | REQ012 |       |
-| CSU06  | Avaliação de locais e estabelecimentos    | REQ013 | RN005 |
-| CSU07  | Criação de roteiros turísticos            | REQ014 | RN006 |
+| CSU06  | Avaliação de locais e estabelecimentos    | REQ013 | RN004 |
+| CSU07  | Criação de roteiros turísticos            | REQ014 | RN005 |
 | CSU08  | Interação com roteiros turísticos         | REQ015, REQ016 | RN005 |
 | CSU09  | Fórum de discussão dos roteiros           | REQ017 |       |
 | CSU10  | Mapa interativo                           | REQ018 |       |
-| CSU11  | Publicação de eventos                     | REQ019 | RN004 |
+| CSU11  | Publicação de eventos                     | REQ019 | RN003 |
 | CSU12  | Gestão de agenda                          | REQ020 | RN004 |
 | CSU13  | Gestão de notificações                    | REQ021 | RN007 |
 | CSU14  | Gestão de locais de interess              | REQ022 |       |
