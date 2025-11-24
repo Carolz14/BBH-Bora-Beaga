@@ -3,56 +3,60 @@ package bbh.domain;
 import java.time.LocalDate;
 
 public class Promocao {
+
     private String nome;
-    private Long desconto;
     private String descricao;
     private LocalDate data;
     private Long id;
-    
-    public Promocao(String nome, Long desconto, String descricao, LocalDate data){
+    private Long idEstabelecimento;
+
+    public Promocao(String nome, String descricao, LocalDate data, Long idEstabelecimento) {
         this.nome = nome;
-        this.desconto = desconto;
         this.descricao = descricao;
         this.data = data;
+        this.idEstabelecimento = idEstabelecimento;
     }
-        
-    public String getNome(){
+
+    public Promocao() {
+    }
+
+    public String getNome() {
         return nome;
     }
-    
-    public void setNome(String nome){
+
+    public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    public Long getDesconto(){
-        return desconto;
-    }
-    
-    public void setDesconto(Long desconto){
-        this.desconto = desconto;
-    }
-    
-    public String getDescricao(){
+
+    public String getDescricao() {
         return descricao;
     }
-    
-    public void setDescricao(String descricao){
+
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    
-    public LocalDate getData(){
+
+    public LocalDate getData() {
         return data;
     }
-    
-    public void setData(LocalDate data){
+
+    public void setData(LocalDate data) {
         this.data = data;
     }
-    
-    public Long getId(){
+
+    public Long getId() {
         return id;
     }
-    
-    public void setId(Long id){
+
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIdEstabelecimento() {
+        return idEstabelecimento;
+    }
+
+    public void setIdEstabelecimento(Long idEstabelecimento) {
+        this.idEstabelecimento = idEstabelecimento;
     }
 }

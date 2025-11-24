@@ -3,6 +3,7 @@ package bbh.service;
 import bbh.dao.PromocaoDAO;
 import bbh.domain.Promocao;
 import bbh.common.PersistenciaException;
+import java.util.List;
 
 public class GestaoPromocoesService {
 
@@ -16,11 +17,15 @@ public class GestaoPromocoesService {
         dao.inserir(promocao);
     }
 
-    public void excluirPromocao(Long id) throws PersistenciaException {
-        dao.delete(id);
+    public List<Promocao> listarPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
+        return dao.listarPorEstabelecimento(idEstabelecimento);
     }
 
-    public Promocao pesquisar(Long id) throws PersistenciaException {
-        return dao.pesquisar(id);
+    public void removerVinculo(Long idUsuario, Long idPromocao) throws PersistenciaException {
+        dao.removerVinculo(idUsuario, idPromocao);
+    }
+
+    public Long buscarEstabelecimenoPorPromocao(Long idPromocao) throws PersistenciaException {
+        return dao.buscarEstabelecimentoDaPromocao(idPromocao);
     }
 }

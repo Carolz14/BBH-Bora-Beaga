@@ -1,6 +1,7 @@
 package bbh.controller;
 
 import bbh.domain.Promocao;
+import bbh.domain.Usuario;
 import bbh.service.GestaoPromocoesService;
 
 import java.io.IOException;
@@ -19,17 +20,18 @@ public class CadastroPromocao extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            String id = request.getParameter("idEstab");
+            Long idEstabelecimento = Long.valueOf(id);
+
+            // Pegando parâmetros
             String nome = request.getParameter("nomePromocao");
             String descricao = request.getParameter("descricaoPromocao");
-            String dataStr = request.getParameter("dataPromocao");
+            LocalDate data = LocalDate.parse(request.getParameter("dataPromocao"));
 
-            if (dataStr == null || dataStr.isBlank()) {
-                throw new RuntimeException("Data não informada!");
-            }
+            // Criando a promoção com o ID do estabelecimento
+            Promocao promocao = new Promocao(nome, descricao, data, idEstabelecimento);
 
-            LocalDate data = LocalDate.parse(dataStr);
-            Promocao promocao = new Promocao(nome, 0L, descricao, data);
-
+            // Chamada correta
             GestaoPromocoesService service = new GestaoPromocoesService();
             service.cadastrarPromocao(promocao);
 
@@ -39,7 +41,7 @@ public class CadastroPromocao extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("erro", "Erro ao cadastrar promoção: " + e.getMessage());
             request.getRequestDispatcher("/jsps/estabelecimento/promocoes.jsp")
-                   .forward(request, response);
+                    .forward(request, response);
         }
     }
 }

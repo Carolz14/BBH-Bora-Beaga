@@ -3,13 +3,11 @@ package bbh.dao;
 import bbh.common.PersistenciaException;
 import bbh.domain.Promocao;
 import bbh.service.util.ConexaoBD;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-public class PromocaoDAO implements GenericDeleteDAO<Promocao, Long> {
+public class PromocaoDAO {
 
     private static PromocaoDAO instance;
 
@@ -20,70 +18,62 @@ public class PromocaoDAO implements GenericDeleteDAO<Promocao, Long> {
         return instance;
     }
 
-    @Override
+    private PromocaoDAO() {
+    }
+
     public void inserir(Promocao promocao) throws PersistenciaException {
-        String sql = "INSERT INTO promocao (nome, desconto, descricao, data) VALUES (?, ?, ?, ?)";
+        String sqlPromocao
+                = "INSERT INTO promocao (nome, descricao, data) VALUES (?, ?, ?)";
 
-        try (Connection conn = ConexaoBD.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        String sqlVinculo
+                = "INSERT INTO promocao_estabelecimento (id_usuario, id_promocao) VALUES (?, ?)";
 
-            ps.setString(1, promocao.getNome());
-            ps.setLong(2, promocao.getDesconto());
-            ps.setString(3, promocao.getDescricao());
-            ps.setDate(4, java.sql.Date.valueOf(promocao.getData()));
+        try (Connection conn = ConexaoBD.getConnection()) {
+            conn.setAutoCommit(false);
 
-            ps.executeUpdate();
+            // insere promoção
+            try (PreparedStatement ps = conn.prepareStatement(sqlPromocao, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, promocao.getNome());
+                ps.setString(2, promocao.getDescricao());
+                ps.setDate(3, java.sql.Date.valueOf(promocao.getData()));
+                ps.executeUpdate();
 
-            try (ResultSet rs = ps.getGeneratedKeys()) {
+                ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     promocao.setId(rs.getLong(1));
                 }
             }
+
+            // insere vínculo
+            try (PreparedStatement ps2 = conn.prepareStatement(sqlVinculo)) {
+                ps2.setLong(1, promocao.getIdEstabelecimento());
+                ps2.setLong(2, promocao.getId());
+                ps2.executeUpdate();
+            }
+
+            conn.commit();
 
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao inserir promoção: " + e.getMessage(), e);
         }
     }
 
-    @Override
-    public void delete(Long id) throws PersistenciaException {
-        String sql = "DELETE FROM promocao WHERE id = ?";
-
-        try (Connection conn = ConexaoBD.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setLong(1, id);
-            int linhas = ps.executeUpdate();
-
-            if (linhas == 0) {
-                throw new PersistenciaException("Promoção não encontrada para deletar");
-            }
-
-        } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao deletar promoção: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
     public Promocao pesquisar(Long id) throws PersistenciaException {
-        Promocao promocao = null;
+        String sql = "SELECT * FROM promocao WHERE id = ?";
 
-        String sql = "SELECT id, nome, desconto, descricao, data FROM promocao WHERE id = ?";
-
-        try (Connection conn = ConexaoBD.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setLong(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    promocao = new Promocao(
-                            rs.getString("nome"),
-                            rs.getLong("desconto"),
-                            rs.getString("descricao"),
-                            rs.getDate("data").toLocalDate()
-                    );
-                    promocao.setId(rs.getLong("id"));
+
+                    Promocao p = new Promocao();
+                    p.setId(rs.getLong("id"));
+                    p.setNome(rs.getString("nome"));
+                    p.setDescricao(rs.getString("descricao"));
+                    p.setData(rs.getDate("data").toLocalDate());
+                    return p;
                 }
             }
 
@@ -91,6 +81,71 @@ public class PromocaoDAO implements GenericDeleteDAO<Promocao, Long> {
             throw new PersistenciaException("Erro ao pesquisar promoção: " + e.getMessage(), e);
         }
 
-        return promocao;
+        return null;
     }
+
+    public List<Promocao> listarPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
+        String sql
+                = "SELECT p.id, p.nome, p.descricao, p.data "
+                + "FROM promocao p "
+                + "JOIN promocao_estabelecimento pe ON pe.id_promocao = p.id "
+                + "WHERE pe.id_usuario = ?";
+
+        List<Promocao> lista = new ArrayList<>();
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, idEstabelecimento);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Promocao p = new Promocao();
+                    p.setId(rs.getLong("id"));
+                    p.setNome(rs.getString("nome"));
+                    p.setDescricao(rs.getString("descricao"));
+                    p.setData(rs.getDate("data").toLocalDate());
+                    p.setIdEstabelecimento(idEstabelecimento);
+                    lista.add(p);
+                }
+            }
+
+        } catch (Exception e) {
+            throw new PersistenciaException("Erro ao listar promoções: " + e.getMessage(), e);
+        }
+
+        return lista;
+    }
+
+    public void removerVinculo(Long idUsuario, Long idPromocao) throws PersistenciaException {
+        String sql = "DELETE FROM promocao_estabelecimento WHERE id_usuario = ? AND id_promocao = ?";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, idUsuario);
+            ps.setLong(2, idPromocao);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao remover vínculo da promoção: " + e.getMessage(), e);
+        }
+    }
+
+    public Long buscarEstabelecimentoDaPromocao(Long idPromocao) throws PersistenciaException {
+        String sql = "SELECT id_usuario FROM promocao_estabelecimento WHERE id_promocao = ?";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, idPromocao);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong("id_usuario");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao buscar estabelecimento da promoção: " + e.getMessage(), e);
+        }
+
+        return null;
+    }
+
 }

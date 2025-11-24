@@ -42,7 +42,10 @@
 
                             <label for="descricaoPromocao">Descrição:</label>
                             <input id="descricaoPromocao" type="text" name="descricaoPromocao">
+                            
+                            <input type="hidden" name="idEstab" value="<%= usuario.getId() %>">
 
+                            
                             <label for="dataPromocao">Duração:</label>
                             <input id="dataPromocao" type="date" name="dataPromocao" required>
 

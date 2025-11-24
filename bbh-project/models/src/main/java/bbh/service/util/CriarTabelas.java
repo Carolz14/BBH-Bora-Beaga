@@ -114,7 +114,6 @@ public class CriarTabelas {
         CREATE TABLE IF NOT EXISTS promocao (
             id BIGINT AUTO_INCREMENT PRIMARY KEY,
             nome VARCHAR(100) NOT NULL,
-            desconto BIGINT NOT NULL,
             descricao TEXT,
             data DATE NOT NULL
         );
