@@ -6,12 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import bbh.common.PersistenciaException;
 
-
 public class InitDB {
 
     public static void inicializar() {
-        //Conecta no servidor e cria o DB
-        try (Connection conn = ConexaoBD.getServerConnection(); Statement stmt = conn.createStatement()) {
+        try (Connection conn = ConexaoBD.getServerConnection();
+             Statement stmt = conn.createStatement()) {
 
             stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS bbh");
             System.out.println("Banco de dados 'bbh' verificado/criado com sucesso.");
@@ -21,9 +20,9 @@ public class InitDB {
             return;
         }
 
-        //Conecta no banco e cria a tabela, se não exisitir
-        try (Connection conn = ConexaoBD.getConnection(); Statement stmt = conn.createStatement()) {
-            CriarTabelas.criarTodasAsTabelas();
+        try (Connection conn = ConexaoBD.getConnection();
+             Statement stmt = conn.createStatement()) {
+
             String sqlUsuarios = """
                 CREATE TABLE IF NOT EXISTS usuarios (
                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -36,33 +35,36 @@ public class InitDB {
                     habilitado BOOLEAN DEFAULT TRUE,
                     usuario_tipo VARCHAR(50) NOT NULL,
                     cnpj VARCHAR(18) DEFAULT NULL
-                );
+                ) ENGINE=InnoDB;
                 """;
+
             stmt.executeUpdate(sqlUsuarios);
             System.out.println("Tabela 'usuarios' verificada/criada com sucesso.");
 
-            //verifica se há registros e poem "usuarios iniciais"
             try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM usuarios")) {
                 rs.next();
                 int total = rs.getInt("total");
 
                 if (total == 0) {
                     String insert = """
-                        INSERT INTO usuarios (nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo, cnpj)
+                        INSERT INTO usuarios 
+                        (nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo, cnpj)
                         VALUES
                         ('Administrador do Sistema', 'admin@email.com', SHA2('123', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ADMINISTRADOR', NULL),
                         ('Carol', 'carol@email.com', SHA2('1414', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'TURISTA', NULL),
                         ('Artur', 'artur@email.com', SHA2('2525', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'GUIA', NULL),
                         ('Cozinha Legal', 'george@email.com', SHA2('6363', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ESTABELECIMENTO', NULL);
                         """;
+
                     stmt.executeUpdate(insert);
                     System.out.println("Usuários padrão inseridos com sucesso!");
-                } else {
-                    System.out.println("Tabela 'usuarios' já possui registros.");
                 }
             }
+
+            CriarTabelas.criarTodasAsTabelas();
+
         } catch (SQLException | PersistenciaException e) {
-            System.err.println("Erro ao criar tabela ou inserir dados: " + e.getMessage());
+            System.err.println("Erro ao criar tabelas ou inserir dados: " + e.getMessage());
         }
     }
 }
