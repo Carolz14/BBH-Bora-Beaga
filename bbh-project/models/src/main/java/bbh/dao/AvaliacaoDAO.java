@@ -50,7 +50,7 @@ public class AvaliacaoDAO {
 }
 
 
-    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
+    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(long idEstabelecimento) throws PersistenciaException {
         String sql = """
                      SELECT * FROM avaliacao
                      WHERE id_estabelecimento = ?

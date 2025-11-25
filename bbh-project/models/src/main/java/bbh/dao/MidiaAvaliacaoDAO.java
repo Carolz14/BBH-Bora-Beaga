@@ -16,14 +16,14 @@ import java.util.List;
  *
  * @author aluno
  */
-public class MidiaAvalicaoDAO {
+public class MidiaAvaliacaoDAO {
 
     public MidiaAvaliacao inserir(MidiaAvaliacao midia) throws PersistenciaException {
         String sql = """
-                     INSERT INTO midia_avaliacao 
-                     (id_avaliacao, nome_original, nome_armazenado, caminho, mime, tamanho_bytes)
-                     VALUES (?,?,?,?,?,?)
-                     """;
+                INSERT INTO midia_avaliacao
+                (id_avaliacao, nome_original, nome_armazenado, caminho, mime, tamanho_bytes)
+                VALUES (?,?,?,?,?,?)
+                """;
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, midia.getIdAvaliacao());
             ps.setString(2, midia.getNomeOriginal());
@@ -55,12 +55,12 @@ public class MidiaAvalicaoDAO {
         }
     }
 
-    public MidiaAvaliacao buscarPorId(Long idMidia) throws PersistenciaException {
-        String sql = "SELECT FROM midia_avalicao WHERE id_midia = ?";
+    public MidiaAvaliacao buscarPorId(long idMidia) throws PersistenciaException {
+        String sql = "SELECT * FROM midia_avaliacao WHERE id_midia = ?";
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, idMidia);
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next()){
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                     return gerarObjetoMidiaAvaliacao(rs);
                 }
                 return null;
@@ -69,17 +69,46 @@ public class MidiaAvalicaoDAO {
             throw new PersistenciaException("Erro ao buscar midia por ID:" + e.getMessage() + e);
         }
     }
-    
+
+    public List<MidiaAvaliacao> listarMidiasPorAvaliacao(long idAvaliacao) throws PersistenciaException {
+        String sql = "SELECT * FROM midia_avaliacao WHERE id_avaliacao = ? ORDER by data_midia DESC";
+        List<MidiaAvaliacao> lista = new ArrayList<>();
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, idAvaliacao);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(gerarObjetoMidiaAvaliacao(rs));
+                }
+            }
+            return lista;
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao listar mídias da avaliação." + e.getMessage() + e);
+        }
+    }
+
+    public void removerPorId(long idMidia) throws PersistenciaException {
+        String sql = "DELETE FROM midia_avaliacao WHERE id_midia = ?";
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, idMidia);
+            int linhasAfetadas = ps.executeUpdate();
+            if(linhasAfetadas == 0){
+                throw new PersistenciaException("Erro ao remover por mídia por id:" + idMidia + "não encontrado, zero linhas afetadas");
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao remover mídia. " + e.getMessage() + e);
+        }
+    }
+
     private MidiaAvaliacao gerarObjetoMidiaAvaliacao(ResultSet rs) throws SQLException {
-    return new MidiaAvaliacao(
-            rs.getLong("id_midia"),
-            rs.getLong("id_avaliacao"),
-            rs.getString("nome_original"),
-            rs.getString("nome_armazenado"),
-            rs.getString("caminho"),
-            rs.getString("mime"),
-            rs.getLong("tamanho_bytes"),
-            rs.getTimestamp("data_midia")
-    );
-}
+        return new MidiaAvaliacao(
+                rs.getLong("id_midia"),
+                rs.getLong("id_avaliacao"),
+                rs.getString("nome_original"),
+                rs.getString("nome_armazenado"),
+                rs.getString("caminho"),
+                rs.getString("mime"),
+                rs.getLong("tamanho_bytes"),
+                rs.getTimestamp("data_midia"));
+    }
+
 }
