@@ -19,7 +19,7 @@
 <%
     Evento evento = (Evento) request.getAttribute("evento");
     if (evento == null) {
-        response.sendRedirect("evento");
+        response.sendRedirect(request.getContextPath() + "/evento");
         return;
     }
 %>
@@ -45,7 +45,7 @@
                 <%= evento.getDescricao() %>
             </p>
 
-            <a class="btn-voltar" href="evento">
+            <a class="btn-voltar" href="${pageContext.request.contextPath}/evento">
                 Voltar para Eventos
             </a>
         </div>

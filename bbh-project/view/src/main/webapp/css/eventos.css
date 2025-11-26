@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
 :root {
@@ -11,240 +11,72 @@
     --cor-secundaria: #93c665;
     --cor-borda: #6c757d;
     --cor-texto-principal: #1a1a1a;
-    --cor-texto-secundario: #666666;
+    --cor-texto-secundario: #666;
 }
 
-/* ESTILOS GERAIS DA PÁGINA DE EVENTOS */
-
-main {
-    padding: 30px 50px;
+main, .main-detalhe {
+    padding: 40px;
     background-color: var(--cor-fundo);
     min-height: calc(100vh - 130px);
+    display: flex;
+    justify-content: center;
 }
 
-h1 {
-    font-size: 32px;
+h1, h2 {
     font-family: var(--fonte-logo);
     font-weight: 800;
     color: var(--cor-texto-principal);
-    margin-bottom: 25px;
 }
 
-h2 {
-    font-size: 24px;
-    font-family: var(--fonte-texto);
-    font-weight: 700;
-    color: #444;
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
-/* LAYOUT DE GERENCIAMENTO (ESTABELECIMENTO) */
-
-.card-gerenciar {
-    background-color: white;
-    border-radius: 12px;
-    padding: 40px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    max-width: 800px;
-    margin: 0 auto 40px auto;
-}
-
-.card-gerenciar h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-.card-gerenciar h2 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-top: 25px;
-    margin-bottom: 15px;
-}
-
-.form-evento {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.form-evento input[type="text"],
-.form-evento input[type="date"],
-.form-evento input[type="time"],
-.form-evento textarea {
+.eventos-grid {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: border-color 0.2s;
-}
-
-.form-evento input:focus,
-.form-evento textarea:focus {
-    border-color: var(--cor-primaria);
-    outline: none;
-}
-
-.form-evento textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    text-decoration: none;
-    text-align: center;
-}
-
-.criar-evento-btn {
-    background-color: var(--cor-secundaria);
-    color: white;
-    margin-top: 10px;
-    align-self: flex-start;
-}
-
-.criar-evento-btn:hover {
-    background-color: #7eb450;
-}
-
-
-.evento-gerenciar {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 20px;
-    gap: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-}
-
-.evento-gerenciar h3, .evento-gerenciar p {
-    margin: 0;
-}
-
-.info-gerenciar {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex-grow: 1;
-}
-
-.form-editar {
+    max-width: 1100px;
     display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 5px 10px;
-    align-items: center;
-    padding: 15px 0;
-    border-top: 1px solid #eee;
-    margin-top: 10px;
-}
-
-.form-editar label {
-    font-weight: 600;
-    font-size: 14px;
-    color: #444;
-}
-
-.form-editar input, .form-editar textarea {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.form-editar textarea {
-    grid-column: 2 / 3;
-}
-
-.form-excluir {
-    text-align: right;
-}
-
-.btn-salvar {
-    background-color: #007bff;
-    color: white;
-    grid-column: 2 / 3;
-    justify-self: end;
-    width: auto;
-}
-
-.btn-remover {
-    background-color: #dc3545;
-    color: white;
-}
-
-
-
-.eventos {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); 
-    justify-content: center;
-    gap: 30px;
-    padding: 10px 0;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    margin-top: 20px;
 }
 
 .evento-card {
-    background-color: white;
+    background-color: #fff;
     border-radius: 20px;
     padding: 20px;
     display: flex;
     align-items: center;
-    gap: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    text-decoration: none; 
-    color: inherit; 
-    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    gap: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: 0.25s ease;
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 }
 
 .evento-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.evento-img {
+    width: 140px;
+    height: 105px;
+    border-radius: 10px;
+    background-color: #d1e7c5;
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
 }
 
 .evento-info h3 {
+    font-size: 18px;
     margin: 0;
     font-weight: 700;
-    font-size: 18px;
-    color: var(--cor-texto-principal);
 }
 
 .evento-info p {
-    margin: 4px 0 0 0;
-    font-weight: 400;
     font-size: 14px;
+    margin-top: 4px;
     color: var(--cor-texto-secundario);
-}
-
-/* Placeholder da Imagem */
-.evento-img {
-    width: 140px; 
-    height: 105px; 
-    background-color: #d1e7c5;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23d1e7c5"/><path fill="%2393c665" d="M0 70 L20 50 L40 60 L60 40 L100 80 V100 H0 Z"/><circle cx="75" cy="25" r="10" fill="%23f9e470"/></svg>');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 80%;
-    border-radius: 8px;
-    flex-shrink: 0;
-    display: block;
-}
-
-/* LAYOUT DE DETALHE DE EVENTO */
-
-.main-detalhe {
-    display: flex;
-    justify-content: center;
-    padding: 50px 50px;
 }
 
 .card-detalhe-evento {
@@ -259,9 +91,8 @@ h2 {
 
 .evento-img.grande {
     width: 40%;
-    min-height: 100%; 
-    background-size: 60%; 
-    flex-shrink: 0;
+    min-height: 100%;
+    background-size: 60%;
 }
 
 .detalhe-info {
@@ -272,43 +103,131 @@ h2 {
 }
 
 .detalhe-info h1 {
-    font-size: 36px;
-    margin: 0 0 20px 0;
-}
-
-.detalhe-info p {
-    font-size: 18px;
-    line-height: 1.6;
-    color: #444;
+    font-size: 34px;
     margin-bottom: 10px;
 }
 
-.detalhe-data, .detalhe-horario {
-    font-weight: 400;
-    font-size: 18px;
+.detalhe-info p {
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 6px 0;
 }
 
 .detalhe-desc {
     margin-top: 20px;
-    font-size: 16px;
     color: var(--cor-texto-secundario);
-    flex-grow: 1; 
 }
 
-/* Estilo para o voltar */
 .btn-voltar {
     background-color: #ccc;
     color: #333;
     padding: 12px 24px;
-    margin-top: 20px; 
+    width: fit-content;
     border-radius: 8px;
+    margin-top: 25px;
     text-decoration: none;
-    text-align: center;
     font-weight: 600;
-    font-size: 16px;
-    transition: background-color 0.2s;
+    transition: 0.2s ease;
 }
 
 .btn-voltar:hover {
     background-color: #aaa;
+}
+
+.card-gerenciar {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.form-evento {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-evento input,
+.form-evento textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #bbb;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.form-evento input:focus,
+.form-evento textarea:focus {
+    border-color: var(--cor-primaria);
+    outline: none;
+}
+
+.btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.criar-evento-btn {
+    background-color: var(--cor-secundaria);
+    color: white;
+}
+
+.criar-evento-btn:hover {
+    background-color: #7eb450;
+}
+
+.evento-gerenciar {
+    background: white;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-gerenciar h3 {
+    margin: 0;
+}
+
+.form-editar {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 10px;
+}
+
+.btn-salvar {
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+}
+
+.btn-remover {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 6px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .card-detalhe-evento {
+        flex-direction: column;
+    }
+    .evento-img.grande {
+        width: 100%;
+        height: 200px;
+    }
+    .detalhe-info {
+        width: 100%;
+    }
 }

@@ -8,152 +8,129 @@ import bbh.service.EventoService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@WebServlet(name = "EventoController", urlPatterns = {"/evento"})
+@WebServlet("/evento")
 public class EventoController extends HttpServlet {
 
     private final EventoService service = new EventoService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processar(req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        HttpSession session = req.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        String action = req.getParameter("action");
+
+        try {
+            if ("detalhe".equals(action)) {
+                Long id = parseLong(req.getParameter("id"));
+                if (id == null) {
+                    req.setAttribute("erro", "Id do evento inválido.");
+                    req.getRequestDispatcher("/jsps/turista/eventos.jsp").forward(req, resp);
+                    return;
+                }
+                Evento evento = service.buscarPorId(id);
+                req.setAttribute("evento", evento);
+                req.getRequestDispatcher("/jsps/turista/detalhe-evento.jsp").forward(req, resp);
+                return;
+            }
+
+            if (usuario.getUsuarioTipo() == UsuarioTipo.ESTABELECIMENTO) {
+                Long estabId = usuario.getId();
+                List<Evento> meusEventos = service.listarMeusEventos(estabId);
+                req.setAttribute("meusEventos", meusEventos);
+                req.getRequestDispatcher("/jsps/estabelecimento/eventos.jsp").forward(req, resp);
+                return;
+            }
+
+
+            req.setAttribute("proximos4", service.buscarProximos4());
+            req.setAttribute("eventosFuturos", service.listarEventosFuturos());
+            req.getRequestDispatcher("/jsps/turista/eventos.jsp").forward(req, resp);
+
+        } catch (PersistenciaException e) {
+            req.setAttribute("erro", e.getMessage());
+            req.getRequestDispatcher("/jsps/turista/eventos.jsp").forward(req, resp);
+        }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processar(req, resp);
-    }
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-    private void processar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String action = req.getParameter("action");
-        HttpSession session = req.getSession(false);
-        Usuario usuarioLogado = null;
-        UsuarioTipo tipo = null;
-        if (session != null) {
-            usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-            if (usuarioLogado != null) {
-                tipo = usuarioLogado.getUsuarioTipo();
-            }
-        }
 
         try {
             if ("add".equals(action)) {
-                // só estabelecimento pode criar eventos
-                requireTipo(tipo, UsuarioTipo.ESTABELECIMENTO, resp);
-                Evento e = montarEventoParaCriar(req, usuarioLogado);
-                service.criarEvento(e);
-                req.setAttribute("msg", "Evento criado com sucesso.");
-                // após criar tenho que mostrar gestão do estabelecimento
-                List<Evento> meus = service.listarMeusEventos(usuarioLogado.getId());
-                req.setAttribute("meusEventos", meus);
-                req.getRequestDispatcher("/jsps/eventos/eventos.jsp").forward(req, resp);
-                return;
+                Evento evento = new Evento();
+                evento.setNome(req.getParameter("nome"));
+                evento.setDescricao(req.getParameter("descricao"));
+                evento.setData(LocalDate.parse(req.getParameter("dataEvento")));
+                evento.setHorario(LocalTime.parse(req.getParameter("horarioEvento")));
+                evento.setEstabelecimentoId(usuario.getId());
 
-            } else if ("update".equals(action)) {
-                requireTipo(tipo, UsuarioTipo.ESTABELECIMENTO, resp);
-                Evento e = montarEventoParaAtualizar(req, usuarioLogado);
-                service.atualizarEvento(e);
-                req.setAttribute("msg", "Evento atualizado.");
-                List<Evento> meus = service.listarMeusEventos(usuarioLogado.getId());
-                req.setAttribute("meusEventos", meus);
-                req.getRequestDispatcher("/jsps/eventos/eventos.jsp").forward(req, resp);
-                return;
+                service.criarEvento(evento);
 
-            } else if ("delete".equals(action)) {
-                requireTipo(tipo, UsuarioTipo.ESTABELECIMENTO, resp);
+                resp.sendRedirect("evento");
+                return;
+            }
+
+            if ("update".equals(action)) {
                 Long id = parseLong(req.getParameter("id"));
-                service.excluirEvento(id, usuarioLogado.getId());
-                req.setAttribute("msg", "Evento removido.");
-                List<Evento> meus = service.listarMeusEventos(usuarioLogado.getId());
-                req.setAttribute("meusEventos", meus);
-                req.getRequestDispatcher("/jsps/eventos/eventos.jsp").forward(req, resp);
-                return;
-                
-            } else {
-                // listagem — comportamento depende do tipo do usuário
-                if (tipo == UsuarioTipo.TURISTA) {
-                    List<Evento> proximos4 = service.buscarProximos4();
-                    List<Evento> todos = service.listarEventosFuturos();
-                    req.setAttribute("proximos4", proximos4);
-                    req.setAttribute("eventosFuturos", todos);
-                } else if (tipo == UsuarioTipo.ESTABELECIMENTO) {
-                    // estabelecimento gerencia seus eventos
-                    if (usuarioLogado == null) {
-                        resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Usuário não autenticado.");
-                        return;
-                    }
-                    List<Evento> meus = service.listarMeusEventos(usuarioLogado.getId());
-                    req.setAttribute("meusEventos", meus);
-                } else {
-                    // ADMIN ou outros: não expõe eventos públicos
-                    req.setAttribute("proximos4", null);
-                    req.setAttribute("eventosFuturos", null);
+                if (id == null) {
+                    req.setAttribute("erro", "Id inválido.");
+                    req.getRequestDispatcher("/jsps/estabelecimento/eventos.jsp").forward(req, resp);
+                    return;
                 }
-                req.getRequestDispatcher("/jsps/eventos/eventos.jsp").forward(req, resp);
+
+                Evento evento = new Evento();
+                evento.setId(id);
+                evento.setNome(req.getParameter("nome"));
+                evento.setDescricao(req.getParameter("descricao"));
+                evento.setData(LocalDate.parse(req.getParameter("dataEvento")));
+                evento.setHorario(LocalTime.parse(req.getParameter("horarioEvento")));
+                evento.setEstabelecimentoId(usuario.getId());
+
+                service.atualizarEvento(evento);
+
+                resp.sendRedirect("evento");
                 return;
             }
-        } catch (PersistenciaException pe) {
-            req.setAttribute("erro", pe.getMessage());
-            try {
-                req.getRequestDispatcher("/jsps/eventos/eventos.jsp").forward(req, resp);
-            } catch (Exception ex) {
-                throw new ServletException(ex);
+
+            if ("delete".equals(action)) {
+                Long id = parseLong(req.getParameter("id"));
+                if (id == null) {
+                    req.setAttribute("erro", "Id inválido.");
+                    req.getRequestDispatcher("/jsps/estabelecimento/eventos.jsp").forward(req, resp);
+                    return;
+                }
+
+                service.excluirEvento(id, usuario.getId());
+                resp.sendRedirect("evento");
             }
-        } catch (Exception e) {
-            throw new ServletException(e);
+
+        } catch (PersistenciaException e) {
+            req.setAttribute("erro", e.getMessage());
+            req.getRequestDispatcher("/jsps/estabelecimento/eventos.jsp").forward(req, resp);
         }
     }
 
-    private void requireTipo(UsuarioTipo tipo, UsuarioTipo esperado, HttpServletResponse resp) throws IOException {
-        if (tipo == null || tipo != esperado) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Você não tem permissão para executar essa ação.");
-        }
-    }
-
-    private Evento montarEventoParaCriar(HttpServletRequest req, Usuario usuarioLogado) throws PersistenciaException {
-        Evento e = new Evento();
-        e.setEstabelecimentoId(usuarioLogado.getId());
-        e.setNome(req.getParameter("nome"));
-        e.setDescricao(req.getParameter("descricao"));
-        String dataStr = req.getParameter("dataEvento");
-        String horarioStr = req.getParameter("horarioEvento");
-
-        if (dataStr != null && !dataStr.isBlank())
-            e.setData(LocalDate.parse(dataStr));
-        if (horarioStr != null && !horarioStr.isBlank())
-            e.setHorario(LocalTime.parse(horarioStr));
-
-        return e;
-    }
-
-    private Evento montarEventoParaAtualizar(HttpServletRequest req, Usuario usuarioLogado) throws PersistenciaException {
-        Evento e = new Evento();
-        e.setId(parseLong(req.getParameter("id")));
-        e.setEstabelecimentoId(usuarioLogado.getId());
-        e.setNome(req.getParameter("nome"));
-        e.setDescricao(req.getParameter("descricao"));
-
-        String dataStr = req.getParameter("dataEvento");
-        String horarioStr = req.getParameter("horarioEvento");
-
-        if (dataStr != null && !dataStr.isBlank())
-            e.setData(LocalDate.parse(dataStr));
-        if (horarioStr != null && !horarioStr.isBlank())
-            e.setHorario(LocalTime.parse(horarioStr));
-
-        return e;
-    }
-
-    private Long parseLong(String s) {
-        if (s == null) return null;
+    private Long parseLong(String val) {
         try {
-            return Long.parseLong(s);
-        } catch (NumberFormatException ex) {
+            return Long.parseLong(val);
+        } catch (Exception e) {
             return null;
         }
     }

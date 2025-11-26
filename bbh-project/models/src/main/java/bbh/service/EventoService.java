@@ -13,7 +13,6 @@ public class EventoService {
 
     public Long criarEvento(Evento evento) throws PersistenciaException {
         validarEventoBasico(evento, true);
-        // data e hora já validados = evento futuro
         return dao.inserir(evento);
     }
 
@@ -55,18 +54,19 @@ public class EventoService {
         if (evento == null) {
             throw new PersistenciaException("Evento inválido.");
         }
+        if (!novo && evento.getId() == null) {
+            throw new PersistenciaException("Id do evento é obrigatório para atualização.");
+        }
         if (evento.getNome() == null || evento.getNome().trim().isEmpty()) {
             throw new PersistenciaException("Nome do evento é obrigatório.");
         }
         if (evento.getData() == null) {
             throw new PersistenciaException("Data do evento é obrigatória.");
         }
-        // Data futura 
         LocalDate hoje = LocalDate.now();
         if (evento.getData().isBefore(hoje)) {
             throw new PersistenciaException("A data do evento deve ser hoje ou futura.");
         }
-        // estabelecimentoId obrigatorio para criar ou atualizar
         if (evento.getEstabelecimentoId() == null) {
             throw new PersistenciaException("Evento deve estar associado a um estabelecimento.");
         }

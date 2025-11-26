@@ -1,50 +1,111 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="bbh.domain.Evento"%>
 <%@page import="bbh.domain.Usuario"%>
 <%@page import="bbh.domain.util.UsuarioTipo"%>
+<%@page import="java.util.List"%>
 
 <!DOCTYPE html>
-<html lang="pt">
-
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bora Beagá</title>
-    <link rel="stylesheet" href="../../css/style-geral.css">
+    <title>Gerenciar Eventos</title>
+    <link rel="stylesheet" href="../../css/eventos.css">
     <link rel="stylesheet" href="../../css/style-estab.css">
+    <link rel="stylesheet" href="../../css/style-geral.css">
 </head>
 
 <body>
-    
-    <%@ include file="../header.jsp" %>
-    
-    <main>
-        <div class="conteudo-promo-event">
-            <h1 class="texto-apresentacao">Gerenciar Eventos</h1>
-            <div class="display-gerenciar-eventos">
-                <p>Nenhum evento cadastrado</p>
-            </div>
-            
-            <h1 class="texto-apresentacao">Novo Evento</h1>
-            <div class="display-cadastro-evento">
-                
-                <form method="POST" action="GerenciarEvento">
-                    <label for="nomeEvento">Nome:</label>
-                    <input id="nomeEvento" type="text" name="nomeEvento" required>
 
-                    <label for="dataEvento">Data:</label>
-                    <input id="dataEvento" type="date" name="dataEvento" required>
+<%@ include file="../header.jsp" %>
 
-                    <label for="descricaoEvento">Descrição:</label>
-                    <input id="descricaoEvento" type="text" name="descricaoEvento">
-                    
-                    <button class="botao-submit" type="submit">Criar Evento</button>
-                </form>
+<%
+    String ctx = request.getContextPath();
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    UsuarioTipo tipo = usuario != null ? usuario.getUsuarioTipo() : null;
 
-            </div>
+    List<Evento> meusEventos = (List<Evento>) request.getAttribute("meusEventos");
+
+    String msg = (String) request.getAttribute("msg");
+    String erro = (String) request.getAttribute("erro");
+%>
+
+<main>
+    <% if (msg != null) { %>
+        <p class="msg-sucesso"><%= msg %></p>
+    <% } %>
+
+    <% if (erro != null) { %>
+        <p class="msg-erro"><%= erro %></p>
+    <% } %>
+
+    <div class="container-estab">
+        <div class="card-gerenciar">
+            <h1>Gerenciar Eventos</h1>
+
+            <form action="<%= ctx %>/evento?action=add" method="POST" class="form-evento">
+                <label for="nome">Nome</label>
+                <input id="nome" type="text" name="nome" required>
+
+                <label for="dataEvento">Data</label>
+                <input id="dataEvento" type="date" name="dataEvento" required>
+
+                <label for="horarioEvento">Horário</label>
+                <input id="horarioEvento" type="time" name="horarioEvento" required>
+
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao"></textarea>
+
+                <button type="submit" class="btn criar-evento-btn">Criar Evento</button>
+            </form>
         </div>
-    </main>
-    
-    <%@ include file="../footer.jsp" %>
-    
+
+        <h2>Meus próximos eventos</h2>
+
+        <section class="eventos">
+            <% if (meusEventos != null && !meusEventos.isEmpty()) {
+               for (Evento e : meusEventos) { %>
+
+            <div class="evento evento-gerenciar">
+                <div class="evento-img"></div>
+                <div class="info-gerenciar">
+                    <h3><%= e.getNome() %></h3>
+                    <p><%= e.getData() %> às <%= e.getHorario() %></p>
+
+                    <form action="<%= ctx %>/evento?action=update" method="POST" class="form-editar">
+                        <input type="hidden" name="id" value="<%= e.getId() %>">
+
+                        <label>Nome:</label>
+                        <input type="text" name="nome" value="<%= e.getNome() %>" required>
+
+                        <label>Descrição:</label>
+                        <textarea name="descricao"><%= e.getDescricao() %></textarea>
+
+                        <label>Data:</label>
+                        <input type="date" name="dataEvento" value="<%= e.getData() %>" required>
+
+                        <label>Horário:</label>
+                        <input type="time" name="horarioEvento" value="<%= e.getHorario() %>" required>
+
+                        <button class="btn btn-salvar">Salvar</button>
+                    </form>
+
+                    <form action="<%= ctx %>/evento?action=delete" method="POST" class="form-excluir">
+                        <input type="hidden" name="id" value="<%= e.getId() %>">
+                        <button class="btn btn-remover">Excluir</button>
+                    </form>
+                </div>
+            </div>
+
+            <%   }
+               } else { %>
+                <p>Nenhum evento cadastrado</p>
+            <% } %>
+        </section>
+    </div>
+</main>
+
+<%@ include file="../footer.jsp" %>
+
 </body>
 </html>
