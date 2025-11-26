@@ -129,7 +129,7 @@ public class MidiaAvaliacaoService {
             throw new PersistenciaException("Erro: caminho de destino inválido.");
         }
 
-        Path temp = Files.createTempFile("midia-upload-", tempSuffix);
+        Path temp = Files.createTempFile(imagensDir,"midia-upload-", tempSuffix);
 
         try {
             // grava stream em temp

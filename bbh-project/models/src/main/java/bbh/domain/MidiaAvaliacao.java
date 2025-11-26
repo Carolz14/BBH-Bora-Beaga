@@ -1,7 +1,7 @@
 package bbh.domain;
 
 import java.sql.Timestamp;
-import java.util.Objects;
+
 
 public final class MidiaAvaliacao {
 

@@ -3,7 +3,7 @@ package bbh.service;
 import bbh.dao.AvaliacaoDAO;
 import bbh.domain.Avaliacao;
 import bbh.common.PersistenciaException;
-import java.sql.Timestamp;
+
 import java.util.List;
 
 public class AvaliacaoService {

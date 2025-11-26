@@ -75,73 +75,10 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO DE AVALIAÇÕES -->
-            <section class="avaliacoes">
-                <h2>Avaliações</h2>
-
-                <c:if test="${empty avaliacoes}">
-                    <p>Seja o primeiro a avaliar este estabelecimento.</p>
-                </c:if>
-
-                <c:forEach var="av" items="${avaliacoes}">
-                    <!-- dados seguros nos data-attributes -->
-                    <div class="avaliacao" 
-                         data-id="<c:out value='${av.idAvaliacao}'/>"
-                         data-nota="<c:out value='${av.notaAvaliacao}'/>"
-                         data-comentario="<c:out value='${av.comentario}'/>">
-                        <div style="display:flex;justify-content:space-between;align-items:center;">
-                            <div>
-                                <strong>Usuário:</strong> <c:out value="${av.idUsuario}" />
-                                &nbsp;·&nbsp;
-                                <small><c:out value="${av.dataAvaliacao}" /></small>
-                            </div>
-
-                            <div style="display:flex;gap:8px;align-items:center;">
-                                <span class="nota-badge"><c:out value="${av.notaAvaliacao}" /></span>
-
-                                <!-- botão Editar: sem inline JS, apenas classe -->
-                                <button type="button" class="btn-link btn-edit">Editar</button>
-
-                                <!-- formulário deletar -->
-                                <form method="post" action="${pageContext.request.contextPath}/avaliacao/deletar"
-                                      onsubmit="return confirm('Excluir avaliação?');" style="display:inline;margin:0;">
-                                    <input type="hidden" name="id_avaliacao" value="${av.idAvaliacao}" />
-                                    <input type="hidden" name="id" value="${estabelecimento.id}" />
-                                    <button type="submit" class="btn-link">Excluir</button>
-                                </form>
-                            </div>
-                        </div>
-
-                        <p style="white-space:pre-wrap; margin-top:8px;">
-                            <c:out value="${av.comentario}" />
-                        </p>
-                    </div>
-                </c:forEach>
-
-                <!-- FORM NOVA AVALIAÇÃO -->
-                <div class="nova-avaliacao">
-                    <h3>Deixe sua avaliação</h3>
-
-                    <form method="post" action="${pageContext.request.contextPath}/avaliacao/inserir">
-                        <input type="hidden" name="id" value="${estabelecimento.id}" />
-
-                        <label>
-                            Nota:
-                            <input name="nota" type="number" min="1" max="5" required />
-                        </label>
-
-                        <label style="margin-top:8px;">
-                            Comentário:
-                            <textarea name="comentario" rows="4" required></textarea>
-                        </label>
-
-                        <div style="margin-top:10px;">
-                            <button type="submit" class="btn btn-success">Enviar avaliação</button>
-                        </div>
-                    </form>
-                </div>
-            </section>
-
+            <jsp:include page="/avaliacao/listar" flush="true">
+                <jsp:param name="id" value="${estabelecimento.id}" />
+            </jsp:include>
+            
         </c:if>
 
         <c:if test="${empty estabelecimento}">

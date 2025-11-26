@@ -1,9 +1,7 @@
 package bbh.controller;
 
 import bbh.domain.Usuario;
-import bbh.domain.Avaliacao;
 import bbh.service.GestaoUsuariosService;
-import bbh.service.AvaliacaoService;
 import bbh.common.PersistenciaException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +13,6 @@ import java.util.List;
 public class DetalheEstabelecimentoController extends HttpServlet {
 
     private final GestaoUsuariosService usuariosService = new GestaoUsuariosService();
-    private final AvaliacaoService avaliacaoService = new AvaliacaoService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,12 +32,8 @@ public class DetalheEstabelecimentoController extends HttpServlet {
                 return;
             }
 
-            List<Avaliacao> avaliacoes = avaliacaoService.buscarAvaliacoesPorEstabelecimento(id);
-            double media = avaliacaoService.calcularMedia(id);
-
             req.setAttribute("estabelecimento", estabelecimento);
-            req.setAttribute("avaliacoes", avaliacoes);
-            req.setAttribute("media", media);
+           
 
             req.getRequestDispatcher("/jsps/turista/detalhe-estabelecimento.jsp").forward(req, resp);
 
