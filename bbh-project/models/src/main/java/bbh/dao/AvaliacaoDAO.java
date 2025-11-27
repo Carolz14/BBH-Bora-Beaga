@@ -40,7 +40,6 @@ public class AvaliacaoDAO {
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs != null && rs.next()) {
                     long idCriado = rs.getLong(1);
-                    // usa o setter que você já tem (com acento)
                     avaliacao.setIdAvaliação(idCriado);
                     return avaliacao;
                 } else {

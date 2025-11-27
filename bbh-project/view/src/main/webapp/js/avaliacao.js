@@ -124,16 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
         previewInfo.textContent = `${f.name} — ${(f.size / 1024).toFixed(1)} KB`;
     });
 
-    // Opcional: intercepta o submit e usa fetch para feedback AJAX
     const form = document.getElementById('avaliacaoComMidiaForm');
     const status = document.getElementById('formStatus');
     form.addEventListener('submit', function (evt) {
-        // descomente para usar AJAX; por padrão deixe o comportamento tradicional se preferir fallback
-        //evt.preventDefault();
-        //status.textContent = 'Enviando...';
-        //const fd = new FormData(form);
-        //fetch(form.action, { method:'POST', body: fd, credentials:'same-origin' })
-        //  .then(r => { if(r.redirected) window.location = r.url; else return r.text(); })
-        //  .catch(e => { console.error(e); status.textContent = 'Erro ao enviar.'; });
     });
 });

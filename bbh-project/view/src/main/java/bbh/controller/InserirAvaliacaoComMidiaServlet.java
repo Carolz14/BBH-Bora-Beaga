@@ -58,8 +58,6 @@ public class InserirAvaliacaoComMidiaServlet extends BaseServlet {
                     midiaService.salvarMidia(filePart, idAvaliacaoSalva);
                 }
             }
-
-            // 4) redireciona para a página do estabelecimento (ou referer)
             resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + idEstabelecimento);
 
         } catch (PersistenciaException pe) {
