@@ -14,14 +14,15 @@ public class AvaliacaoService {
         this.avaliacaoDAO = new AvaliacaoDAO();
     }
 
-    public void inserirAvaliacao(Avaliacao avaliacao) throws PersistenciaException { 
+    public Avaliacao inserirAvaliacao(Avaliacao avaliacao) throws PersistenciaException {
         if (avaliacao == null) {
             throw new PersistenciaException("Avaliação não pode ser nula");
         }
         if (avaliacao.getNotaAvaliacao() < 1 || avaliacao.getNotaAvaliacao() > 5) {
             throw new PersistenciaException("A nota deve ser entre 1 e 5");
-        }  
-        avaliacaoDAO.inserirAvaliacao(avaliacao);
+        }
+        Avaliacao av = avaliacaoDAO.inserirAvaliacao(avaliacao);
+        return av;
     }
 
     public void atualizarAvaliacao(Avaliacao avaliacao) throws PersistenciaException {
@@ -50,7 +51,14 @@ public class AvaliacaoService {
     public double calcularMedia(long idEstabelecimento) throws PersistenciaException {
         return avaliacaoDAO.calcularNotaMedia(idEstabelecimento);
     }
-    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException{
+
+    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
         return avaliacaoDAO.buscarAvaliacoesPorEstabelecimento(idEstabelecimento);
+    }
+
+    public int getNumeroAvaliacoesPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
+        List<Avaliacao> avaliacoes = buscarAvaliacoesPorEstabelecimento(idEstabelecimento);
+        int numeroAvaliacoes = avaliacoes.size();
+        return numeroAvaliacoes;
     }
 }

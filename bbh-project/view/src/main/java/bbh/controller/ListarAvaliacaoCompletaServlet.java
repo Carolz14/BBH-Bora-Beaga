@@ -52,7 +52,7 @@ public class ListarAvaliacaoCompletaServlet extends HttpServlet {
             req.setAttribute("media", media);
             req.setAttribute("estabelecimentoId", idEstabelecimento);
 
-            req.getRequestDispatcher("/jsps/turista/avaliacoes.jsp").include(req, resp);
+            req.getRequestDispatcher("/jsps/turista/avaliacao.jsp").include(req, resp);
 
         } catch (PersistenciaException e) {
             throw new ServletException("Erro ao carregar avaliações/mídias: " + e.getMessage(), e);

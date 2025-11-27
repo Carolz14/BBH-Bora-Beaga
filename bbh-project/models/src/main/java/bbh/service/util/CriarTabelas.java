@@ -77,25 +77,25 @@ public class CriarTabelas {
     }
 
     public static void criarTabelaAvaliacaoMidia() throws SQLException {
-        String sql = """
-                           CREATE TABLE IF NO EXISTS midia_avalicao(
-                                id_midia BIG INT AUTO_INCREMENT PRIMARY KEY,
-                                id_avaliacao BIGINT NOT NULL,
-                                nome_original VARCHAR(255) NOT NULL,
-                                nome_armazenado VARCHAR(255) NOT NULL,
-                                caminho (1024) NOT NULL,
-                                mime VARCHAR(100),
-                                tamanho_bytes BIGINT,
-                                data_midia TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-                                FOREIGN KEY (id_avaliacao) REFERENCES avaliacao(id_avaliacao)
-                                    ON DELETE CASCADE ON UPDATE CASCADE
-                           )
-                           """;
-       try(Connection conn = ConexaoBD.getConnection(); Statement stmt = conn.createStatement()){
-            stmt.executeUpdate(sql);
-            System.out.println("Tabela midia_avaliacao criada (ou já existia)");
-       }
+    String sql = """
+                CREATE TABLE IF NOT EXISTS midia_avaliacao(
+                    id_midia BIGINT AUTO_INCREMENT PRIMARY KEY,
+                    id_avaliacao BIGINT NOT NULL,
+                    nome_original VARCHAR(255) NOT NULL,
+                    nome_armazenado VARCHAR(255) NOT NULL,
+                    caminho VARCHAR(1024) NOT NULL,
+                    mime VARCHAR(100),
+                    tamanho_bytes BIGINT,
+                    data_midia TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (id_avaliacao) REFERENCES avaliacao(id_avaliacao)
+                        ON DELETE CASCADE ON UPDATE CASCADE
+                ) ENGINE=InnoDB;
+                """;
+    try(Connection conn = ConexaoBD.getConnection(); Statement stmt = conn.createStatement()){
+        stmt.executeUpdate(sql);
+        System.out.println("Tabela midia_avaliacao criada (ou já existia)");
     }
+}
 
     public static void criarTabelaAvaliacao() throws SQLException {
         String sqlTabela = """
@@ -206,5 +206,6 @@ public class CriarTabelas {
         criarTabelaCorrespondencia();
         inserirTagsPadroes();
         criarTabelaAvaliacao();
+        criarTabelaAvaliacaoMidia();
     }
 }

@@ -87,39 +87,6 @@
 
     </div>
 </main>
-
-<!-- Modal de edição -->
-<div id="editModalBackdrop" class="modal-backdrop" aria-hidden="true">
-    <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-header">
-            <h3 id="modalTitle">Editar Avaliação</h3>
-            <button class="modal-close" aria-label="Fechar" onclick="closeEditModal()">✕</button>
-        </div>
-
-        <form id="editForm" method="post" action="${pageContext.request.contextPath}/avaliacao/atualizar">
-            <input type="hidden" name="id_avaliacao" id="modal-id-avaliacao" value="" />
-            <input type="hidden" name="id" value="${estabelecimento.id}" />
-
-            <div>
-                <label>Nota (1 a 5)
-                    <input type="number" name="nota" id="modal-nota" min="1" max="5" required />
-                </label>
-            </div>
-
-            <div style="margin-top:8px;">
-                <label>Comentário
-                    <textarea name="comentario" id="modal-comentario" rows="5" required></textarea>
-                </label>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Salvar</button>
-            </div>
-        </form>
-    </div>
-</div>
-
 <%@ include file="../footer.jsp" %>
 <script src="${pageContext.request.contextPath}/js/avaliacao.js"></script>
 </body>

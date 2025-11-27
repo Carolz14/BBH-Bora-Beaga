@@ -9,10 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-/**
- * Recebe upload multipart (campo "file") e parâmetro "id" = id da avaliacao.
- * Salva a imagem via MidiaAvaliacaoService.salvarMidia(part, idAvaliacao).
- */
+
 @WebServlet("/midia/upload")
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024,        // 1MB em memória antes de gravar em disco
@@ -64,7 +61,6 @@ public class UploadMidiaServlet extends HttpServlet {
         try {
             MidiaAvaliacao midia = service.salvarMidia(filePart, idAvaliacao);
 
-            // comportamento simples: redireciona para referer (se existir) ou para raiz
             String referer = req.getHeader("Referer");
             if (referer != null && !referer.isBlank()) {
                 resp.sendRedirect(referer);

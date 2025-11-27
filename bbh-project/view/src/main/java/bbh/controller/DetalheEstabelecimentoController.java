@@ -1,44 +1,54 @@
 package bbh.controller;
 
-import bbh.domain.Usuario;
-import bbh.service.GestaoUsuariosService;
+import java.io.IOException;
+
 import bbh.common.PersistenciaException;
+import bbh.domain.Avaliacao;
+import bbh.domain.Usuario;
+import bbh.service.AvaliacaoService;
+import bbh.service.GestaoUsuariosService;
+import bbh.service.MidiaAvaliacaoService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-import java.io.IOException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @WebServlet("/bbh/DetalheEstabelecimentoController")
 public class DetalheEstabelecimentoController extends HttpServlet {
-
-    private final GestaoUsuariosService usuariosService = new GestaoUsuariosService();
-
+    private final AvaliacaoService avaliacaoService = new AvaliacaoService();
+    
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idParam = req.getParameter("id");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-        if (idParam == null || idParam.isBlank()) {
-            resp.sendRedirect(req.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
+        String idParam = request.getParameter("id");
+
+        if (idParam == null) {
+            response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
             return;
         }
 
         try {
-            long id = Long.parseLong(idParam);
+            Long id = Long.parseLong(idParam);
+            GestaoUsuariosService service = new GestaoUsuariosService();
+            Usuario estabelecimento = service.pesquisarPorId(id);
+            double media = avaliacaoService.calcularMedia(id);
+            List <Avaliacao> avaliacoes = avaliacaoService.buscarAvaliacoesPorEstabelecimento(id);
 
-            Usuario estabelecimento = usuariosService.pesquisarPorId(id);
-            if (estabelecimento == null) {
-                resp.sendRedirect(req.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
-                return;
+            if (estabelecimento != null) {
+                request.setAttribute("estabelecimento", estabelecimento);
+                request.setAttribute("media", media);
+                request.setAttribute("avaliacoes", avaliacoes);
+                request.getRequestDispatcher("/jsps/turista/detalhe-estabelecimento.jsp").forward(request, response);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
             }
 
-            req.setAttribute("estabelecimento", estabelecimento);
-           
-
-            req.getRequestDispatcher("/jsps/turista/detalhe-estabelecimento.jsp").forward(req, resp);
-
         } catch (NumberFormatException | PersistenciaException e) {
-            throw new ServletException("Erro ao carregar detalhe do estabelecimento.", e);
+            throw new ServletException("Erro ao buscar estabelecimento: " + e.getMessage(), e);
         }
     }
+
 }

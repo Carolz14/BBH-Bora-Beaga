@@ -17,45 +17,48 @@ import bbh.common.PersistenciaException;
  */
 public class AvaliacaoDAO {
 
-    public void inserirAvaliacao(Avaliacao avaliacao) throws PersistenciaException {
-    String sql = """
-                 INSERT INTO avaliacao 
-                 (id_usuario, id_estabelecimento, nota_avaliacao, comentario)
-                 VALUES (?, ?, ?, ?)
-                 """;
+    public Avaliacao inserirAvaliacao(Avaliacao avaliacao) throws PersistenciaException {
+        String sql = """
+                INSERT INTO avaliacao
+                (id_usuario, id_estabelecimento, nota_avaliacao, comentario)
+                VALUES (?, ?, ?, ?)
+                """;
 
-    try (Connection conn = ConexaoBD.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = ConexaoBD.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-        ps.setLong(1, avaliacao.getIdUsuario());
-        ps.setLong(2, avaliacao.getIdEstabelecimento());
-        ps.setInt(3, avaliacao.getNotaAvaliacao());
-        ps.setString(4, avaliacao.getComentario());
+            ps.setLong(1, avaliacao.getIdUsuario());
+            ps.setLong(2, avaliacao.getIdEstabelecimento());
+            ps.setInt(3, avaliacao.getNotaAvaliacao());
+            ps.setString(4, avaliacao.getComentario());
 
-        int linhas = ps.executeUpdate();
-        if (linhas == 0) {
-            throw new PersistenciaException("Erro na inserção, nenhuma linha foi alterada");
-        }
-
-        try (ResultSet rs = ps.getGeneratedKeys()) {
-            if (rs.next()) {
-                long idCriado = rs.getLong(1);
-                avaliacao.setIdAvaliação(idCriado);
+            int linhas = ps.executeUpdate();
+            if (linhas == 0) {
+                throw new PersistenciaException("Erro na inserção, nenhuma linha foi alterada");
             }
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs != null && rs.next()) {
+                    long idCriado = rs.getLong(1);
+                    // usa o setter que você já tem (com acento)
+                    avaliacao.setIdAvaliação(idCriado);
+                    return avaliacao;
+                } else {
+                    throw new PersistenciaException("Inserção realizada mas não foi possível obter o id gerado.");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao inserir avaliação: " + e.getMessage(), e);
         }
-
-    } catch (SQLException e) {
-        throw new PersistenciaException("Erro ao inserir avaliação: " + e.getMessage());
     }
-}
-
 
     public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(long idEstabelecimento) throws PersistenciaException {
         String sql = """
-                     SELECT * FROM avaliacao
-                     WHERE id_estabelecimento = ?
-                     ORDER BY data_avaliacao DESC
-                     """;
+                SELECT * FROM avaliacao
+                WHERE id_estabelecimento = ?
+                ORDER BY data_avaliacao DESC
+                """;
         List<Avaliacao> lista = new ArrayList<>();
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, idEstabelecimento);
@@ -65,7 +68,8 @@ public class AvaliacaoDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao tentar listar as avaliações do estabelecimento " + e.getMessage() + e);
+            throw new PersistenciaException(
+                    "Erro ao tentar listar as avaliações do estabelecimento " + e.getMessage() + e);
         }
         return lista;
     }
@@ -75,17 +79,18 @@ public class AvaliacaoDAO {
             throw new PersistenciaException("ID da avaliação inválido para update");
         }
         String sql = """
-                    UPDATE avaliacao 
-                    SET nota_avaliacao = ?, comentario = ?, data_avaliacao = CURRENT_TIMESTAMP
-                    WHERE id_avaliacao = ?
-                    """;
+                UPDATE avaliacao
+                SET nota_avaliacao = ?, comentario = ?, data_avaliacao = CURRENT_TIMESTAMP
+                WHERE id_avaliacao = ?
+                """;
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, avaliacao.getNotaAvaliacao());
             ps.setString(2, avaliacao.getComentario());
             ps.setLong(3, avaliacao.getIdAvaliacao());
             int linhasAfetadas = ps.executeUpdate();
             if (linhasAfetadas == 0) {
-                throw new PersistenciaException("Erro: tentou atualizar uma avaliação que não existe, id da avaliação:" + avaliacao.getIdAvaliacao());
+                throw new PersistenciaException("Erro: tentou atualizar uma avaliação que não existe, id da avaliação:"
+                        + avaliacao.getIdAvaliacao());
             }
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao tentar atualizar a avaliação " + e.getMessage() + e);
@@ -127,7 +132,6 @@ public class AvaliacaoDAO {
                 rs.getLong("id_estabelecimento"),
                 rs.getInt("nota_avaliacao"),
                 rs.getString("comentario"),
-                rs.getTimestamp("data_avaliacao")
-        );
+                rs.getTimestamp("data_avaliacao"));
     }
 }

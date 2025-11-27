@@ -24,7 +24,10 @@ public class MidiaAvaliacaoDAO {
                 (id_avaliacao, nome_original, nome_armazenado, caminho, mime, tamanho_bytes)
                 VALUES (?,?,?,?,?,?)
                 """;
-        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        try (Connection conn = ConexaoBD.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setLong(1, midia.getIdAvaliacao());
             ps.setString(2, midia.getNomeOriginal());
             ps.setString(3, midia.getNomeArmazenado());
@@ -33,14 +36,13 @@ public class MidiaAvaliacaoDAO {
             ps.setLong(6, midia.getTamanhoEmBytes());
 
             int linhasAfetadas = ps.executeUpdate();
-
             if (linhasAfetadas == 0) {
                 throw new PersistenciaException("Erro na inserção de mídia, nenhuma linha foi alterada");
             }
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    long idGerado = rs.getLong(1);
 
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs != null && rs.next()) {
+                    long idGerado = rs.getLong(1);
                     MidiaAvaliacao midiaSalva = buscarPorId(idGerado);
                     if (midiaSalva == null) {
                         return midia.criarComIdGerado(idGerado);
@@ -50,6 +52,7 @@ public class MidiaAvaliacaoDAO {
                     throw new PersistenciaException("Inserção de mídia falhou, não foi possível recuperar o id gerado");
                 }
             }
+
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao inserir mídia: " + e.getMessage(), e);
         }
@@ -91,8 +94,9 @@ public class MidiaAvaliacaoDAO {
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, idMidia);
             int linhasAfetadas = ps.executeUpdate();
-            if(linhasAfetadas == 0){
-                throw new PersistenciaException("Erro ao remover por mídia por id:" + idMidia + "não encontrado, zero linhas afetadas");
+            if (linhasAfetadas == 0) {
+                throw new PersistenciaException(
+                        "Erro ao remover por mídia por id:" + idMidia + "não encontrado, zero linhas afetadas");
             }
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao remover mídia. " + e.getMessage() + e);

@@ -10,27 +10,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
 import java.util.List;
-
 import java.util.UUID;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.ImageReader;
+import java.util.Iterator;
 
 public class MidiaAvaliacaoService {
 
     private final MidiaAvaliacaoDAO dao;
     private final Path raizUpload;
     private final long tamanhoMaximoImagem;
-    private final int larguraMaximaPx = 4000; // 4K de largura
-    private final int alturaMaximaPx = 4000; // 4K de altura
+    private final int larguraMaximaPx = 4000;
+    private final int alturaMaximaPx = 4000;
 
     public MidiaAvaliacaoService() {
         this(
                 new MidiaAvaliacaoDAO(),
-                Paths.get(System.getProperty("bbh.upload.dir",
-                        System.getProperty("user.home")
-                                + System.getProperty("file.separator")
-                                + "bbh-uploads")),
+                detectDefaultUploadDir(),
                 10L * 1024L * 1024L);
+    }
+
+    private static Path detectDefaultUploadDir() {
+        Path caminhoFixo = Paths.get("C:/Projetos/BBH-Bora-Beaga/uploads");
+        caminhoFixo = caminhoFixo.toAbsolutePath().normalize();
+        return caminhoFixo;
     }
 
     public MidiaAvaliacaoService(MidiaAvaliacaoDAO dao, Path raizUpload, long tamanhoMaximoImagem) {
@@ -44,6 +49,21 @@ public class MidiaAvaliacaoService {
         this.dao = dao;
         this.raizUpload = raizUpload;
         this.tamanhoMaximoImagem = tamanhoMaximoImagem;
+
+        System.out.println("java.io.tmpdir = " + System.getProperty("java.io.tmpdir"));
+        System.out.println("Tentando criar a pasta de upload: " + this.raizUpload.toAbsolutePath());
+
+        ImageIO.setUseCache(false);
+        System.out.println("Tentando criar a pasta de upload: " + this.raizUpload.toAbsolutePath());
+
+        try {
+            Files.createDirectories(this.raizUpload);
+            System.out.println("Diretório criado ou já existente: " + this.raizUpload.toAbsolutePath());
+        } catch (IOException e) {
+            System.out.println("ERRO ao criar diretório de upload!");
+            e.printStackTrace();
+            throw new IllegalStateException("Não foi possível criar diretório de upload: " + this.raizUpload, e);
+        }
     }
 
     public MidiaAvaliacao salvarMidia(Part part, long idAvaliacao)
@@ -88,11 +108,9 @@ public class MidiaAvaliacaoService {
             throw new PersistenciaException("Erro: tamanho do arquivo supera o permitido.");
         }
 
-        // prepara diretório de imagens
         Path imagensDir = raizUpload.resolve("imagens");
         Files.createDirectories(imagensDir);
 
-        // decide extensão (do nome ou do mime)
         String extensao = MidiaAvaliacaoUtil.extrairExtensao(nomeArquivoEnviado);
         if (extensao == null) {
             extensao = "";
@@ -107,35 +125,35 @@ public class MidiaAvaliacaoService {
             }
         }
 
-        // sufixo para arquivo temporário
-        String tempSuffix;
-        if (extensao.isEmpty()) {
-            tempSuffix = ".tmp";
-        } else {
-            tempSuffix = extensao;
-        }
+        String tempSuffix = extensao.isEmpty() ? ".tmp" : extensao;
 
-        // nome armazenado único
         String nomeArmazenadoBase = UUID.randomUUID().toString();
-        String nomeArmazenado;
-        if (extensao.isEmpty()) {
-            nomeArmazenado = nomeArmazenadoBase;
-        } else {
-            nomeArmazenado = nomeArmazenadoBase + extensao;
-        }
+        String nomeArmazenado = extensao.isEmpty() ? nomeArmazenadoBase : nomeArmazenadoBase + extensao;
 
         Path destino = imagensDir.resolve(nomeArmazenado).normalize();
         if (!destino.startsWith(imagensDir)) {
             throw new PersistenciaException("Erro: caminho de destino inválido.");
         }
 
-        Path temp = Files.createTempFile(imagensDir,"midia-upload-", tempSuffix);
+        Path temp = Files.createTempFile(imagensDir, "midia-upload-", tempSuffix);
 
         try {
-            // grava stream em temp
             Files.copy(in, temp, StandardCopyOption.REPLACE_EXISTING);
 
-            // --- valida dimensões em pixels (carrega imagem do temp) ---
+            long sizeReal = Files.size(temp);
+            if (sizeReal <= 0) {
+                throw new PersistenciaException("Erro: arquivo temporário está vazio.");
+            }
+            if (sizeReal > tamanhoMaximoImagem) {
+                throw new PersistenciaException("Erro: arquivo gravado excede tamanho máximo permitido.");
+            }
+            try (ImageInputStream iis = ImageIO.createImageInputStream(Files.newInputStream(temp))) {
+                Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
+                if (readers == null || !readers.hasNext()) {
+                    throw new PersistenciaException("Formato de imagem não suportado pelo servidor.");
+                }
+            }
+
             BufferedImage img = ImageIO.read(temp.toFile());
             if (img == null) {
                 throw new PersistenciaException("O arquivo enviado não é uma imagem válida.");
@@ -150,12 +168,9 @@ public class MidiaAvaliacaoService {
 
             if (largura > larguraMaximaPx || altura > alturaMaximaPx) {
                 throw new PersistenciaException(
-                        "Imagem muito grande. Máximo permitido:" + alturaMaximaPx + "x" + larguraMaximaPx);
-
+                        "Imagem muito grande. Máximo permitido: " + larguraMaximaPx + "x" + alturaMaximaPx + " px.");
             }
-            // ------------------------------------------------------------
 
-            // move para destino final (tenta atômico, senão replace)
             try {
                 Files.move(temp, destino, StandardCopyOption.ATOMIC_MOVE);
             } catch (AtomicMoveNotSupportedException amnse) {
@@ -166,19 +181,17 @@ public class MidiaAvaliacaoService {
 
             MidiaAvaliacao midia = new MidiaAvaliacao(idAvaliacao, nomeArquivoEnviado, nomeArmazenado, caminhoRelativo,
                     mime,
-                    tamanho);
+                    sizeReal);
             MidiaAvaliacao midiaSalva = dao.inserir(midia);
             return midiaSalva;
 
         } catch (PersistenciaException pe) {
-            // se falhar ao persistir, tenta apagar o destino para não deixar órfãos
             try {
                 Files.deleteIfExists(destino);
             } catch (IOException ignored) {
             }
             throw pe;
         } catch (IOException ioe) {
-            // limpeza: apagar temp e destino parcial
             try {
                 Files.deleteIfExists(temp);
             } catch (IOException ignored) {
@@ -207,7 +220,6 @@ public class MidiaAvaliacaoService {
             throw new PersistenciaException("Midia com id " + idMidia + " não encontrada");
         }
 
-        // caminho físico
         Path caminho = raizUpload.resolve(midiaAvaliacao.getCaminho()).normalize();
 
         if (!caminho.startsWith(raizUpload)) {
@@ -215,11 +227,20 @@ public class MidiaAvaliacaoService {
         }
 
         try {
-            Files.deleteIfExists(caminho);
-        } catch (IOException e) {
-            throw new PersistenciaException("Erro ao apagar arquivo físico: " + e.getMessage(), e);
+            dao.removerPorId(idMidia);
+        } catch (PersistenciaException e) {
+            throw new PersistenciaException("Erro ao remover o metadado do BD: " + e.getMessage(), e);
         }
 
-        dao.removerPorId(idMidia);
+        try {
+            Files.deleteIfExists(caminho);
+        } catch (IOException e) {
+            throw new PersistenciaException("Mídia removida do banco, mas erro ao apagar arquivo: " + e.getMessage(),
+                    e);
+        }
+    }
+
+    public Path getRaizUpload() {
+        return this.raizUpload;
     }
 }

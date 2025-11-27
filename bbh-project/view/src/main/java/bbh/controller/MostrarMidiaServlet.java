@@ -47,7 +47,7 @@ public class MostrarMidiaServlet extends HttpServlet {
                 String sep = System.getProperty("file.separator");
                 raizStr = home + sep + "bbh-uploads";
             }
-            Path raiz = Paths.get(raizStr);
+            Path raiz = service.getRaizUpload();
             Path file = raiz.resolve(midia.getCaminho()).normalize();
 
             if (!file.startsWith(raiz)) {
