@@ -15,7 +15,12 @@
     </c:if>
 
     <c:forEach var="av" items="${avaliacoes}">
-        <div class="avaliacao" style="border-bottom:1px solid #eee; padding:8px 0;">
+        <!-- adicionados data-* para id e nota; comentário ficará em elemento oculto (escapado com c:out) -->
+        <div class="avaliacao"
+             data-id="${av.idAvaliacao}"
+             data-nota="${av.notaAvaliacao}"
+             style="border-bottom:1px solid #eee; padding:8px 0;">
+
             <div style="display:flex;justify-content:space-between;align-items:center;">
                 <div>
                     <strong>Usuário:</strong> <c:out value="${av.idUsuario}" />
@@ -30,6 +35,9 @@
             <p style="white-space:pre-wrap; margin-top:8px;">
                 <c:out value="${av.comentario}" />
             </p>
+
+            <!-- elemento oculto com comentário (usado pelo JS para popular o modal de edição) -->
+            <div class="data-comentario" style="display:none;"><c:out value="${av.comentario}" /></div>
 
             <!-- ======= Galeria de mídias (renderiza mídias já salvas) ======= -->
             <c:set var="listaMidias" value="${midiasPorAvaliacao[av.idAvaliacao]}" />
@@ -47,17 +55,21 @@
                                 <input type="hidden" name="id" value="${m.idMidia}" />
                                 <button type="submit" class="midia-delete-btn" style="font-size:12px;">Remover</button>
                             </form>
+                            <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/atualizar">
+                                <input type="hidden" name="id" value="${m.idMidia}" />
+                                <input type="file" name="file" accept="image/*" required />
+                                <button type="submit">Alterar imagem</button>
+                            </form>
+
                         </div>
                     </c:forEach>
                 </div>
             </c:if>
-            
 
             <!-- ======= Editar / Excluir avaliação (sem verificação de permissão) ======= -->
             <div style="margin-top:8px;">
-                <button onclick="openEditModal(${av.idAvaliacao}, '${av.notaAvaliacao}', '${av.comentario}')">
-                    Editar
-                </button>
+                <!-- botão Edit sem inline onclick; JS irá pegar data-* e .av-comentario -->
+                <button type="button" class="btn-edit">Editar</button>
 
                 <form method="post" action="${pageContext.request.contextPath}/avaliacao/deletar" style="display:inline;">
                     <input type="hidden" name="id_avaliacao" value="${av.idAvaliacao}" />
@@ -70,7 +82,7 @@
 
     <!-- substitui o bloco de nova-avaliacao / upload -->
     <div class="nova-avaliacao" style="margin-top:16px;">
-        <h3>Deixe sua avaliação</h3>
+        <h3>Deixe sua avaliação ai parceiro</h3>
 
         <form id="avaliacaoComMidiaForm" method="post" enctype="multipart/form-data"
               action="${pageContext.request.contextPath}/avaliacao/inserir-com-midia">

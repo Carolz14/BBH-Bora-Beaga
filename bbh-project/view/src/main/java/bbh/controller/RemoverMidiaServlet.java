@@ -7,9 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-
 @WebServlet("/midia/deletar")
-public class RemoverMidiaServlet extends HttpServlet {
+public class RemoverMidiaServlet extends BaseServlet {
 
     private final MidiaAvaliacaoService service = new MidiaAvaliacaoService();
 
@@ -37,6 +36,13 @@ public class RemoverMidiaServlet extends HttpServlet {
 
         try {
             service.removerMidia(idMidia);
+            String accept = req.getHeader("Accept");
+            String ajax = req.getHeader("X-Requested-With");
+
+            if ("XMLHttpRequest".equalsIgnoreCase(ajax) || (accept != null && accept.contains("application/json"))) {
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                return;
+            }
 
             String referer = req.getHeader("Referer");
             if (referer != null && !referer.isBlank()) {
@@ -46,7 +52,19 @@ public class RemoverMidiaServlet extends HttpServlet {
             }
 
         } catch (PersistenciaException pe) {
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao remover mídia: " + pe.getMessage());
+            System.err.println("Erro ao remover mídia " + pe.getMessage());
+            pe.printStackTrace();
+
+            String ajax = req.getHeader("X-Requested-With");
+            if ("XMLHttpRequest".equalsIgnoreCase(ajax)) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.setContentType("text/plain;charset=UTF-8");
+                resp.getWriter().write("Erro ao remover mídia: " + pe.getMessage());
+                return;
+            }
+
+            // caso contrário, lança ServletException para ver no error page
+            throw new ServletException("Erro ao remover mídia. " + pe.getMessage(), pe);
         }
     }
 }

@@ -81,9 +81,12 @@ public class MostrarMidiaServlet extends HttpServlet {
             }
             resp.setHeader("Content-Disposition", "inline; filename=\"" + filename + "\"");
 
-            resp.setHeader("Cache-Control", "public, max-age=86400"); // 1 dia
+            resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            resp.setHeader("Pragma", "no-cache");
+            resp.setHeader("Expires", "0");
 
-            try (OutputStream out = resp.getOutputStream(); InputStream in = Files.newInputStream(file, StandardOpenOption.READ)) {
+            try (OutputStream out = resp.getOutputStream();
+                    InputStream in = Files.newInputStream(file, StandardOpenOption.READ)) {
                 byte[] buffer = new byte[8192];
                 int read;
                 while ((read = in.read(buffer)) != -1) {

@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!row) return;
             var id = row.getAttribute('data-id') || '';
             var nota = row.getAttribute('data-nota') || '';
-            var comentario = row.getAttribute('data-comentario') || '';
+            var comentarioDiv = row.querySelector('.data-comentario');
+            var comentario = comentarioDiv ? comentarioDiv.textContent : '';
             openEditModal(id, nota, comentario);
         });
     });
@@ -76,30 +77,54 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.midia-delete-form').forEach(form => {
         form.addEventListener('submit', function (evt) {
             evt.preventDefault();
-            const fd = new FormData(form);
-            const btn = form.querySelector('button');
-            btn.disabled = true;
-            btn.textContent = 'Removendo...';
+
+            const btn = form.querySelector('button[type="submit"], button');
+            if (btn) { btn.disabled = true; btn.textContent = 'Removendo...'; }
+
+            let idValue = '';
+            const hid = form.querySelector('input[name="id"]');
+            if (hid) idValue = (hid.value || '').trim();
+
+            if (!idValue) {
+                const container = form.closest('.midia-item');
+                if (container) idValue = container.dataset.midiaId || container.getAttribute('data-midia-id') || '';
+            }
+
+            if (!idValue) {
+                if (btn) { btn.disabled = false; btn.textContent = 'Remover'; }
+                alert('Erro: id da mídia não encontrado no form. Inspecione o HTML.');
+                return;
+            }
+            const body = new URLSearchParams();
+            body.append('id', idValue);
 
             fetch(form.action, {
                 method: 'POST',
-                body: fd,
-                credentials: 'same-origin'
-            }).then(resp => {
+                body: body.toString(),
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then(async resp => {
+                console.log('Remover midia - status', resp.status);
+                const text = await resp.text();
+                console.log('Remover midia - response text:', text);
                 if (resp.ok) {
                     const container = form.closest('.midia-item');
                     if (container) container.remove();
-                } else {
-                    return resp.text().then(t => { throw new Error(t || resp.statusText); });
+                    return;
                 }
+                throw new Error(text || resp.statusText);
             }).catch(err => {
-                console.error(err);
-                btn.disabled = false;
-                btn.textContent = 'Remover';
-                alert('Erro ao remover mídia.');
+                console.error('Erro remover mídia (detalhe):', err);
+                if (btn) { btn.disabled = false; btn.textContent = 'Remover'; }
+                alert('Erro ao remover mídia: ' + (err.message || 'erro desconhecido'));
             });
         });
     });
+
+
 });
 document.addEventListener('DOMContentLoaded', function () {
     const inputFile = document.getElementById('inputFileAvaliacao');

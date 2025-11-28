@@ -89,17 +89,15 @@ public class MidiaAvaliacaoDAO {
         }
     }
 
-    public void removerPorId(long idMidia) throws PersistenciaException {
+    public boolean removerPorId(long idMidia) throws PersistenciaException {
         String sql = "DELETE FROM midia_avaliacao WHERE id_midia = ?";
-        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, idMidia);
             int linhasAfetadas = ps.executeUpdate();
-            if (linhasAfetadas == 0) {
-                throw new PersistenciaException(
-                        "Erro ao remover por mídia por id:" + idMidia + "não encontrado, zero linhas afetadas");
-            }
+            return linhasAfetadas > 0;
         } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao remover mídia. " + e.getMessage() + e);
+            throw new PersistenciaException("Erro ao remover mídia. " + e.getMessage(), e);
         }
     }
 
@@ -113,6 +111,27 @@ public class MidiaAvaliacaoDAO {
                 rs.getString("mime"),
                 rs.getLong("tamanho_bytes"),
                 rs.getTimestamp("data_midia"));
+    }
+
+    public boolean atualizarPorId(MidiaAvaliacao midia) throws PersistenciaException {
+        String sql = """
+                UPDATE midia_avaliacao
+                SET nome_original = ?, nome_armazenado = ?, caminho = ?, mime = ?, tamanho_bytes = ?
+                WHERE id_midia = ?
+                """;
+        try (Connection conn = ConexaoBD.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, midia.getNomeOriginal());
+            ps.setString(2, midia.getNomeArmazenado());
+            ps.setString(3, midia.getCaminho());
+            ps.setString(4, midia.getMime());
+            ps.setLong(5, midia.getTamanhoEmBytes());
+            ps.setLong(6, midia.getIdMidia());
+            int linhas = ps.executeUpdate();
+            return linhas > 0;
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao atualizar mídia: " + e.getMessage(), e);
+        }
     }
 
 }
