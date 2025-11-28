@@ -10,9 +10,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Eventos</title>
-    <link rel="stylesheet" href="../../css/eventos.css">
-    <link rel="stylesheet" href="../../css/style-estab.css">
-    <link rel="stylesheet" href="../../css/style-geral.css">
+
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/eventos.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style-estab.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style-geral.css">
 </head>
 
 <body>
@@ -20,10 +21,6 @@
 <%@ include file="../header.jsp" %>
 
 <%
-    String ctx = request.getContextPath();
-    Usuario usuario = (Usuario) session.getAttribute("usuario");
-    UsuarioTipo tipo = usuario != null ? usuario.getUsuarioTipo() : null;
-
     List<Evento> meusEventos = (List<Evento>) request.getAttribute("meusEventos");
 
     String msg = (String) request.getAttribute("msg");
@@ -31,6 +28,7 @@
 %>
 
 <main>
+
     <% if (msg != null) { %>
         <p class="msg-sucesso"><%= msg %></p>
     <% } %>
@@ -43,7 +41,7 @@
         <div class="card-gerenciar">
             <h1>Gerenciar Eventos</h1>
 
-            <form action="<%= ctx %>/evento?action=add" method="POST" class="form-evento">
+            <form action="<%= request.getContextPath() %>/evento?action=add" method="POST" class="form-evento">
                 <label for="nome">Nome</label>
                 <input id="nome" type="text" name="nome" required>
 
@@ -72,7 +70,7 @@
                     <h3><%= e.getNome() %></h3>
                     <p><%= e.getData() %> às <%= e.getHorario() %></p>
 
-                    <form action="<%= ctx %>/evento?action=update" method="POST" class="form-editar">
+                    <form action="<%= request.getContextPath() %>/evento?action=update" method="POST" class="form-editar">
                         <input type="hidden" name="id" value="<%= e.getId() %>">
 
                         <label>Nome:</label>
@@ -90,19 +88,19 @@
                         <button class="btn btn-salvar">Salvar</button>
                     </form>
 
-                    <form action="<%= ctx %>/evento?action=delete" method="POST" class="form-excluir">
+                    <form action="<%= request.getContextPath() %>/evento?action=delete" method="POST" class="form-excluir">
                         <input type="hidden" name="id" value="<%= e.getId() %>">
                         <button class="btn btn-remover">Excluir</button>
                     </form>
                 </div>
             </div>
 
-            <%   }
-               } else { %>
+            <% } } else { %>
                 <p>Nenhum evento cadastrado</p>
             <% } %>
         </section>
     </div>
+
 </main>
 
 <%@ include file="../footer.jsp" %>

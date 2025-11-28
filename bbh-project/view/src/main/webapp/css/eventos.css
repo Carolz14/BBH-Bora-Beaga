@@ -1,64 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
 :root {
     --fonte-logo: "Nunito", sans-serif;
     --fonte-texto: "Lato", sans-serif;
-    --fonte-cursiva: "Parisienne", cursive;
     --cor-fundo: #f3f3f3;
     --cor-primaria: #f9e470;
     --cor-secundaria: #93c665;
-    --cor-borda: #6c757d;
     --cor-texto-principal: #1a1a1a;
     --cor-texto-secundario: #666;
 }
 
-main, .main-detalhe {
-    padding: 40px;
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 30px;
     background-color: var(--cor-fundo);
     min-height: calc(100vh - 130px);
-    display: flex;
-    justify-content: center;
 }
 
-h1, h2 {
+.eventos-header,
+.proximos4-section,
+.acoes-eventos,
+.todos-eventos-section {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.eventos-header {
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.eventos-header h1 {
     font-family: var(--fonte-logo);
     font-weight: 800;
+    font-size: 36px;
     color: var(--cor-texto-principal);
+    margin: 0;
+}
+
+.eventos-header .subtitle {
+    font-family: var(--fonte-texto);
+    font-size: 18px;
+    color: var(--cor-texto-secundario);
+    margin: 5px 0 0;
+}
+
+.proximos4-section,
+.todos-eventos-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.proximos4-section h2,
+.todos-eventos-section h2 {
+    font-family: var(--fonte-logo);
+    font-weight: 800;
+    font-size: 26px;
+    color: var(--cor-texto-principal);
+    margin: 0;
 }
 
 .eventos-grid {
     width: 100%;
-    max-width: 1100px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 28px;
-    margin-top: 20px;
 }
 
 .evento-card {
     background-color: #fff;
-    border-radius: 20px;
+    border-radius: 12px;
     padding: 20px;
     display: flex;
     align-items: center;
     gap: 18px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.06);
     transition: 0.25s ease;
-    cursor: pointer;
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
 }
 
 .evento-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
 .evento-img {
-    width: 140px;
-    height: 105px;
+    width: 120px;
+    height: 90px;
     border-radius: 10px;
     background-color: #d1e7c5;
     background-size: 80%;
@@ -68,166 +104,67 @@ h1, h2 {
 }
 
 .evento-info h3 {
+    font-family: var(--fonte-texto);
     font-size: 18px;
-    margin: 0;
+    margin: 0 0 4px 0;
     font-weight: 700;
+    color: var(--cor-texto-principal);
 }
 
 .evento-info p {
+    font-family: var(--fonte-texto);
     font-size: 14px;
-    margin-top: 4px;
+    margin: 0;
     color: var(--cor-texto-secundario);
 }
 
-.card-detalhe-evento {
-    background: white;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 900px;
+.acoes-eventos {
     display: flex;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    justify-content: center;
+    margin-top: 10px;
 }
 
-.evento-img.grande {
-    width: 40%;
-    min-height: 100%;
-    background-size: 60%;
-}
-
-.detalhe-info {
-    width: 60%;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-}
-
-.detalhe-info h1 {
-    font-size: 34px;
-    margin-bottom: 10px;
-}
-
-.detalhe-info p {
-    font-size: 17px;
-    line-height: 1.5;
-    margin: 6px 0;
-}
-
-.detalhe-desc {
-    margin-top: 20px;
-    color: var(--cor-texto-secundario);
-}
-
-.btn-voltar {
-    background-color: #ccc;
-    color: #333;
+.btn-ver-todos {
     padding: 12px 24px;
-    width: fit-content;
-    border-radius: 8px;
-    margin-top: 25px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s ease;
-}
-
-.btn-voltar:hover {
-    background-color: #aaa;
-}
-
-.card-gerenciar {
-    background: white;
-    border-radius: 12px;
-    padding: 40px;
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 50px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
-
-.form-evento {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.form-evento input,
-.form-evento textarea {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #bbb;
     font-size: 16px;
-    box-sizing: border-box;
-}
-
-.form-evento input:focus,
-.form-evento textarea:focus {
-    border-color: var(--cor-primaria);
-    outline: none;
-}
-
-.btn {
-    padding: 12px 20px;
-    border-radius: 8px;
-    border: none;
     font-weight: 700;
-    cursor: pointer;
-}
-
-.criar-evento-btn {
+    font-family: var(--fonte-texto);
     background-color: var(--cor-secundaria);
     color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.criar-evento-btn:hover {
+.btn-ver-todos:hover {
     background-color: #7eb450;
-}
-
-.evento-gerenciar {
-    background: white;
-    padding: 20px;
-    margin-bottom: 25px;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.info-gerenciar h3 {
-    margin: 0;
-}
-
-.form-editar {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 10px;
-}
-
-.btn-salvar {
-    background-color: #007bff;
-    color: white;
-    border-radius: 6px;
-}
-
-.btn-remover {
-    background-color: #dc3545;
-    color: white;
-    border-radius: 6px;
+    transform: translateY(-1px);
 }
 
 .hidden {
     display: none;
 }
 
-@media (max-width: 800px) {
-    .card-detalhe-evento {
-        flex-direction: column;
-    }
-    .evento-img.grande {
-        width: 100%;
-        height: 200px;
-    }
-    .detalhe-info {
-        width: 100%;
-    }
+.msg-sucesso,
+.msg-erro {
+    width: 100%;
+    max-width: 1100px;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: var(--fonte-texto);
+    font-weight: 600;
+    margin: -20px 0 10px 0;
+}
+
+.msg-sucesso {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.msg-erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
 }
