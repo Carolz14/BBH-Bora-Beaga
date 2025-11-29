@@ -15,7 +15,6 @@
     </c:if>
 
     <c:forEach var="av" items="${avaliacoes}">
-        <!-- adicionados data-* para id e nota; comentário ficará em elemento oculto (escapado com c:out) -->
         <div class="avaliacao"
              data-id="${av.idAvaliacao}"
              data-nota="${av.notaAvaliacao}"
@@ -36,29 +35,34 @@
                 <c:out value="${av.comentario}" />
             </p>
 
-            <!-- elemento oculto com comentário (usado pelo JS para popular o modal de edição) -->
             <div class="data-comentario" style="display:none;"><c:out value="${av.comentario}" /></div>
 
-            <!-- ======= Galeria de mídias (renderiza mídias já salvas) ======= -->
             <c:set var="listaMidias" value="${midiasPorAvaliacao[av.idAvaliacao]}" />
+
             <c:if test="${not empty listaMidias}">
                 <div class="galeria-avaliacao" style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;">
                     <c:forEach var="m" items="${listaMidias}">
                         <div class="midia-item" data-midia-id="${m.idMidia}" style="position:relative;">
+
                             <img
+                                class="midia-img"
                                 src="${pageContext.request.contextPath}/midia/serve?id=${m.idMidia}"
                                 alt="<c:out value='${m.nomeOriginal}'/>"
                                 style="width:120px;height:90px;object-fit:cover;border-radius:6px;display:block;"
-                                />
-                            <!-- Deletar (form tradicional - fallback sem JS) -->
-                            <form class="midia-delete-form" method="post" action="${pageContext.request.contextPath}/midia/deletar" style="margin:6px 0 0 0; text-align:center;">
+                            />
+
+                            <!-- Deletar (form tradicional) -->
+                            <form class="midia-delete-form" method="post" action="${pageContext.request.contextPath}/midia/deletar" style="margin-top:6px;text-align:center;">
                                 <input type="hidden" name="id" value="${m.idMidia}" />
-                                <button type="submit" class="midia-delete-btn" style="font-size:12px;">Remover</button>
+                                <button type="submit" class="btn-simple" style="font-size:12px;padding:6px 8px;">Remover</button>
                             </form>
-                            <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/atualizar">
+
+                            <!-- Form para alterar imagem: file hidden + botão simples -->
+                            <form class="midia-update-form" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/atualizar" style="margin-top:6px;text-align:center;">
                                 <input type="hidden" name="id" value="${m.idMidia}" />
-                                <input type="file" name="file" accept="image/*" required />
-                                <button type="submit">Alterar imagem</button>
+                                <!-- file input escondido; será aberto pelo botão abaixo -->
+                                <input class="file-input-hidden" type="file" name="file" accept="image/*" style="display:none;" onchange="this.form.submit()" />
+                                <button type="button" class="btn-file-trigger btn-simple" title="Alterar imagem">Alterar imagem</button>
                             </form>
 
                         </div>
@@ -66,9 +70,21 @@
                 </div>
             </c:if>
 
-            <!-- ======= Editar / Excluir avaliação (sem verificação de permissão) ======= -->
+            <c:if test="${empty listaMidias}">
+                <div style="margin-top:8px;">
+                    <!-- Form para inserir mídia: file hidden + botão simples -->
+                    <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/upload" class="midia-insert-form" style="display:inline-block;">
+                        <input type="hidden" name="id" value="${av.idAvaliacao}" />
+                        <input class="file-input-hidden" type="file" name="file" accept="image/*" style="display:none;" onchange="this.form.submit()" />
+                        <button type="button" class="btn-file-trigger btn-simple" title="Inserir imagem">Inserir mídia</button>
+                    </form>
+
+                    <!-- Caso queira mostrar o input visível como fallback, descomente abaixo e remova o style display:none acima -->
+                    <%-- <input type="file" name="file" accept="image/*" required /> --%>
+                </div>
+            </c:if>
+
             <div style="margin-top:8px;">
-                <!-- botão Edit sem inline onclick; JS irá pegar data-* e .av-comentario -->
                 <button type="button" class="btn-edit">Editar</button>
 
                 <form method="post" action="${pageContext.request.contextPath}/avaliacao/deletar" style="display:inline;">
@@ -80,44 +96,72 @@
         </div>
     </c:forEach>
 
+    <!-- formulário para nova avaliação (mantido) -->
     <!-- substitui o bloco de nova-avaliacao / upload -->
-    <div class="nova-avaliacao" style="margin-top:16px;">
-        <h3>Deixe sua avaliação ai parceiro</h3>
+<div class="nova-avaliacao" style="margin-top:16px;">
+    <h3>Deixe sua avaliação</h3>
 
-        <form id="avaliacaoComMidiaForm" method="post" enctype="multipart/form-data"
-              action="${pageContext.request.contextPath}/avaliacao/inserir-com-midia">
-            <input type="hidden" name="id" value="${estabelecimentoId}" />
+    <form id="avaliacaoComMidiaForm" method="post" enctype="multipart/form-data"
+          action="${pageContext.request.contextPath}/avaliacao/inserir-com-midia">
+        <input type="hidden" name="id" value="${estabelecimentoId}" />
 
-            <div class="avaliacao-grid" style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
-                <!-- texto da avaliação -->
-                <div style="flex:1 1 420px; min-width:280px;">
-                    <label style="display:block;font-weight:600;margin-bottom:6px;">Nota</label>
-                    <input type="number" name="nota" min="1" max="5" required style="width:80px;padding:6px;border-radius:4px;border:1px solid #ccc;"/>
+        <div class="avaliacao-grid" style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
+            <div style="flex:1 1 420px; min-width:280px;">
+                <label style="display:block;font-weight:600;margin-bottom:6px;">Nota</label>
+                <input type="number" name="nota" min="1" max="5" required
+                       style="width:80px;padding:6px;border-radius:4px;border:1px solid #ccc;"/>
 
-                    <label style="display:block;font-weight:600;margin:10px 0 6px;">Comentário</label>
-                    <textarea name="comentario" rows="6" required style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;resize:vertical;"></textarea>
-                </div>
-
-                <!-- upload e preview -->
-                <div style="flex:0 0 220px; min-width:200px;">
-                    <label style="display:block;font-weight:600;margin-bottom:6px;">Imagem (opcional)</label>
-                    <input id="inputFileAvaliacao" type="file" name="file" accept="image/*" />
-
-                    <div id="previewWrapper" style="margin-top:10px;">
-                        <img id="previewImg" src="" alt="Preview" style="width:200px;height:150px;object-fit:cover;border-radius:6px;display:none;border:1px solid #e0e0e0;" />
-                        <div id="previewInfo" style="font-size:12px;color:#666;margin-top:6px;"></div>
-                    </div>
-                </div>
+                <label style="display:block;font-weight:600;margin:10px 0 6px;">Comentário</label>
+                <textarea name="comentario" rows="6" required
+                          style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;resize:vertical;"></textarea>
             </div>
 
-            <div style="margin-top:12px;">
-                <button type="submit" style="padding:8px 14px;border-radius:6px;border:none;background:#007bff;color:white;cursor:pointer;">Enviar avaliação + imagem</button>
-                <span id="formStatus" style="margin-left:12px;color:#666;"></span>
-            </div>
-        </form>
-    </div>
+            <div style="flex:0 0 220px; min-width:200px;">
+                <label style="display:block;font-weight:600;margin-bottom:6px;">Imagem (opcional)</label>
 
-    <!-- Modal de edição (mantido) -->
+                <!-- botão estilizado que abre o file picker -->
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <button type="button" class="btn-file-trigger" style="
+                        padding:8px 12px;
+                        border-radius:6px;
+                        background:linear-gradient(180deg,#fff,#eef2ff);
+                        border:1px solid #cdd6ff;
+                        box-shadow:0 2px 0 rgba(0,0,0,0.03);
+                        cursor:pointer;
+                        font-weight:600;
+                    ">
+                        📷 Inserir mídia
+                    </button>
+
+                    <!-- botão limpar (aparece quando tiver arquivo selecionado) -->
+                    <button type="button" id="btn-clear-file" style="
+                        display:none;
+                        padding:6px 10px;border-radius:6px;border:1px solid #eee;background:#fff;cursor:pointer;
+                    ">Remover</button> <!--  to falando desse botão gemini-->
+                </div>
+
+                <!-- input real (escondido): não possui onchange que submeta o form -->
+                <input id="inputFileAvaliacao" type="file" name="file" accept="image/*" style="display:none;" />
+
+                <div id="previewWrapper" style="margin-top:10px;">
+                    <img id="previewImg" src="" alt="Preview"
+                         style="width:200px;height:150px;object-fit:cover;border-radius:6px;display:none;border:1px solid #e0e0e0;" />
+                    <div id="previewInfo" style="font-size:12px;color:#666;margin-top:6px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top:12px;">
+            <button id="btnSubmitAvaliacao" type="submit" style="
+                padding:8px 14px;border-radius:6px;border:none;background:#007bff;color:white;cursor:pointer;
+                box-shadow: 0 2px 8px rgba(2, 55, 120, 0.15);
+            ">Enviar avaliação + imagem</button>
+            <span id="formStatus" style="margin-left:12px;color:#666;"></span>
+        </div>
+    </form>
+</div>
+
+
     <div id="editModalBackdrop" class="modal-backdrop" aria-hidden="true">
         <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <div class="modal-header">
@@ -127,19 +171,16 @@
             <form id="editForm" method="post" action="${pageContext.request.contextPath}/avaliacao/atualizar">
                 <input type="hidden" name="id_avaliacao" id="modal-id-avaliacao" value="" />
                 <input type="hidden" name="id" value="${estabelecimentoId}" />
-
                 <div>
                     <label>Nota (1 a 5)
                         <input type="number" name="nota" id="modal-nota" min="1" max="5" required />
                     </label>
                 </div>
-
                 <div style="margin-top:8px;">
                     <label>Comentário
                         <textarea name="comentario" id="modal-comentario" rows="5" required></textarea>
                     </label>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Salvar</button>
@@ -149,5 +190,23 @@
     </div>
 
 </section>
+
+<!-- CSS minimal para botões mais bonitos -->
+<style>
+  .btn-simple {
+    background: #0b5ed7;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .btn-simple[disabled] { opacity: 0.6; cursor: default; }
+  .btn-simple:active { transform: translateY(1px); }
+</style>
+
+<!-- script: faz o botão abrir file picker (de dentro do form) -->
+
 
 <script src="${pageContext.request.contextPath}/js/avaliacao.js"></script>
