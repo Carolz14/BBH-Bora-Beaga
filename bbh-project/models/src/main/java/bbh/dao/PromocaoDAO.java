@@ -148,4 +148,34 @@ public class PromocaoDAO {
         return null;
     }
 
+    public List<Promocao> listarTodas() throws PersistenciaException {
+        String sql = "SELECT p.id, p.nome, p.descricao, p.data, pe.id_usuario "
+                + "FROM promocao p "
+                + "JOIN promocao_estabelecimento pe ON pe.id_promocao = p.id "
+                + "ORDER BY p.data ASC";
+
+        List<Promocao> lista = new ArrayList<>();
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Promocao p = new Promocao();
+                p.setId(rs.getLong("id"));
+                p.setNome(rs.getString("nome"));
+                p.setDescricao(rs.getString("descricao"));
+
+                if (rs.getDate("data") != null) {
+                    p.setData(rs.getDate("data").toLocalDate());
+                }
+                p.setIdEstabelecimento(rs.getLong("id_usuario"));
+
+                lista.add(p);
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao listar todas as promoções: " + e.getMessage(), e);
+        }
+
+        return lista;
+    }
 }

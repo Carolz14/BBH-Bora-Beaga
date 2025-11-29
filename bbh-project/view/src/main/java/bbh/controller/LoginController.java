@@ -41,10 +41,10 @@ public class LoginController extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/jsps/admin/painel.jsp");
                         break;
                     case TURISTA:
-                        response.sendRedirect(request.getContextPath() + "/jsps/turista/pagina-principal.jsp");
+                        response.sendRedirect(request.getContextPath() + "/bbh/feed");
                         break;
                     case GUIA:
-                        response.sendRedirect(request.getContextPath() + "/jsps/turista/pagina-principal.jsp");
+                        response.sendRedirect(request.getContextPath() + "/bbh/feed");
                         break;
                     case ESTABELECIMENTO:
                         response.sendRedirect(request.getContextPath() + "/jsps/estabelecimento/painel.jsp");

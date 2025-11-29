@@ -28,4 +28,8 @@ public class GestaoPromocoesService {
     public Long buscarEstabelecimenoPorPromocao(Long idPromocao) throws PersistenciaException {
         return dao.buscarEstabelecimentoDaPromocao(idPromocao);
     }
+
+    public List<Promocao> listarTodas() throws PersistenciaException {
+        return dao.listarTodas();
+    }
 }

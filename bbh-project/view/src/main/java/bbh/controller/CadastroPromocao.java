@@ -1,7 +1,6 @@
 package bbh.controller;
 
 import bbh.domain.Promocao;
-import bbh.domain.Usuario;
 import bbh.service.GestaoPromocoesService;
 
 import java.io.IOException;
@@ -35,13 +34,12 @@ public class CadastroPromocao extends HttpServlet {
             GestaoPromocoesService service = new GestaoPromocoesService();
             service.cadastrarPromocao(promocao);
 
-            response.sendRedirect(request.getContextPath() + "/jsps/estabelecimento/promocoes.jsp");
+            response.sendRedirect(request.getContextPath() + "/bbh/promocoes");
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro ao cadastrar promoção: " + e.getMessage());
-            request.getRequestDispatcher("/jsps/estabelecimento/promocoes.jsp")
-                    .forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/bbh/promocoes");
         }
     }
 }

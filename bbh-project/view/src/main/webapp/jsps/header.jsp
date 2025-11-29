@@ -17,7 +17,7 @@
         <nav>
             <ul>
                 <c:if test="${ControleAutorizacao.checkPermissao('inicio', sessionScope.usuario.usuarioTipo)}">
-                    <li><a href="../turista/pagina-principal.jsp">Início</a></li>
+                    <li><a href="${pageContext.request.contextPath}/bbh/feed">Início</a></li>
                     </c:if>
 
                 <c:if test="${ControleAutorizacao.checkPermissao('roteiros', sessionScope.usuario.usuarioTipo)}">

@@ -46,19 +46,15 @@
                     <h2 class="section-titulo">Nova Promoção</h2>
 
                     <form name="formPromocao" method="POST"
-                          action="<%= request.getContextPath()%>/bbh/CadastroPromocao"
-                          enctype="multipart/form-data">
+                          action="<%= request.getContextPath()%>/bbh/CadastroPromocao">
 
                         <label for="nomePromocao">Nome:</label>
                         <input id="nomePromocao" type="text" name="nomePromocao" required>
 
-                        <label for="imagemPromocao">Imagem da promoção:</label>
-                        <input type="file" id="imagemPromocao" name="imagemPromocao" accept="image/*">
-
                         <label for="descricaoPromocao">Descrição:</label>
                         <input id="descricaoPromocao" type="text" name="descricaoPromocao">
 
-                        <input type="hidden" name="idEstab" value="<%= usuario.getId()%>">
+                        <input type="hidden" name="idEstab" value="${sessionScope.usuario.id}">
 
                         <label for="dataPromocao">Validade:</label>
                         <input id="dataPromocao" type="date" name="dataPromocao" required>
