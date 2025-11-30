@@ -25,9 +25,9 @@
                     </c:if>
 
                 <c:if test="${ControleAutorizacao.checkPermissao('eventos', sessionScope.usuario.usuarioTipo)}">
-                    <li><a href="../turista/eventos.jsp">Eventos</a></li>
-                    </c:if>
-
+                    <li><a href="${pageContext.request.contextPath}/evento">Eventos</a></li>
+                </c:if>
+  
                 <c:if test="${ControleAutorizacao.checkPermissao('interesse', sessionScope.usuario.usuarioTipo)}">
                     <li><a href="../turista/lista-interesses.jsp">Lista de Interesse</a></li>
                     </c:if>
@@ -50,10 +50,9 @@
                     <li><a href="<%= request.getContextPath()%>/bbh/promocoes">Promoções</a></li>
                     </c:if>
 
-
-                <c:if test="${ControleAutorizacao.checkPermissao('gerenciarEventos', sessionScope.usuario.usuarioTipo)}">
-                    <li><a href="../estabelecimento/eventos.jsp">Eventos</a></li>
-                    </c:if>
+                 <c:if test="${ControleAutorizacao.checkPermissao('gerenciarEventos', sessionScope.usuario.usuarioTipo)}">
+                        <li><a href="${pageContext.request.contextPath}/evento">Eventos</a></li>
+                  </c:if> 
 
                 <c:if test="${ControleAutorizacao.checkPermissao('perfilEstab', sessionScope.usuario.usuarioTipo)}">
                     <li><a href="../estabelecimento/perfil.jsp">Perfil</a></li>
