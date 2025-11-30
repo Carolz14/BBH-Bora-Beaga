@@ -34,7 +34,10 @@ public class InitDB {
                         contato BIGINT,
                         habilitado BOOLEAN DEFAULT TRUE,
                         usuario_tipo VARCHAR(50) NOT NULL,
-                        cnpj VARCHAR(18) DEFAULT NULL
+                        cnpj VARCHAR(18) DEFAULT NULL,
+
+                        descricao TEXT DEFAULT NULL,
+                        imagem_url VARCHAR(255) DEFAULT NULL
                     );
                     """;
             stmt.executeUpdate(sqlUsuarios);
@@ -45,7 +48,6 @@ public class InitDB {
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         nome VARCHAR(100) NOT NULL,
                         descricao TEXT,
-                        imagem_url VARCHAR(255),
                         usuario_id BIGINT NOT NULL,
                         habilitado BOOLEAN DEFAULT TRUE,
                         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
@@ -75,12 +77,12 @@ public class InitDB {
 
                 if (total == 0) {
                     String insert = """
-                            INSERT INTO usuarios (nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo, cnpj)
+                            INSERT INTO usuarios (nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo, cnpj, descricao, imagem_url)
                             VALUES
-                            ('Administrador do Sistema', 'admin@email.com', SHA2('123', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ADMINISTRADOR', NULL),
-                            ('Carol', 'carol@email.com', SHA2('1414', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'TURISTA', NULL),
-                            ('Artur', 'artur@email.com', SHA2('2525', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'GUIA', NULL),
-                            ('Cozinha Legal', 'george@email.com', SHA2('6363', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ESTABELECIMENTO', NULL);
+                            ('Administrador do Sistema', 'admin@email.com', SHA2('123', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ADMINISTRADOR', NULL, NULL, NULL),
+                            ('Carol', 'carol@email.com', SHA2('1414', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'TURISTA', NULL,  NULL, NULL),
+                            ('Artur', 'artur@email.com', SHA2('2525', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'GUIA', NULL,  NULL, NULL),
+                            ('Cozinha Legal', 'george@email.com', SHA2('6363', 256), 'Brasil', 'Rua Principal, 100', 31999999999, TRUE, 'ESTABELECIMENTO', NULL, NULL, NULL);
                             """;
                     stmt.executeUpdate(insert);
                     System.out.println("Usuários padrão inseridos com sucesso!");

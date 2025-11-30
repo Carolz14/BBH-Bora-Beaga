@@ -37,8 +37,8 @@
                 <div class="estabelecimento">
 
                     <div class="estabelecimento-imagem">
-                        <img src="${pageContext.request.contextPath}/imagens/restaurante.jpeg"
-                             alt="Imagem do estabelecimento">
+                      <img src="/imagens-bbh/${estabelecimento.imagemUrl}"
+         alt="Imagem de ${estabelecimento.nome}">
                     </div>
 
                     <div class="estabelecimento-detalhes">
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="informacao">
-                            
+                            <p><strong>Descrição:</strong> ${estabelecimento.descricao}</p>
                             <p><strong>Contato:</strong> ${estabelecimento.contato}</p>
                             <p><strong>Endereço:</strong> ${estabelecimento.endereco}</p>
                         </div>
@@ -68,9 +68,7 @@
                             </button>
                         </div>
 
-                        <div class="map">
-                            <img src="${pageContext.request.contextPath}/imagens/mapa.jpeg" alt="Mini mapa da localização">
-                        </div>
+                       
                     </div>
                 </div>
             </c:if>

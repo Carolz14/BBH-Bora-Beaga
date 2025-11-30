@@ -13,7 +13,7 @@ import bbh.domain.util.UsuarioTipo;
 import bbh.service.util.ConexaoBD;
 
 public class EstabelecimentoDAO {
- private static EstabelecimentoDAO estabelecimentoDAO;
+    private static EstabelecimentoDAO estabelecimentoDAO;
 
     static {
         EstabelecimentoDAO.estabelecimentoDAO = null;
@@ -28,10 +28,10 @@ public class EstabelecimentoDAO {
         return estabelecimentoDAO;
     }
 
-  public List<Usuario> listarEstabelecimentos() throws PersistenciaException {
+    public List<Usuario> listarEstabelecimentos() throws PersistenciaException {
         List<Usuario> estabelecimentos = new ArrayList<>();
 
-        String sql = "SELECT id, nome, endereco, contato, habilitado, usuario_tipo "
+        String sql = "SELECT id, nome, endereco, contato, habilitado, usuario_tipo, descricao, imagem_url "
                 + "FROM usuarios WHERE usuario_tipo = 'ESTABELECIMENTO' AND habilitado = TRUE";
 
         try (Connection conn = ConexaoBD.getConnection();
@@ -45,15 +45,16 @@ public class EstabelecimentoDAO {
                 estabelecimento.setId(rs.getLong("id"));
                 estabelecimento.setEndereco(rs.getString("endereco"));
                 estabelecimento.setContato(rs.getObject("contato", Long.class));
-           
+
                 estabelecimento.setHabilitado(rs.getBoolean("habilitado"));
 
                 String tipoStr = rs.getString("usuario_tipo");
                 estabelecimento.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
-
+                estabelecimento.setDescricao(rs.getString("descricao"));
+                estabelecimento.setImagemUrl(rs.getString("imagem_url"));
                 estabelecimentos.add(estabelecimento);
             }
-             System.out.println("Qtd de estabelecimentos encontrados: " + estabelecimentos.size());
+            System.out.println("Qtd de estabelecimentos encontrados: " + estabelecimentos.size());
 
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao listar estabelecimentos: " + e.getMessage(), e);
