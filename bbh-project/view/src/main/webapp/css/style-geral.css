@@ -97,3 +97,33 @@ h1 {
     text-decoration: none;
     font-family: var(--fonte-texto);
 }
+
+.nearby-section{
+    padding: 20px;
+}
+
+.tituloPromocao{
+    font-family: var(--fonte-texto);
+    margin-bottom: 20px;
+}
+.promocoes-list{
+    justify-content: center;
+}
+
+.botao-submit{
+    text-align: center; 
+    display: block; 
+    text-decoration: none; 
+    margin-top: 10px; 
+    font-size: 14px;
+}
+
+#nenhumaPromocao{
+    text-align: center; 
+    width: 100%;
+}
+
+#textoPromocao{
+    color: #666;
+    font-size: 18px;
+}
