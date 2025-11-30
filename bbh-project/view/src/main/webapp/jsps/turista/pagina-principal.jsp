@@ -76,10 +76,10 @@
                 </div>
             </section>
 
-            <section class="nearby-section" style="padding: 20px;">
-                <h1 style="font-family: var(--fonte-texto); margin-bottom: 20px;">Promoções da Galera</h1>
+            <section class="nearby-section">
+                <h1 class="tituloPromocao">Promoções da Galera</h1>
 
-                <div class="promocoes-list" style="justify-content: center;">
+                <div class="promocoes-list">
                     <c:choose>
                         <c:when test="${not empty promocoes}">
                             <c:forEach var="p" items="${promocoes}">
@@ -93,8 +93,7 @@
                                     <p class="promocao-data">Válido até: ${p.data}</p>
 
                                     <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${p.idEstabelecimento}" 
-                                       class="botao-submit" 
-                                       style="text-align: center; display: block; text-decoration: none; margin-top: 10px; font-size: 14px;">
+                                       class="botao-submit">
                                         Ver Local
                                     </a>
                                 </div>
@@ -102,8 +101,8 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <div style="text-align: center; width: 100%;">
-                                <p style="color: #666; font-size: 18px;">Nenhuma promoção rolando hoje :(</p>
+                            <div id="nenhumaPromocao">
+                                <p id ="textoPromocao">Nenhuma promoção rolando hoje :(</p>
                             </div>
                         </c:otherwise>
                     </c:choose>
