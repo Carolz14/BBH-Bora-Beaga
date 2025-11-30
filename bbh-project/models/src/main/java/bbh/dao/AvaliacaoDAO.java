@@ -73,6 +73,21 @@ public class AvaliacaoDAO {
         return lista;
     }
 
+    public Avaliacao buscarPorId(Long idAvaliacao) throws PersistenciaException {
+        String sql = "SELECT * FROM avaliacao WHERE id_avaliacao = ?";
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, idAvaliacao);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return gerarObjetoAvaliacao(rs);
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao buscar a avaliação por ID" + e.getMessage() + e);
+        }
+    }
+
     public void atualizarAvaliacao(Avaliacao avaliacao) throws PersistenciaException {
         if (avaliacao.getIdAvaliacao() <= 0) {
             throw new PersistenciaException("ID da avaliação inválido para update");

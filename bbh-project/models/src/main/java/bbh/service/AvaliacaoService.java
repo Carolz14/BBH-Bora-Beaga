@@ -61,4 +61,7 @@ public class AvaliacaoService {
         int numeroAvaliacoes = avaliacoes.size();
         return numeroAvaliacoes;
     }
+    public Avaliacao buscarPorId(Long idAvaliacao) throws PersistenciaException{
+        return avaliacaoDAO.buscarPorId(idAvaliacao);
+    }
 }

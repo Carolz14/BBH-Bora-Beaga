@@ -21,6 +21,4 @@ public enum UsuarioTipo {
 
       throw new RuntimeException("O tipo:" + strTipo + " nao e valido");
    }
-
-
 }
