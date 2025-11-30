@@ -1,13 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<head>
+    <title>Avaliações</title>
+</head>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacoes.css" />
 
 <section class="avaliacoes">
-    <h2>Avaliações</h2>
+    <h1 style="margin-bottom:15px; margin-left:5px">Avaliações</h1>
 
-    <div>
-        <strong>Média:</strong> <c:out value="${media}" />
+    <div style="margin-left:4px">
+        <strong>Média do estabelecimento:</strong> <c:out value="${media}" />
         &nbsp;·&nbsp;
-        <strong>Total:</strong> <c:out value="${empty avaliacoes ? 0 : avaliacoes.size()}" />
+        <strong>Número de avaliações:</strong> <c:out value="${empty avaliacoes ? 0 : avaliacoes.size()}" />
     </div>
 
     <c:if test="${empty avaliacoes}">
@@ -17,156 +21,135 @@
     <c:forEach var="av" items="${avaliacoes}">
         <div class="avaliacao"
              data-id="${av.idAvaliacao}"
-             data-nota="${av.notaAvaliacao}"
-             style="border-bottom:1px solid #eee; padding:8px 0;">
+             data-nota="${av.notaAvaliacao}">
 
-            <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="avaliacao-top">
                 <div>
                     <strong>Usuário:</strong> <c:out value="${av.idUsuario}" />
                     &nbsp;·&nbsp;
                     <small><c:out value="${av.dataAvaliacao}" /></small>
                 </div>
                 <div>
-                    <span class="nota-badge"><c:out value="${av.notaAvaliacao}" /></span>
+                    <div class="rating">
+                        <c:forEach var="i" begin="1" end="${av.notaAvaliacao}">
+                            <img src="<c:url value='/imagens/estrela-png.png' />"
+                                 alt="" aria-hidden="true" class="nota-star" />
+                        </c:forEach>
+                    </div>
                 </div>
             </div>
 
-            <p style="white-space:pre-wrap; margin-top:8px;">
+            <p class="comentario">
                 <c:out value="${av.comentario}" />
             </p>
-
             <div class="data-comentario" style="display:none;"><c:out value="${av.comentario}" /></div>
 
             <c:set var="listaMidias" value="${midiasPorAvaliacao[av.idAvaliacao]}" />
 
             <c:if test="${not empty listaMidias}">
-                <div class="galeria-avaliacao" style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;">
+                <div class="galeria-avaliacao">
                     <c:forEach var="m" items="${listaMidias}">
-                        <div class="midia-item" data-midia-id="${m.idMidia}" style="position:relative; padding:6px;">
+                        <div class="midia-item" data-midia-id="${m.idMidia}">
                             <img class="midia-img"
                                  src="${pageContext.request.contextPath}/midia/serve?id=${m.idMidia}"
-                                 alt="<c:out value='${m.nomeOriginal}'/>"
-                                 style="width:120px;height:90px;object-fit:cover;border-radius:6px;display:block;" />
+                                 alt="<c:out value='${m.nomeOriginal}'/>" />
 
                             <c:if test="${ehAdmin or (idUsuario == av.idUsuario)}">
-                                <div class="midia-actions" style="position:absolute; right:6px; top:6px;">
-                                        <button type="button" class="action-toggle" aria-expanded="false" title="Opções"
-                                                style="background:#fff;border:1px solid #ddd;border-radius:6px;padding:6px;cursor:pointer;">⋯</button>
+                                <div class="midia-actions">
+                                    <button type="button" class="action-toggle" aria-expanded="false" title="Opções">⋯</button>
 
-                                        <div class="action-menu" role="menu" style="display:none; position:absolute; right:0; top:34px; min-width:140px; background:#fff; border:1px solid #e6e7ef; border-radius:6px; box-shadow:0 6px 18px rgba(0,0,0,0.06); z-index:100;">
-                                            <button type="button" class="action-update" data-midia-id="${m.idMidia}" role="menuitem" style="display:block; padding:8px 12px; width:100%; text-align:left; background:none; border:0; cursor:pointer;">Atualizar mídia</button>
-                                            <button type="button" class="action-remove" data-midia-id="${m.idMidia}" role="menuitem" style="display:block; padding:8px 12px; width:100%; text-align:left; background:none; border:0; cursor:pointer; color:#c00;">Remover mídia</button>
-                                        </div>
+                                    <div class="action-menu" role="menu">
+                                        <button type="button" class="action-update" data-midia-id="${m.idMidia}" role="menuitem">Atualizar mídia</button>
+                                        <button type="button" class="action-remove" data-midia-id="${m.idMidia}" role="menuitem">Remover mídia</button>
                                     </div>
-
-                                    <!-- forms escondidos usados pelo JS (sem onchange) -->
-                                    <form class="midia-update-form" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/atualizar" style="display:none;">
-                                        <input type="hidden" name="id" value="${m.idMidia}" />
-                                        <input class="file-input-hidden" type="file" name="file" accept="image/*" style="display:none;" />
-                                    </form>
-
-                                    <form class="midia-delete-form" method="post" action="${pageContext.request.contextPath}/midia/deletar" style="display:none;">
-                                        <input type="hidden" name="id" value="${m.idMidia}" />
-                                    </form>
                                 </div>
+
+                                <!-- forms escondidos usados pelo JS -->
+                                <form class="midia-update-form hidden-form" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/atualizar">
+                                    <input type="hidden" name="id" value="${m.idMidia}" />
+                                    <input class="file-input-hidden" type="file" name="file" accept="image/*" />
+                                </form>
+
+                                <form class="midia-delete-form hidden-form" method="post" action="${pageContext.request.contextPath}/midia/deletar">
+                                    <input type="hidden" name="id" value="${m.idMidia}" />
+                                </form>
                             </c:if>
                         </div>
-                    </c:forEach>   
+                    </c:forEach>
+                </div>
             </c:if>
 
             <c:if test="${empty listaMidias}">
                 <c:if test="${ehAdmin or (idUsuario == av.idUsuario )}">
-                   <div style="margin-top:8px;">
-                    <!-- Form para inserir mídia: file hidden + botão simples -->
-                    <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/upload" class="midia-insert-form" style="display:inline-block;">
-                        <input type="hidden" name="id" value="${av.idAvaliacao}" />
-                        <input class="file-input-hidden" type="file" name="file" accept="image/*" style="display:none;" onchange="this.form.submit()" />
-                        <button type="button" class="btn-file-trigger btn-simple" title="Inserir imagem">Inserir mídia</button>
-                    </form>
+                    <div class="midia-insert-wrapper">
+                        <!-- Form para inserir mídia: file hidden + botão simples -->
+                        <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/upload" class="midia-insert-form">
+                            <input type="hidden" name="id" value="${av.idAvaliacao}" />
+                            <input class="file-input-hidden" type="file" name="file" accept="image/*" onchange="this.form.submit()" style="display:none" />
+                            <button type="button" class="btn-file-trigger btn-simple" title="Inserir imagem">Inserir mídia</button>
+                        </form>
 
-                    <!-- Caso queira mostrar o input visível como fallback, descomente abaixo e remova o style display:none acima -->
-                    <%-- <input type="file" name="file" accept="image/*" required /> --%>
-                </div> 
-                </c:if>  
+                        <!-- Caso queira mostrar o input visível como fallback, descomente abaixo -->
+                        <%-- <input type="file" name="file" accept="image/*" required /> --%>
+                    </div>
+                </c:if>
             </c:if>
+
             <c:if test="${ehAdmin or (idUsuario == av.idUsuario)}">
-                 <div style="margin-top:8px;">
-                <button type="button" class="btn-edit">Editar</button>
-                <form method="post" action="${pageContext.request.contextPath}/avaliacao/deletar" style="display:inline;">
-                    <input type="hidden" name="id_avaliacao" value="${av.idAvaliacao}" />
-                    <input type="hidden" name="id" value="${estabelecimentoId}" />
-                    <button type="submit">Excluir</button>
-                </form>
-            </div>
+                <div class="avaliacao-actions">
+                    <button type="button" class="btn-edit btn-simple">Editar avaliação</button>
+                    <form method="post" action="${pageContext.request.contextPath}/avaliacao/deletar" class="inline-form">
+                        <input type="hidden" name="id_avaliacao" value="${av.idAvaliacao}" />
+                        <input type="hidden" name="id" value="${estabelecimentoId}" />
+                        <button class="btn-simple-remove" type="submit">Excluir avaliação</button>
+                    </form>
+                </div>
             </c:if>
         </div>
     </c:forEach>
 
-    <!-- formulário para nova avaliação (mantido) -->
-    <!-- substitui o bloco de nova-avaliacao / upload -->
-    <div class="nova-avaliacao" style="margin-top:16px;">
+    <!-- formulário para nova avaliação -->
+    <div class="nova-avaliacao">
         <h3>Deixe sua avaliação</h3>
 
         <form id="avaliacaoComMidiaForm" method="post" enctype="multipart/form-data"
               action="${pageContext.request.contextPath}/avaliacao/inserir-com-midia">
             <input type="hidden" name="id" value="${estabelecimentoId}" />
 
-            <div class="avaliacao-grid" style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
-                <div style="flex:1 1 420px; min-width:280px;">
-                    <label style="display:block;font-weight:600;margin-bottom:6px;">Nota</label>
-                    <input type="number" name="nota" min="1" max="5" required
-                           style="width:80px;padding:6px;border-radius:4px;border:1px solid #ccc;"/>
+            <div class="avaliacao-grid">
+                <div class="avaliacao-main">
+                    <label class="label-block">Nota :</label>
+                    <input type="number" name="nota" min="1" max="5" required class="nota-input" />
 
-                    <label style="display:block;font-weight:600;margin:10px 0 6px;">Comentário</label>
-                    <textarea name="comentario" rows="6" required
-                              style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;resize:vertical;"></textarea>
+                    <label class="label-block">Comentário :</label>
+                    <textarea name="comentario" rows="6" required class="comentario-input"></textarea>
                 </div>
 
-                <div style="flex:0 0 220px; min-width:200px;">
-                    <label style="display:block;font-weight:600;margin-bottom:6px;">Imagem (opcional)</label>
+                <div class="avaliacao-side">
+                    <label class="label-block">Imagem :</label>
 
-                    <!-- botão estilizado que abre o file picker -->
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <button type="button" class="btn-file-trigger" style="
-                                padding:8px 12px;
-                                border-radius:6px;
-                                background:linear-gradient(180deg,#fff,#eef2ff);
-                                border:1px solid #cdd6ff;
-                                box-shadow:0 2px 0 rgba(0,0,0,0.03);
-                                cursor:pointer;
-                                font-weight:600;
-                                ">
-                            📷 Inserir mídia
-                        </button>
-
-                        <!-- botão limpar (aparece quando tiver arquivo selecionado) -->
-                        <button type="button" id="btn-clear-file" style="
-                                display:none;
-                                padding:6px 10px;border-radius:6px;border:1px solid #eee;background:#fff;cursor:pointer;
-                                ">Remover</button> <!--  to falando desse botão gemini-->
+                    <!-- controles de arquivo -->
+                    <div class="file-controls">
+                        <button type="button" class="btn-file-trigger btn-simple">📷 Inserir mídia</button>
+                        <button type="button" id="btn-clear-file" class="btn-clear-file btn-simple-remove">Remover</button>
                     </div>
 
                     <!-- input real (escondido): não possui onchange que submeta o form -->
-                    <input id="inputFileAvaliacao" type="file" name="file" accept="image/*" style="display:none;" />
+                    <input id="inputFileAvaliacao" type="file" name="file" accept="image/*" class="file-input-hidden"  style="display:none"/>
 
-                    <div id="previewWrapper" style="margin-top:10px;">
-                        <img id="previewImg" src="" alt="Preview"
-                             style="width:200px;height:150px;object-fit:cover;border-radius:6px;display:none;border:1px solid #e0e0e0;" />
-                        <div id="previewInfo" style="font-size:12px;color:#666;margin-top:6px;"></div>
+                    <div id="previewWrapper">
+                        <img id="previewImg" src="" alt="Preview" />
+                        <div id="previewInfo"></div>
                     </div>
                 </div>
             </div>
 
-            <div style="margin-top:12px;">
-                <button id="btnSubmitAvaliacao" type="submit" style="
-                        padding:8px 14px;border-radius:6px;border:none;background:#007bff;color:white;cursor:pointer;
-                        box-shadow: 0 2px 8px rgba(2, 55, 120, 0.15);
-                        ">Enviar avaliação + imagem</button>
-                <span id="formStatus" style="margin-left:12px;color:#666;"></span>
+            <div class="form-actions">
+                <button id="btnSubmitAvaliacao" class="btn-edit btn-simple" type="submit">Enviar avaliação</button>
+                <span id="formStatus"></span>
             </div>
         </form>
     </div>
-
 
     <div id="editModalBackdrop" class="modal-backdrop" aria-hidden="true">
         <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -178,44 +161,47 @@
                 <input type="hidden" name="id_avaliacao" id="modal-id-avaliacao" value="" />
                 <input type="hidden" name="id" value="${estabelecimentoId}" />
                 <div>
-                    <label>Nota (1 a 5)
-                        <input type="number" name="nota" id="modal-nota" min="1" max="5" required />
+                    <label>Nota :
+                        <input type="number" class="nota-input" name="nota" id="modal-nota" min="1" max="5" required />
                     </label>
                 </div>
-                <div style="margin-top:8px;">
-                    <label>Comentário
-                        <textarea name="comentario" id="modal-comentario" rows="5" required></textarea>
+                <div>
+                    <label>Comentário:
+                        <textarea name="comentario" id="modal-comentario" class="comentario-input" rows="5" required></textarea>
                     </label>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn-edit btn-simple" onclick="closeEditModal()">Cancelar</button>
+                    <button type="submit" class="btn-edit btn-simple">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
+    <div id="confirmDeleteModal" class="modal-backdrop" aria-hidden="true" aria-labelledby="confirmDeleteTitle" role="dialog">
+        <div class="modal-window" role="document" style="max-width:420px;">
+            <div class="modal-header">
+                <h3 id="confirmDeleteTitle">Confirmar exclusão</h3>
+                <button class="modal-close" id="confirmCloseBtn" aria-label="Fechar">✕</button>
+            </div>
+
+            <div class="modal-body" style="padding:8px 4px 0 4px;">
+                <p id="confirmDeleteMessage" style="color:#333; margin:8px 4px;">Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.</p>
+            </div>
+
+            <div class="modal-footer" style="gap:8px; display:flex; justify-content:flex-end; padding-top:8px;">
+                <button type="button" id="confirmCancelBtn" class="btn-simple" aria-label="Cancelar">Cancelar</button>
+                <button type="button" id="confirmDeleteBtn" class="btn-simple-remove" aria-label="Confirmar exclusão">Excluir</button>
+            </div>
+        </div>
+    </div>
+    <div id="imageLightboxModal" class="modal-backdrop" aria-hidden="true" aria-labelledby="imageLightboxTitle" role="dialog">
+        <button id="lightboxCloseBtn" class="lightbox-close" aria-label="Fechar">✕</button>
+        <img id="lightboxImg" src="" alt="" class="lightbox-image" />
+    </div>
 
 </section>
 
-<!-- CSS minimal para botões mais bonitos -->
-<style>
-    .btn-simple {
-        background: #0b5ed7;
-        color: #fff;
-        border: none;
-        padding: 6px 10px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 13px;
-    }
-    .btn-simple[disabled] {
-        opacity: 0.6;
-        cursor: default;
-    }
-    .btn-simple:active {
-        transform: translateY(1px);
-    }
-</style>
 <script src="${pageContext.request.contextPath}/js/avaliacao-envio.js"></script>
 <script src="${pageContext.request.contextPath}/js/avaliacao-modal.js"></script>
 <script src="${pageContext.request.contextPath}/js/avaliacao-dropdown.js"></script>
+<script src="${pageContext.request.contextPath}/js/confirmar-exclusao.js"></script>

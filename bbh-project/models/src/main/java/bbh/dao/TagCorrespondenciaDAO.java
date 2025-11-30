@@ -130,12 +130,13 @@ public class TagCorrespondenciaDAO {
         if (nomeTag == null || nomeTag.isEmpty()) {
             return new ArrayList<>();
         }
-        String sql = "SELECT tc id.usuario"
-                + "FROM tag_correspondencia tc"
-                + "JOIN tag t ON tc.id_tag = t.id"
+        String sql = "SELECT tc.id_usuario "
+                + "FROM tag_correspondencia tc "
+                + "JOIN tag t ON tc.id_tag = t.id "
                 + "WHERE LOWER(t.slug) = LOWER(?)";
         List<Long> ids = new ArrayList<>();
-        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nomeTag.trim());
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {

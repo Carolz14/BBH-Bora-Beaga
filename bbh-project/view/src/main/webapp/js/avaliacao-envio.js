@@ -1,8 +1,6 @@
-// avaliacao.js
 (function () {
     'use strict';
 
-    // ---------- utilitários ----------
     function buildUrl(path) {
         const ctx = (window && window.ctx) ? window.ctx : '';
         if (!path) return ctx;
@@ -22,10 +20,6 @@
         try { alert(msg); } catch (e) { }
     }
 
-    // ---------- modal (open/close) ----------
-   
-
-    // ---------- main ----------
     document.addEventListener('DOMContentLoaded', function () {
 
         // close modal if click outside or Esc
@@ -39,15 +33,14 @@
             if (e.key === 'Escape') closeEditModal();
         });
 
-        // --------- preview & nova-avaliacao file handlers ----------
         const formNovaAvaliacao = document.getElementById('avaliacaoComMidiaForm');
-        const inputFileAvaliacao = document.getElementById('inputFileAvaliacao'); // hidden input inside nova-avaliacao
+        const inputFileAvaliacao = document.getElementById('inputFileAvaliacao');
         const previewImg = document.getElementById('previewImg');
         const previewInfo = document.getElementById('previewInfo');
-        const btnClearFile = document.getElementById('btn-clear-file'); // optional clear button
+        const btnClearFile = document.getElementById('btn-clear-file');
         const formStatus = document.getElementById('formStatus');
 
-        // attach single change listener for the new-evaluation file input (preview only)
+
         if (inputFileAvaliacao && !inputFileAvaliacao.dataset.previewAttached) {
             inputFileAvaliacao.dataset.previewAttached = '1';
             inputFileAvaliacao.addEventListener('change', function () {
@@ -81,7 +74,6 @@
             });
         }
 
-        // clear button for new-evaluation
         if (btnClearFile && !btnClearFile.dataset.clearAttached) {
             btnClearFile.dataset.clearAttached = '1';
             btnClearFile.addEventListener('click', function (e) {
@@ -93,7 +85,6 @@
             });
         }
 
-        // --------- prevent double-submits on nova avaliacao ---------- 
         if (formNovaAvaliacao) {
             // avoid duplicate binding
             if (!formNovaAvaliacao.dataset.submitAttached) {
@@ -145,8 +136,6 @@
             }
         }
 
-        // --------- file-picker triggers (delegated) ----------
-        // behavior: button .btn-file-trigger should open the input[type=file] INSIDE its form (or target via data-target)
         document.addEventListener('click', function (e) {
             const btn = e.target.closest('.btn-file-trigger');
             if (!btn) return;
@@ -154,7 +143,6 @@
             e.preventDefault();
             e.stopPropagation();
 
-            // prevent reentrancy
             if (btn.dataset.opening === '1') return;
             btn.dataset.opening = '1';
 
@@ -172,14 +160,12 @@
                 return;
             }
 
-            // set a one-time change listener to clear the opening flag when dialog finishes
             const onChange = function () {
                 try { delete btn.dataset.opening; } catch (err) { btn.removeAttribute && btn.removeAttribute('data-opening'); }
                 input.removeEventListener('change', onChange);
             };
             input.addEventListener('change', onChange, { once: true });
 
-            // safety timeout in case change is not fired
             const t = setTimeout(function () {
                 try { delete btn.dataset.opening; } catch (err) { btn.removeAttribute && btn.removeAttribute('data-opening'); }
                 input.removeEventListener('change', onChange);
@@ -193,8 +179,5 @@
                 alert('Não foi possível abrir o seletor de arquivos. Veja o console.');
             }
         }, false);
-
-        // --------- attach click for .btn-edit (open modal) ----------
-        
     });
 })();

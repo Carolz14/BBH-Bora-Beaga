@@ -185,7 +185,8 @@ public class CriarTabelas {
             {"Igrejas", "igrejas"},
             {"Natureza", "natureza"},
             {"Cultura mineira", "cultura-mineira"},
-            {"Monumentos", "monumentos"}
+            {"Monumentos", "monumentos"},
+            {"Museus", "museus"}
         };
 
         List<Tag> listaTags = new ArrayList<>(stringTagsPadroes.length);

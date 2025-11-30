@@ -1,6 +1,57 @@
-// avaliacao-dropdown.js — controla apenas o dropdown + update/delete
 (function () {
     'use strict';
+    // showConfirmModal: usa o modal já presente no JSP (#confirmDeleteModal)
+    // retorna Promise<boolean> que resolve true se confirmar, false se cancelar/fechar
+    function showConfirmModal(message) {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('confirmDeleteModal');
+            if (!modal) {
+                // fallback para confirm nativo se modal não existir
+                resolve(window.confirm(message));
+                return;
+            }
+
+            const msgEl = document.getElementById('confirmDeleteMessage');
+            const btnConfirm = document.getElementById('confirmDeleteBtn');
+            const btnCancel = document.getElementById('confirmCancelBtn');
+            const btnClose = document.getElementById('confirmCloseBtn');
+
+            // atualiza mensagem
+            if (msgEl) msgEl.textContent = message || 'Confirmar?';
+
+            // mostra modal
+            modal.classList.add('show');
+            modal.setAttribute('aria-hidden', 'false');
+
+            // foco acessível no botão confirmar
+            setTimeout(() => btnConfirm && btnConfirm.focus(), 30);
+            function cleanup(result) {
+                // remover listeners
+                btnConfirm && btnConfirm.removeEventListener('click', onConfirm);
+                btnCancel && btnCancel.removeEventListener('click', onCancel);
+                btnClose && btnClose.removeEventListener('click', onCancel);
+                modal && modal.removeEventListener('click', onBackdrop);
+                document.removeEventListener('keydown', onKeydown);
+
+                // esconder modal
+                modal.classList.remove('show');
+                modal.setAttribute('aria-hidden', 'true');
+
+                resolve(result);
+            }
+
+            function onConfirm(e) { e && e.preventDefault(); cleanup(true); }
+            function onCancel(e) { e && e.preventDefault(); cleanup(false); }
+            function onBackdrop(e) { if (e.target === modal) cleanup(false); }
+            function onKeydown(e) { if (e.key === 'Escape') cleanup(false); }
+
+            btnConfirm && btnConfirm.addEventListener('click', onConfirm);
+            btnCancel && btnCancel.addEventListener('click', onCancel);
+            btnClose && btnClose.addEventListener('click', onCancel);
+            modal && modal.addEventListener('click', onBackdrop);
+            document.addEventListener('keydown', onKeydown);
+        });
+    }
 
     function closeAll() {
         document.querySelectorAll('.action-menu').forEach(m => {
@@ -13,10 +64,7 @@
     }
 
     document.addEventListener('click', function (e) {
-
-        // -------------------------------------
         // 1) Toggle do menu
-        // -------------------------------------
         const toggle = e.target.closest('.action-toggle');
         if (toggle) {
             e.preventDefault();
@@ -33,38 +81,35 @@
             return;
         }
 
-        // clique fora fecha
         if (!e.target.closest('.action-menu') && !e.target.closest('.action-toggle')) {
             closeAll();
         }
 
-        // -------------------------------------
-        // 2) REMOVER mídia
-        // -------------------------------------
+        // 2) REMOVER mídia (com modal estilizado)
         const rem = e.target.closest('.action-remove');
         if (rem) {
             e.preventDefault();
             const item = rem.closest('.midia-item');
             const delForm = item.querySelector('.midia-delete-form');
             const id = delForm.querySelector('input[name="id"]').value;
+            showConfirmModal('Remover esta mídia?').then(confirmed => {
+                if (!confirmed) return;
 
-            if (!confirm('Remover esta mídia?')) return;
+                fetch(delForm.action, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                    body: "id=" + encodeURIComponent(id)
+                }).then(r => {
+                    if (!r.ok) throw new Error();
+                    item.remove();   // remove o card do DOM
+                    closeAll();
+                }).catch(() => alert("Erro ao remover mídia"));
+            });
 
-            fetch(delForm.action, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                body: "id=" + encodeURIComponent(id)
-            }).then(r => {
-                if (!r.ok) throw new Error();
-                item.remove();   // remove o card do DOM
-                closeAll();
-            }).catch(() => alert("Erro ao remover mídia"));
             return;
         }
 
-        // -------------------------------------
         // 3) ATUALIZAR mídia
-        // -------------------------------------
         const upd = e.target.closest('.action-update');
         if (upd) {
             e.preventDefault();
@@ -72,12 +117,9 @@
             const item = upd.closest('.midia-item');
             const updForm = item.querySelector('.midia-update-form');
             const fileInput = updForm.querySelector('input[type="file"]');
-
-            // evitar duplo clique
             if (fileInput.dataset.opening === "1") return;
             fileInput.dataset.opening = "1";
 
-            // Quando o usuário seleciona a imagem
             const onChange = function () {
                 delete fileInput.dataset.opening;
                 fileInput.removeEventListener('change', onChange);
@@ -89,17 +131,15 @@
 
             fileInput.addEventListener('change', onChange, { once: true });
 
-            // limpa flag caso nada aconteça
             setTimeout(() => delete fileInput.dataset.opening, 1500);
 
-            fileInput.click();   // abre o seletor de arquivos
+            fileInput.click();
             closeAll();
             return;
         }
 
     }, false);
 
-    // fecha com ESC
     document.addEventListener('keydown', ev => {
         if (ev.key === 'Escape') closeAll();
     });

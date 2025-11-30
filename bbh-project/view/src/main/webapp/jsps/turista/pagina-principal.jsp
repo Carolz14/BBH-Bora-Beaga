@@ -57,23 +57,23 @@
         
 
             <div class="quick-filters">
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=restaurante" class="category-item">
                     <i class="fa-solid fa-utensils"></i>
                     <span>Restaurantes</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=museus" class="category-item">
                     <i class="fa-solid fa-landmark"></i>
                     <span>Museus</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=bar" class="category-item">
                     <i class="fa-solid fa-martini-glass"></i>
                     <span>Bares</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=parque" class="category-item">
                     <i class="fa-solid fa-tree"></i>
                     <span>Parques</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=monumentos" class="category-item">
                     <i class="fa-solid fa-monument"></i>
                     <span>Monumentos</span>
                 </a>
