@@ -1,45 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="bbh.service.GestaoUsuariosService"%>
-<%@page import="bbh.domain.Usuario"%>
-<%@page import="java.util.List"%>
-
-
-<%
-    GestaoUsuariosService service = new GestaoUsuariosService();
-    List<Usuario> usuariosAtivos = null;
-
-    try {
-        usuariosAtivos = service.pesquisarAtivos();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-
-    List<Usuario> turistas = new java.util.ArrayList<>();
-    List<Usuario> guias = new java.util.ArrayList<>();
-    List<Usuario> estabelecimentos = new java.util.ArrayList<>();
-
-    if (usuariosAtivos != null) {
-    for (Usuario u : usuariosAtivos) {
-        if (u.getUsuarioTipo() != null && u.getUsuarioTipo().equalsIgnoreCase("TURISTA")) {
-            turistas.add(u);
-        } else if (u.getUsuarioTipo() != null && u.getUsuarioTipo().equalsIgnoreCase("GUIA")) {
-            guias.add(u);
-        } else if (u.getCNPJ() != null) {
-            estabelecimentos.add(u);
-        }
-    }
-}
-
-%>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+ <%@taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bora Beagá</title>
-    <link rel="stylesheet" href="../../css/style-geral.css">
-    <link rel="stylesheet" href="../../css/usuarios.css">
+    <title>Bora Beagá - Usuários</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/usuarios.css">
 </head>
 
 <body>
@@ -52,51 +22,59 @@
             <section class="user-section">
                 <h2 class="section-titulo">Turistas</h2>
                 <div class="user-list">
-                    <% if (!turistas.isEmpty()) { 
-                        for (Usuario t : turistas) { %>
-                            <div class="user-card">
-                                <p class="user-name"><%= t.getNome() %></p>
-                                <p class="user-email"><%= t.getEmail() %></p>
-                            </div>
-                    <%  } 
-                    } else { %>
-                        <p class="sem-usuarios">Nenhum turista ativo encontrado.</p>
-                    <% } %>
+                    <c:choose>
+                        <c:when test="${not empty turistas}">
+                            <c:forEach var="t" items="${turistas}">
+                                <div class="user-card">
+                                    <p class="user-name">${t.nome}</p>
+                                    <p class="user-email">${t.email}</p>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <p class="sem-usuarios">Nenhum turista ativo encontrado.</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </section>
 
             <section class="user-section">
                 <h2 class="section-titulo">Guias</h2>
                 <div class="user-list">
-                    <% if (!guias.isEmpty()) { 
-                        for (Usuario g : guias) { %>
-                            <div class="user-card">
-                                <p class="user-name"><%= g.getNome() %></p>
-                                <p class="user-email"><%= g.getEmail() %></p>
-                            </div>
-                    <%  } 
-                    } else { %>
-                        <p class="sem-usuarios">Nenhum guia ativo encontrado.</p>
-                    <% } %>
+                    <c:choose>
+                        <c:when test="${not empty guias}">
+                            <c:forEach var="g" items="${guias}">
+                                <div class="user-card">
+                                    <p class="user-name">${g.nome}</p>
+                                    <p class="user-email">${g.email}</p>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <p class="sem-usuarios">Nenhum guia ativo encontrado.</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </section>
 
             <section class="user-section">
                 <h2 class="section-titulo">Estabelecimentos</h2>
                 <div class="user-list">
-                    <% if (!estabelecimentos.isEmpty()) { 
-                        for (Usuario e : estabelecimentos) { %>
-                            <div class="user-card">
-                                <p class="user-name"><%= e.getNome() %></p>
-                                <p class="user-email"><%= e.getEmail() %></p>
-                            </div>
-                    <%  } 
-                    } else { %>
-                        <p class="sem-usuarios">Nenhum estabelecimento ativo encontrado.</p>
-                    <% } %>
+                    <c:choose>
+                        <c:when test="${not empty estabelecimentos}">
+                            <c:forEach var="e" items="${estabelecimentos}">
+                                <div class="user-card">
+                                    <p class="user-name">${e.nome}</p>
+                                    <p class="user-email">${e.email}</p>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <p class="sem-usuarios">Nenhum estabelecimento ativo encontrado.</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </section>
-
         </div>
     </main>
 

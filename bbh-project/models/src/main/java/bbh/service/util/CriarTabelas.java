@@ -109,9 +109,80 @@ public class CriarTabelas {
         System.out.println("Tags padrão inseridas com sucesso!");
     }
 
+    public static void criarTabelaPromocao() throws SQLException {
+        String sql = """
+        CREATE TABLE IF NOT EXISTS promocao (
+            id BIGINT AUTO_INCREMENT PRIMARY KEY,
+            nome VARCHAR(100) NOT NULL,
+            descricao TEXT,
+            data DATE NOT NULL
+        );
+        """;
+
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sql);
+            System.out.println("Tabela 'promocao' criada (ou já existia).");
+        }
+    }
+
+    public static void criarTabelaPromocaoEstabelecimento() throws SQLException {
+
+        String sqlTabela = """
+        CREATE TABLE IF NOT EXISTS promocao_estabelecimento (
+            id_usuario BIGINT,
+            id_promocao BIGINT,
+            PRIMARY KEY (id_usuario, id_promocao),
+            FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+            FOREIGN KEY (id_promocao) REFERENCES promocao(id)
+                ON DELETE CASCADE ON UPDATE CASCADE
+        );
+    """;
+
+        String sqlDropTrigger = "DROP TRIGGER IF EXISTS before_insert_promocao_estab;";
+
+        String sqlTrigger = """
+        CREATE TRIGGER before_insert_promocao_estab
+        BEFORE INSERT ON promocao_estabelecimento
+        FOR EACH ROW
+        BEGIN
+            DECLARE tipo_usuario VARCHAR(50);
+
+            SELECT usuario_tipo INTO tipo_usuario
+            FROM usuarios
+            WHERE id = NEW.id_usuario;
+
+            IF tipo_usuario IS NULL THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Usuário não encontrado.';
+            END IF;
+
+            IF tipo_usuario <> 'ESTABELECIMENTO' THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Somente ESTABELECIMENTOS podem ter promoções.';
+            END IF;
+        END;
+    """;
+
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+
+            stmt.executeUpdate(sqlTabela);
+            System.out.println("Tabela 'promocao_estabelecimento' criada (ou já existia).");
+
+            stmt.executeUpdate(sqlDropTrigger);
+            stmt.executeUpdate(sqlTrigger);
+            System.out.println("Trigger 'before_insert_promocao_estab' criada com sucesso.");
+
+        } catch (SQLException e) {
+            throw new SQLException("Erro ao criar tabela/trigger de promoção: " + e.getMessage(), e);
+        }
+    }
+
     public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
         criarTabelaTag();
         criarTabelaCorrespondencia();
         inserirTagsPadroes();
+        criarTabelaPromocao();
+        criarTabelaPromocaoEstabelecimento();
     }
 }
