@@ -269,6 +269,29 @@ public class CriarTabelas {
             throw new SQLException("Erro ao criar tabela/trigger de promoção: " + e.getMessage(), e);
         }
     }
+    
+    public static void criarTabelaEventos() throws SQLException {
+    String sql = """
+        CREATE TABLE IF NOT EXISTS eventos (
+            id BIGINT AUTO_INCREMENT PRIMARY KEY,
+            estabelecimento_id BIGINT NOT NULL,
+            nome VARCHAR(150) NOT NULL,
+            descricao TEXT,
+            data_evento DATE NOT NULL,
+            horario_evento TIME,
+            criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            ativo BOOLEAN DEFAULT TRUE,
+            FOREIGN KEY (estabelecimento_id) REFERENCES usuarios(id)
+                ON DELETE CASCADE ON UPDATE CASCADE
+        );
+    """;
+
+    try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+        stmt.executeUpdate(sql);
+        System.out.println("Tabela 'eventos' criada (ou já existia).");
+    }
+}
+
 
     public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
 
@@ -277,6 +300,7 @@ public class CriarTabelas {
         inserirTagsPadroes();
         criarTabelaPromocao();
         criarTabelaPromocaoEstabelecimento();
+        criarTabelaEventos();
         criarTabelaAvaliacao();
         criarTabelaAvaliacaoMidia();
     }
