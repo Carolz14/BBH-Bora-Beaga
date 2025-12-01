@@ -1,8 +1,6 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib uri="jakarta.tags.core" prefix="c" %>
 <%@page import="bbh.domain.Usuario"%>
-
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -23,18 +21,104 @@
     
     <%@ include file="../header.jsp" %>
 
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-principal.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
 
-    <main>
-        <section class="welcome-section">
-            <h1>Bem vindo, ${sessionScope.usuario.nome}</h1>
-            <h2 class="subtitle">Venha explorar Belo Horizonte conosco</h2>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-estab.css">
 
-            <!-- Barra de pesquisa -->
-            <div class="search-bar">
-                <form action="${pageContext.request.contextPath}/pesquisarLocais" method="get">
-                    <input type="text" name="nome" placeholder= "Pesquise locais de toda a grande BH!" value="${param.nome != null ? param.nome : ''}">
-                </form>
-            </div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+              integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+
+    <body>
+
+        <%@ include file="../header.jsp" %>
+
+        <main>
+            <section class="welcome-section">
+                <h1>Bem vindo, ${sessionScope.usuario.nome}</h1>
+                <h2 class="subtitle">Venha explorar Belo Horizonte conosco</h2>
+
+                <div class="search-bar">
+                    <form action="${pageContext.request.contextPath}/pesquisarLocais" method="get">
+                        <input type="text" name="nome" placeholder= "Pesquise locais de toda a grande BH!" value="${param.nome != null ? param.nome : ''}">
+                    </form>
+                </div>
+
+                <section class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
+                    <c:if test="${not empty sessionScope.resultados}">
+                        <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
+                        <div class="resultados-grid">
+                            <c:forEach var="local" items="${sessionScope.resultados}">
+                                <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${local.id}" class="resultado-card">
+                                    <p>${local.nome}</p>
+                                </a>
+                            </c:forEach>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
+                        <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
+                    </c:if>
+                </section>
+
+                <div class="quick-filters">
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                        <i class="fa-solid fa-utensils"></i>
+                        <span>Restaurantes</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span>Museus</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                        <i class="fa-solid fa-martini-glass"></i>
+                        <span>Bares</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                        <i class="fa-solid fa-tree"></i>
+                        <span>Parques</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                        <i class="fa-solid fa-monument"></i>
+                        <span>Monumentos</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="nearby-section">
+                <h1 class="tituloPromocao">Promoções da Galera</h1>
+
+                <div class="promocoes-list">
+                    <c:choose>
+                        <c:when test="${not empty promocoes}">
+                            <c:forEach var="p" items="${promocoes}">
+
+                                <div class="promocao-card">
+                                    <div class="card-topo">
+                                        <p class="promocao-nome">${p.nome}</p>
+                                        <p class="promocao-descricao">${p.descricao}</p>
+                                    </div>
+
+                                    <p class="promocao-data">Válido até: ${p.data}</p>
+
+                                    <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${p.idEstabelecimento}" 
+                                       class="botao-submit">
+                                        Ver Local
+                                    </a>
+                                </div>
+
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div id="nenhumaPromocao">
+                                <p id ="textoPromocao">Nenhuma promoção rolando hoje :(</p>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </section>
 
         <!-- Resultados da busca (se houver) -->
          
@@ -48,7 +132,6 @@
                         </a>
                     </c:forEach>
                 </div>
-            </c:if>
 
     
     <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
@@ -58,23 +141,23 @@
         
 
             <div class="quick-filters">
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=restaurante" class="category-item">
                     <i class="fa-solid fa-utensils"></i>
                     <span>Restaurantes</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=museus" class="category-item">
                     <i class="fa-solid fa-landmark"></i>
                     <span>Museus</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=bar" class="category-item">
                     <i class="fa-solid fa-martini-glass"></i>
                     <span>Bares</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=parque" class="category-item">
                     <i class="fa-solid fa-tree"></i>
                     <span>Parques</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=monumentos" class="category-item">
                     <i class="fa-solid fa-monument"></i>
                     <span>Monumentos</span>
                 </a>

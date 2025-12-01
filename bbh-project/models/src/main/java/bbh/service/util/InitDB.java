@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import bbh.common.PersistenciaException;
 
 public class InitDB {
 
     public static void inicializar() {
-        // Conecta no servidor e cria o DB
         try (Connection conn = ConexaoBD.getServerConnection();
                 Statement stmt = conn.createStatement()) {
 
@@ -75,13 +75,13 @@ public class InitDB {
                             """;
                     stmt.executeUpdate(insert);
                     System.out.println("Usuários padrão inseridos com sucesso!");
-                } else {
-                    System.out.println("Tabela 'usuarios' já possui registros.");
                 }
             }
 
-        } catch (SQLException e) {
-            System.err.println("Erro ao criar tabela ou inserir dados: " + e.getMessage());
+            CriarTabelas.criarTodasAsTabelas();
+
+        } catch (SQLException | PersistenciaException e) {
+            System.err.println("Erro ao criar tabelas ou inserir dados: " + e.getMessage());
         }
     }
 }

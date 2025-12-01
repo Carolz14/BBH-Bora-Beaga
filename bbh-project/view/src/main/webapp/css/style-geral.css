@@ -7,7 +7,7 @@
     --fonte-logo: "Fraunces", serif;
     --fonte-texto: "Roboto Slab", serif;
     --fonte-cursiva: "Parisienne", cursive;
-    --cor-fundo: #f3f3f3;
+    --cor-fundo: #ffffff;
     --cor-primaria: #f9e470;
     --cor-secundaria: #93c665;
     --cor-borda: #6c757d;
@@ -25,12 +25,13 @@ body {
 
 header {
     background-color: white;
-    border-bottom: 1px black solid;
+    border-bottom: 1px rgba(84, 83, 83, 0.363) solid;
     display: flex;
     align-items: center;
     padding: 10px 20px;
     justify-content: space-between;
     width: 98%;
+    box-shadow: 0 6px 15px rgba(10, 10, 30, 0.10);
 }
 
 ul {
@@ -113,4 +114,34 @@ h1 {
     color: #555;
     text-decoration: none;
     font-family: var(--fonte-texto);
+}
+
+.nearby-section{
+    padding: 20px;
+}
+
+.tituloPromocao{
+    font-family: var(--fonte-texto);
+    margin-bottom: 20px;
+}
+.promocoes-list{
+    justify-content: center;
+}
+
+.botao-submit{
+    text-align: center; 
+    display: block; 
+    text-decoration: none; 
+    margin-top: 10px; 
+    font-size: 14px;
+}
+
+#nenhumaPromocao{
+    text-align: center; 
+    width: 100%;
+}
+
+#textoPromocao{
+    color: #666;
+    font-size: 18px;
 }

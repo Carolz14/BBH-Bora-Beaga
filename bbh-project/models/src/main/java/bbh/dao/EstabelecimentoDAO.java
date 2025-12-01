@@ -62,4 +62,27 @@ public class EstabelecimentoDAO {
 
         return estabelecimentos;
     }
+
+    public Usuario listarEstabelecimentoPorId(long id) throws PersistenciaException {
+        String sql = "SELECT id, nome, endereco, contato, habilitado, usuario_tipo "
+                + "FROM usuarios WHERE usuario_tipo = 'ESTABELECIMENTO' AND habilitado = TRUE AND id= ?";
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Usuario estabelecimento = new Usuario(rs.getString("nome"));
+                    estabelecimento.setId(rs.getLong("id"));
+                    estabelecimento.setEndereco(rs.getString("endereco"));
+                    estabelecimento.setContato(rs.getObject("contato", Long.class));
+                    estabelecimento.setHabilitado(rs.getBoolean("habilitado"));
+                    String tipoStr = rs.getString("usuario_tipo");
+                    estabelecimento.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
+                    return estabelecimento;
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao tentar listar os estabelecimentos por ID" + e.getMessage(), e);
+        }
+    }
 }
