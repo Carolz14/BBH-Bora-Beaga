@@ -1,10 +1,10 @@
 package bbh.service;
 
+import java.util.List;
+
 import bbh.common.PersistenciaException;
 import bbh.dao.LocalDAO;
 import bbh.domain.Local;
-
-import java.util.List;
 
 public class LocalService {
 
@@ -17,13 +17,12 @@ public class LocalService {
         return dao.buscarPorNome(nome.trim());
     }
 
-    //buscar cnpj pode ser usado mais tarde.
-
-   /* public Local pesquisarPorCNPJ(String cnpj) throws PersistenciaException {
-        if (cnpj == null || cnpj.trim().isEmpty()) {
-            throw new PersistenciaException("CNPJ inválido.");
+    public Local pesquisarPorId(Long id) throws PersistenciaException {
+        if (id == null) {
+            throw new PersistenciaException("ID do local não pode ser nulo.");
         }
-        return dao.buscarPorCnpj(cnpj.trim());
-    }*/
-    
+        return dao.buscarPorId(id);
+    }
+
+  
 }

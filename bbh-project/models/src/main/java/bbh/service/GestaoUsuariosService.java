@@ -41,4 +41,8 @@ public class GestaoUsuariosService {
         Usuario resultado = usuarioDAO.pesquisarEmail(email);
         return resultado;
     }
+
+  public void atualizarPerfilEstabelecimento(Long id, String descricao, String imagemUrl) throws PersistenciaException {
+        usuarioDAO.atualizarPerfilEstabelecimento(id, descricao, imagemUrl);
+    }
 }

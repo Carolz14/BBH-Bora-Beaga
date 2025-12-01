@@ -35,8 +35,8 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
             throw new PersistenciaException("'" + usuario.getEmail() + "' usuario ja existente");
         }
 
-        String sql = "INSERT INTO usuarios (nome, email, senha, naturalidade, endereco, contato, cnpj, habilitado, usuario_tipo) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nome, email, senha, naturalidade, endereco, contato, cnpj, habilitado, usuario_tipo, descricao, imagem_url) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConexaoBD.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -64,6 +64,11 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
             ps.setBoolean(8, usuario.getHabilitado());
             ps.setString(9, usuario.getUsuarioTipo().name());
 
+            
+
+
+           ps.setString(10, usuario.getDescricao());
+            ps.setString(11, usuario.getImagemUrl());
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -80,7 +85,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
     public Usuario pesquisarEmail(String email) throws PersistenciaException {
         Usuario usuario = null;
 
-        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, cnpj, habilitado, usuario_tipo "
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, cnpj, habilitado, usuario_tipo, descricao, imagem_url "
                 + "FROM usuarios WHERE email = ?";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -103,6 +108,9 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
                     usuario.setHabilitado(rs.getBoolean("habilitado"));
                     String tipoStr = rs.getString("usuario_tipo");
                     usuario.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
+
+                    usuario.setDescricao(rs.getString("descricao"));
+                    usuario.setImagemUrl(rs.getString("imagem_url"));
                 }
             }
 
@@ -117,7 +125,7 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
     public Usuario pesquisar(Long id) throws PersistenciaException {
         Usuario usuario = null;
 
-        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, habilitado, usuario_tipo "
+        String sql = "SELECT id, nome, email, senha, naturalidade, endereco, contato, cnpj, habilitado, usuario_tipo, descricao, imagem_url "
                 + "FROM usuarios WHERE id = ?";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -138,6 +146,8 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
                     usuario.setHabilitado(rs.getBoolean("habilitado"));
                     String tipoStr = rs.getString("usuario_tipo");
                     usuario.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
+                      usuario.setDescricao(rs.getString("descricao"));
+                    usuario.setImagemUrl(rs.getString("imagem_url"));
                 }
             }
 
@@ -240,5 +250,21 @@ public class UsuarioDAO implements GenericDeleteDAO<Usuario, Long> {
             throw new PersistenciaException("Erro ao desabilitar usuario: " + e.getMessage(), e);
         }
     }
+public void atualizarPerfilEstabelecimento(Long id, String descricao, String imagemUrl) throws PersistenciaException {
+        
+        String sql = "UPDATE usuarios SET descricao = ?, imagem_url = ? WHERE id = ?";
+        
+        try (Connection conn = ConexaoBD.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            ps.setString(1, descricao);
+            ps.setString(2, imagemUrl);
+            ps.setLong(3, id);
+            
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao atualizar perfil do estabelecimento: " + e.getMessage(), e);
+        }
+    }
 }
