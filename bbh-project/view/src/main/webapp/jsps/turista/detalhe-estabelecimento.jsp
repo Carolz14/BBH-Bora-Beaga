@@ -20,23 +20,16 @@
 
         <main>
             <div class="container">
-              <a href="pagina-principal.jsp" class="back-link">Voltar</a>
-
-            <c:if test="${not empty estabelecimento}">
-                <div class="estabelecimento">
-
-                    <div class="estabelecimento-imagem">
-                      <img src="/imagens-bbh/${estabelecimento.imagemUrl}"
-         alt="Imagem de ${estabelecimento.nome}">
-                    </div>
 
                 <a href="${pageContext.request.contextPath}/jsps/turista/pagina-principal.jsp" class="back-link">Voltar</a>
 
                 <c:if test="${not empty estabelecimento}">
                     <div class="estabelecimento">
-                        <div class="estabelecimento-imagem">
-                            <img src="${pageContext.request.contextPath}/imagens/restaurante.jpeg" alt="Imagem do estabelecimento" />
-                        </div>
+                       
+                    <div class="estabelecimento-imagem">
+                      <img src="/imagens-bbh/${estabelecimento.imagemUrl}"
+         alt="Imagem de ${estabelecimento.nome}">
+                    </div>
 
                         <div class="estabelecimento-detalhes">
                             <h1><c:out value="${estabelecimento.nome}" /></h1>
@@ -57,12 +50,13 @@
                         </div>
                     </div>
 
+                    
+                       
+                    </div>
                     <jsp:include page="/avaliacao/listar" flush="true">
                         <jsp:param name="id" value="${estabelecimento.id}" />
                     </jsp:include>
 
-                       
-                    </div>
                 </div>
             </c:if>
 

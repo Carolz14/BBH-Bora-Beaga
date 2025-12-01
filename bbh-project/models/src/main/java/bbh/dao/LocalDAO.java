@@ -9,17 +9,20 @@ import java.util.List;
 
 import bbh.common.PersistenciaException;
 import bbh.domain.Local;
+import bbh.domain.Roteiro;
 import bbh.service.util.ConexaoBD;
 
 /**
- * Classe responsável por buscar apenas os locais (usuários do tipo ESTABELECIMENTO)
+ * Classe responsável por buscar apenas os locais (usuários do tipo
+ * ESTABELECIMENTO)
  * no banco de dados.
  */
 public class LocalDAO {
 
     private static LocalDAO instancia;
 
-    private LocalDAO() {}
+    private LocalDAO() {
+    }
 
     public static LocalDAO getInstance() {
         if (instancia == null) {
@@ -36,16 +39,16 @@ public class LocalDAO {
         List<Local> locais = new ArrayList<>();
 
         String sql = """
-            SELECT id, nome, endereco, usuario_tipo
-            FROM usuarios
-            WHERE LOWER(nome) LIKE LOWER(?)
-              AND usuario_tipo = 'ESTABELECIMENTO'
-             
-            LIMIT 10 
-        """;
+                    SELECT id, nome, endereco, usuario_tipo
+                    FROM usuarios
+                    WHERE LOWER(nome) LIKE LOWER(?)
+                      AND usuario_tipo = 'ESTABELECIMENTO'
+
+                    LIMIT 10
+                """;
 
         try (Connection conn = ConexaoBD.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + nomeBuscado + "%");
 
@@ -55,7 +58,7 @@ public class LocalDAO {
                     local.setId(rs.getLong("id"));
                     local.setNome(rs.getString("nome"));
                     local.setCategoria("Estabelecimento");
-                   // local.setDescricao(rs.getString("descricao"));
+                    // local.setDescricao(rs.getString("descricao"));
                     locais.add(local);
                 }
             }
@@ -66,4 +69,32 @@ public class LocalDAO {
 
         return locais;
     }
+
+    public Local buscarPorId(Long id) throws PersistenciaException {
+        Local local = null;
+
+        String sql = "SELECT id, nome, endereco, usuario_tipo "
+                + "FROM usuarios WHERE id = ? AND usuario_tipo = 'ESTABELECIMENTO'";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    local = new Local();
+                    local.setId(rs.getLong("id"));
+                    local.setNome(rs.getString("nome"));
+                    local.setEndereco(rs.getString("endereco"));
+                    local.setCategoria("Estabelecimento");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao pesquisar pelo id: " + e.getMessage(), e);
+        }
+
+        return local;
+    }
+ 
 }

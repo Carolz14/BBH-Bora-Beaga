@@ -64,7 +64,7 @@ public class EstabelecimentoDAO {
     }
 
     public Usuario listarEstabelecimentoPorId(long id) throws PersistenciaException {
-        String sql = "SELECT id, nome, endereco, contato, habilitado, usuario_tipo "
+         String sql = "SELECT id, nome, endereco, contato, habilitado, usuario_tipo, descricao, imagem_url "
                 + "FROM usuarios WHERE usuario_tipo = 'ESTABELECIMENTO' AND habilitado = TRUE AND id= ?";
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
@@ -77,6 +77,8 @@ public class EstabelecimentoDAO {
                     estabelecimento.setHabilitado(rs.getBoolean("habilitado"));
                     String tipoStr = rs.getString("usuario_tipo");
                     estabelecimento.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
+                     estabelecimento.setDescricao(rs.getString("descricao"));
+                estabelecimento.setImagemUrl(rs.getString("imagem_url"));
                     return estabelecimento;
                 }
                 return null;
