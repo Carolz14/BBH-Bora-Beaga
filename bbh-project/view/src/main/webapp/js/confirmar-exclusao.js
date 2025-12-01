@@ -40,8 +40,6 @@ function showConfirmModal(message) {
   });
 }
 
-
-// Intercepta só o clique do botão "Excluir avaliação" (form com input name="id_avaliacao")
 document.addEventListener('click', function (ev) {
   const btn = ev.target.closest('.btn-simple-remove');
   if (!btn) return;
@@ -49,16 +47,13 @@ document.addEventListener('click', function (ev) {
   const form = btn.closest('form');
   if (!form) return;
 
-  // garante que é o form de exclusão de avaliação (não confundir com outros botões que usam a mesma classe)
   if (!form.querySelector('input[name="id_avaliacao"]')) return;
 
-  // interrompe o submit original e mostra o modal estilizado
   ev.preventDefault();
   ev.stopPropagation();
 
   showConfirmModal('Tem certeza que deseja excluir esta avaliação?').then(confirmed => {
     if (!confirmed) return;
-    // submete o form exatamente como antes (respeita validações HTML)
     if (typeof form.requestSubmit === 'function') form.requestSubmit();
     else form.submit();
   });
