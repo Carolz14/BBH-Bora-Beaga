@@ -122,7 +122,6 @@
                         </div>
                     </a>
                 </div>
-            </c:if>
 
     
     <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
