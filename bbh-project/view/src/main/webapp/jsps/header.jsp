@@ -28,7 +28,7 @@
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('eventos', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="${pageContext.request.contextPath}/jsps/turista/eventos.jsp">Eventos</a></li>
+                <li><a href="${pageContext.request.contextPath}/evento">Eventos</a></li>
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('interesse', sessionScope.usuario.usuarioTipo)}">
