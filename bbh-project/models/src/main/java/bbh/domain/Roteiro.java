@@ -7,15 +7,15 @@ public class Roteiro {
     private Long id;
     private String nome;
     private String descricao;
-    private String imagemUrl;
-    private List<Local> paradas;
+  
+    private String paradas; 
     private Long usuarioId;
     private boolean habilitado;
 
-    public Roteiro(String nome, String descricao, String imagemUrl) {
+    public Roteiro(String nome, String descricao) {
         this.nome = nome;
         this.descricao = descricao;
-        this.imagemUrl = imagemUrl;
+      
     }
 
     public Long getId() {
@@ -42,19 +42,13 @@ public class Roteiro {
         this.descricao = descricao;
     }
 
-    public String getImagemUrl() {
-        return imagemUrl;
-    }
+  
 
-    public void setImagemUrl(String imagemUrl) {
-        this.imagemUrl = imagemUrl;
-    }
-
-    public List<Local> getParadas() {
+    public String  getParadas() {
         return paradas;
     }
 
-    public void setParadas(List<Local> paradas) {
+    public void setParadas(String paradas) {
         this.paradas = paradas;
     }
 

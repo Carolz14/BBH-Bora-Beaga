@@ -48,6 +48,7 @@ public class InitDB {
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         nome VARCHAR(100) NOT NULL,
                         descricao TEXT,
+                        paradas_texto TEXT DEFAULT NULL,
                         usuario_id BIGINT NOT NULL,
                         habilitado BOOLEAN DEFAULT TRUE,
                         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
@@ -57,19 +58,7 @@ public class InitDB {
             stmt.executeUpdate(sqlRoteiros);
             System.out.println("Tabela 'roteiros' verificada/criada com sucesso.");
 
-            String sqlRoteiroParadas = """
-                    CREATE TABLE IF NOT EXISTS roteiro_paradas (
-                        roteiro_id BIGINT NOT NULL,
-                        local_id BIGINT NOT NULL,
-                        PRIMARY KEY (roteiro_id, local_id),
-                        FOREIGN KEY (roteiro_id) REFERENCES roteiros(id)
-                            ON DELETE CASCADE,
-                        FOREIGN KEY (local_id) REFERENCES usuarios(id)
-                            ON DELETE CASCADE
-                    );
-                    """;
-            stmt.executeUpdate(sqlRoteiroParadas);
-            System.out.println("Tabela 'roteiro_paradas' verificada/criada com sucesso.");
+          
             // verifica se há registros e poem "usuarios iniciais"
             try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM usuarios")) {
                 rs.next();
