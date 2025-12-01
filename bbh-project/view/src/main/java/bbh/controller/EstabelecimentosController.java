@@ -3,10 +3,11 @@ package bbh.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import bbh.service.TagService;
+
 import bbh.common.PersistenciaException;
 import bbh.domain.Usuario;
 import bbh.service.GestaoEstabelecimentosService;
+import bbh.service.TagService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -41,7 +42,7 @@ public class EstabelecimentosController extends HttpServlet {
             request.setAttribute("estabelecimentos", listaEstabelecimentos);
             request.getSession().setAttribute("estabelecimentos", listaEstabelecimentos);
             response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
-
+            
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao listar estabelecimentos");

@@ -20,6 +20,8 @@
 
     <c:forEach var="av" items="${avaliacoes}">
         <div class="avaliacao"
+
+
              data-id="${av.idAvaliacao}"
              data-nota="${av.notaAvaliacao}">
 

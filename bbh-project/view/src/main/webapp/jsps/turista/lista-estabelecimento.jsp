@@ -26,7 +26,7 @@
                                 <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${estab.id}"
                                     class="estabelecimentos">
                                     <img src="/imagens-bbh/${estab.imagemUrl}"
-         alt="Imagem de ${estabelecimento.nome}" class="ilustracao">
+         alt="Imagem de ${estab.nome}" class="ilustracao">
                                     <h3>${estab.nome}</h3>
 
                                 </a>

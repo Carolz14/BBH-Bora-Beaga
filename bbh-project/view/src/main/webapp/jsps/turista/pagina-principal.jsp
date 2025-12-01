@@ -9,19 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bora Beagá</title>
-    <link rel="stylesheet" href="../../css/style-principal.css">
-    <link rel="stylesheet" href="../../css/style-geral.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-       <link rel="icon" href="../../imagens/icon-page.png">
-</head>
-
-<body>
-    
-    <%@ include file="../header.jsp" %>
-
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-principal.css">
+     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-principal.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-estab.css">
@@ -29,7 +17,13 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
               integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </head>
+       <link rel="icon" href="../../imagens/icon-page.png">
+</head>
+
+<body>
+    
+  
+
 
     <body>
 
@@ -63,28 +57,28 @@
                     </c:if>
                 </section>
 
-                <div class="quick-filters">
-                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
-                        <i class="fa-solid fa-utensils"></i>
-                        <span>Restaurantes</span>
-                    </a>
-                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
-                        <i class="fa-solid fa-landmark"></i>
-                        <span>Museus</span>
-                    </a>
-                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
-                        <i class="fa-solid fa-martini-glass"></i>
-                        <span>Bares</span>
-                    </a>
-                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
-                        <i class="fa-solid fa-tree"></i>
-                        <span>Parques</span>
-                    </a>
-                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController" class="category-item">
-                        <i class="fa-solid fa-monument"></i>
-                        <span>Monumentos</span>
-                    </a>
-                </div>
+                 <div class="quick-filters">
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=restaurante" class="category-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Restaurantes</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=museus" class="category-item">
+                    <i class="fa-solid fa-landmark"></i>
+                    <span>Museus</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=bar" class="category-item">
+                    <i class="fa-solid fa-martini-glass"></i>
+                    <span>Bares</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=parque" class="category-item">
+                    <i class="fa-solid fa-tree"></i>
+                    <span>Parques</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=monumentos" class="category-item">
+                    <i class="fa-solid fa-monument"></i>
+                    <span>Monumentos</span>
+                </a>
+            </div>
             </section>
 
             <section class="nearby-section">
@@ -120,81 +114,7 @@
                 </div>
             </section>
 
-        <!-- Resultados da busca (se houver) -->
-         
-        <section class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
-            <c:if test="${not empty sessionScope.resultados}">
-                
-                <div class="resultados-grid">
-                    <c:forEach var="local" items="${sessionScope.resultados}">
-                        <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${local.id}" class="resultado-card">
-                            <p>${local.nome}</p>
-                        </a>
-                    </c:forEach>
-                </div>
-
-    
-    <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
-        <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
-    </c:if>
-</section>
         
-
-            <div class="quick-filters">
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=restaurante" class="category-item">
-                    <i class="fa-solid fa-utensils"></i>
-                    <span>Restaurantes</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=museus" class="category-item">
-                    <i class="fa-solid fa-landmark"></i>
-                    <span>Museus</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=bar" class="category-item">
-                    <i class="fa-solid fa-martini-glass"></i>
-                    <span>Bares</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=parque" class="category-item">
-                    <i class="fa-solid fa-tree"></i>
-                    <span>Parques</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=monumentos" class="category-item">
-                    <i class="fa-solid fa-monument"></i>
-                    <span>Monumentos</span>
-                </a>
-            </div>
-        </section>
-
-        <section class="nearby-section">
-            <h1>Perto de você</h1>
-            <div class="card-grid">
-                
-                <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                
-                <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-                <a href="detalhe-estabelecimento.jsp" class="card">
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local">
-                    <p>Nome do Estabelecimento</p>
-                </a>
-            </div>
-        </section>
 
         <section class="ranking">
             <h1>Locais do momento</h1>
