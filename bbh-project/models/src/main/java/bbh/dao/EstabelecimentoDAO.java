@@ -31,7 +31,7 @@ public class EstabelecimentoDAO {
     public List<Usuario> listarEstabelecimentos() throws PersistenciaException {
         List<Usuario> estabelecimentos = new ArrayList<>();
 
-        String sql = "SELECT id, nome, endereco, contato, habilitado, usuario_tipo "
+        String sql = "SELECT id, nome, endereco, contato, habilitado, usuario_tipo, descricao, imagem_url "
                 + "FROM usuarios WHERE usuario_tipo = 'ESTABELECIMENTO' AND habilitado = TRUE";
 
         try (Connection conn = ConexaoBD.getConnection();
@@ -50,7 +50,8 @@ public class EstabelecimentoDAO {
 
                 String tipoStr = rs.getString("usuario_tipo");
                 estabelecimento.setUsuarioTipo(UsuarioTipo.strTo(tipoStr));
-
+                estabelecimento.setDescricao(rs.getString("descricao"));
+                estabelecimento.setImagemUrl(rs.getString("imagem_url"));
                 estabelecimentos.add(estabelecimento);
             }
             System.out.println("Qtd de estabelecimentos encontrados: " + estabelecimentos.size());

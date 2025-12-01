@@ -5,10 +5,21 @@
 <!DOCTYPE html>
 <html lang="pt">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bora Beagá</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bora Beagá</title>
+    <link rel="stylesheet" href="../../css/style-principal.css">
+    <link rel="stylesheet" href="../../css/style-geral.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+       <link rel="icon" href="../../imagens/icon-page.png">
+</head>
+
+<body>
+    
+    <%@ include file="../header.jsp" %>
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-principal.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
@@ -109,18 +120,17 @@
                 </div>
             </section>
 
-            <section class="ranking">
-                <h1>Locais do momento</h1>
-                <div class="ranking-list">
-                    <a href="#" class="ranking-item">
-                        <span class="rank-number">1</span>
-                        <img src="${pageContext.request.contextPath}/imagens/restaurante.jpeg" alt="Imagem" class="rank-img">
-                        <p class="rank-name">Exemplo 1</p>
-                        <div class="rank-rating">
-                            <i class="fas fa-star"></i>
-                            <span>4.9</span>
-                        </div>
-                    </a>
+        <!-- Resultados da busca (se houver) -->
+         
+        <section class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
+            <c:if test="${not empty sessionScope.resultados}">
+                
+                <div class="resultados-grid">
+                    <c:forEach var="local" items="${sessionScope.resultados}">
+                        <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${local.id}" class="resultado-card">
+                            <p>${local.nome}</p>
+                        </a>
+                    </c:forEach>
                 </div>
 
     

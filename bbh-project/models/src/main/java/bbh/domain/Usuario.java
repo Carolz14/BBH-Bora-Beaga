@@ -15,6 +15,9 @@ public class Usuario {
     private UsuarioTipo perfil;
     private String endereco;
     private Long contato;
+
+    private String descricao;
+    private String imagemUrl;
     
     public Usuario(String nome) {
     this.nome = nome;
@@ -117,5 +120,18 @@ public class Usuario {
     
     public boolean getHabilitado() {
         return habilitado;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 }

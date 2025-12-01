@@ -20,6 +20,15 @@
 
         <main>
             <div class="container">
+              <a href="pagina-principal.jsp" class="back-link">Voltar</a>
+
+            <c:if test="${not empty estabelecimento}">
+                <div class="estabelecimento">
+
+                    <div class="estabelecimento-imagem">
+                      <img src="/imagens-bbh/${estabelecimento.imagemUrl}"
+         alt="Imagem de ${estabelecimento.nome}">
+                    </div>
 
                 <a href="${pageContext.request.contextPath}/jsps/turista/pagina-principal.jsp" class="back-link">Voltar</a>
 
@@ -41,10 +50,10 @@
                                 <small>(baseada em <c:out value="${avaliacoes.size()}" /> avaliações)</small>
                             </div>
 
-                            <div class="informacao">
-                                <p><strong>Contato:</strong> <c:out value="${estabelecimento.contato}" /></p>
-                                <p><strong>Endereço:</strong> <c:out value="${estabelecimento.endereco}" /></p>
-                            </div>
+                        <div class="informacao">
+                            <p><strong>Descrição:</strong> ${estabelecimento.descricao}</p>
+                            <p><strong>Contato:</strong> ${estabelecimento.contato}</p>
+                            <p><strong>Endereço:</strong> ${estabelecimento.endereco}</p>
                         </div>
                     </div>
 
@@ -52,7 +61,10 @@
                         <jsp:param name="id" value="${estabelecimento.id}" />
                     </jsp:include>
 
-                </c:if>
+                       
+                    </div>
+                </div>
+            </c:if>
 
                 <c:if test="${empty estabelecimento}">
                     <p>Estabelecimento não encontrado.</p>

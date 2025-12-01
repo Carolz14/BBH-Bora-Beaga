@@ -17,7 +17,7 @@
                 <body>
 
                     <%@ include file="../header.jsp" %>
-                        <a href="pagina-principal.jsp" class="back-link">Voltar</a>
+                        
                         <h1>Estabelecimentos</h1>
 
                         <main class="selecao">
@@ -25,7 +25,8 @@
                             <c:forEach var="estab" items="${sessionScope.estabelecimentos}">
                                 <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${estab.id}"
                                     class="estabelecimentos">
-                                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local" class="ilustracao">
+                                    <img src="/imagens-bbh/${estab.imagemUrl}"
+         alt="Imagem de ${estabelecimento.nome}" class="ilustracao">
                                     <h3>${estab.nome}</h3>
 
                                 </a>
