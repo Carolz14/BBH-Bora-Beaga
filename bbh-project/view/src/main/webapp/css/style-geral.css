@@ -99,6 +99,7 @@ p,
 h2,h1, h3, a{
     font-family: var(--fonte-texto);
       font-weight: normal;
+      text-decoration: none;
 }
 
 h1 {

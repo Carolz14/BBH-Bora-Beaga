@@ -1,88 +1,114 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@page import="bbh.domain.Usuario" %>
-        <%@page import="bbh.domain.util.UsuarioTipo" %>
+<%@page import="bbh.domain.Usuario" %>
+<%@page import="bbh.domain.util.UsuarioTipo" %>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
 
-            <!DOCTYPE html>
-            <html lang="pt">
+<!DOCTYPE html>
+<html lang="pt">
 
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Roteiros</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiros</title>
 
-                <link rel="stylesheet" href="../../css/style-geral.css">
-                <link rel="stylesheet" href="../../css/style-listas.css">
-                <link rel="stylesheet" href="../../css/roteiros.css">
-                <link rel="icon" href="../../imagens/icon-page.png">
-                <script src="../../js/modal.js" defer></script>
+    <link rel="stylesheet" href="../../css/style-geral.css">
+    <link rel="stylesheet" href="../../css/style-listas.css">
+    <link rel="stylesheet" href="../../css/roteiros.css">
+    <link rel="icon" href="../../imagens/icon-page.png">
+    <script src="../../js/modal.js" defer></script>
 
-            </head>
+</head>
 
-            <body>
+<body>
 
-                <%@ include file="../header.jsp" %>
-                    <div class="cabecalho-pagina">
-                        <h1>Roteiros</h1>
-                        <button type="button" onclick="abrirModal()" class="btn-criar">Criar Roteiro</button>
+    <%@ include file="../header.jsp" %>
+
+       <div class="cabecalho-pagina">
+        <h1>Roteiros</h1>
+        <c:if test="${sessionScope.usuario.usuarioTipo == 'GUIA'}">
+            <button type="button" onclick="abrirModal()" class="btn-criar">Criar Roteiro</button>
+        </c:if>
+    </div>
+
+    <c:if test="${sessionScope.usuario.usuarioTipo == 'GUIA'}">
+        <div class="modal-roteiro">
+            <div class="modal-conteudo">
+                <span class="fechar" onclick="fecharModal()">&times;</span>
+                <form action="${pageContext.request.contextPath}/bbh/CriarRoteiroController" method="POST">
+                    <div class="modal-texto">
+                        <h3>Nome do roteiro</h3>
+                        <input type="text" name="nome" placeholder="Nome" required>
+                        <h3>Descrição do roteiro</h3>
+                        <input type="text" name="descricao" placeholder="Descrição" required>
+                        
+                        <h3>Locais do Roteiro</h3>
+                        <label for="paradasTexto">Digite os locais (separados por vírgula):</label>
+                        <textarea name="paradasTexto" id="paradasTexto" rows="3" placeholder="Ex: Museu X, Parque Y, Restaurante Z"></textarea>
+                        
+                        <button type="submit" class="btn-criar">Criar Roteiro</button>
                     </div>
+                </form>
+            </div>
+        </div>
+    </c:if>
+        <main class="selecao">
 
-                    <div class="modal-roteiro">
-                        <div class="modal-conteudo">
-                            <span class="fechar">&times;</span>
-                            <div class="modal-texto">
-                                <h3>Nome do roteiro</h3>
-                                <input type="text" name="nome" id="nome" placeholder="Nome" required>
-                                <h3>Descrição do roteiro</h3>
-                                <input type="text" name="descricao" id="descricao" placeholder="Descrição" required>
-                                <h3>Imagem do roteiro</h3>
-                                <input type="file" src="" alt="">
-                                <h3>Escolha de locais</h3>
-                                <div class="search-bar">
-                                    <form action="${pageContext.request.contextPath}/pesquisarLocais" method="get">
-                                        <input type="text" name="nome"
-                                            placeholder="Adicione locais ao seu roteiro"
-                                            value="${param.nome != null ? param.nome : ''}">
-                                    </form>
-                                </div>
 
-                                <!-- Resultados da busca (se houver) -->
+           <c:if test="${sessionScope.usuario.usuarioTipo == 'TURISTA'}">
+           
+            <div class="selecao">
+                <c:forEach var="roteiro" items="${sessionScope.todosRoteiros}">
+                    <a href="${pageContext.request.contextPath}/bbh/DetalheRoteiroController?id=${roteiro.id}" class="roteiros">
+                        <h3>${roteiro.nome}</h3>
+                    </a>
+                </c:forEach>
+                <c:if test="${empty todosRoteiros}">
+                    <p>Nenhum roteiro cadastrado no momento.</p>
+                </c:if>
+            </div>
+        </c:if>
 
-                                <section
-                                    class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
-                                    <c:if test="${not empty sessionScope.resultados}">
-
-                                        <div class="resultados-grid">
-                                            <c:forEach var="local" items="${sessionScope.resultados}"> 
-                                                    <p>${local.nome}</p>
-                                            </c:forEach>
-                                        </div>
-                                    </c:if>
-
-                                    <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
-                                        <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
-                                    </c:if>
-                                    <button type="button" class="btn-criar">Criar Roteiro</button>
-                            </div>
-                        </div>
+        <c:if test="${sessionScope.usuario.usuarioTipo == 'GUIA'}">
+            <h2>Meus Roteiros</h2>
+            <div class="selecao">
+                <c:forEach var="roteiro" items="${sessionScope.meusRoteiros}">
+                    <div class="roteiros">
+                        <a href="${pageContext.request.contextPath}/bbh/DetalheRoteiroController?id=${roteiro.id}" >
+                            <h3>${roteiro.nome}</h3>
+                        </a>
+                        
+                       
+                        <form action="${pageContext.request.contextPath}/bbh/ExcluirRoteiroController" method="POST" 
+                              onsubmit="return confirm('Tem certeza que deseja excluir este roteiro?');">
+                            <input type="hidden" name="roteiroId" value="${roteiro.id}">
+                            <button type="submit" class="btn-excluir">Excluir</button>
+                        </form>
                     </div>
+                </c:forEach>
+                <c:if test="${empty meusRoteiros}">
+                    <p>Você ainda não criou nenhum roteiro.</p>
+                </c:if>
+            </div>
+            
+            <hr>
+            
+            <h2>Outros Roteiros</h2>
+            <div class="selecao">
+                <c:forEach var="roteiro" items="${sessionScope.outrosRoteiros}">
+                    <a href="${pageContext.request.contextPath}/bbh/DetalheRoteiroController?id=${roteiro.id}" class="roteiros">
+                        <h3>${roteiro.nome}</h3>
+                    </a>
+                </c:forEach>
+                <c:if test="${empty outrosRoteiros}">
+                    <p>Nenhum outro roteiro cadastrado no momento.</p>
+                </c:if>
+            </div>
+        </c:if>
 
-                    <main class="selecao">
+        </main>
 
-                        <c:forEach var="roteiro" items="${sessionScope.roteiros}">
-                            <a href="${pageContext.request.contextPath}/bbh/DetalheRoteiroController?id=${roteiro.id}"
-                                class="roteiros">
-                                <img src="../../imagens/restaurante.jpeg" alt="Imagem do local" class="ilustracao">
-                                <h3>${roteiro.nome}</h3>
-                            </a>
-                        </c:forEach>
-                        <c:if test="${empty roteiros}">
-                            <p>Nenhum roteiro cadastrado.</p>
-                        </c:if>
+        <%@ include file="../footer.jsp" %>
 
-                    </main>
+</body>
 
-                    <%@ include file="../footer.jsp" %>
-
-            </body>
-
-            </html>
+</html>

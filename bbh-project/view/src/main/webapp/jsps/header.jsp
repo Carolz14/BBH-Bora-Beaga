@@ -24,7 +24,7 @@
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('roteiros', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="../turista/lista-roteiros.jsp">Roteiros</a></li>
+                <li><a href="${pageContext.request.contextPath}/bbh/ListarRoteiroController">Roteiros</a></li>
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('eventos', sessionScope.usuario.usuarioTipo)}">
