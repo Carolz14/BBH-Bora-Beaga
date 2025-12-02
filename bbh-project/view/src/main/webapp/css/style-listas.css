@@ -4,8 +4,6 @@ h3{
     line-height: 1.2;
 }
 
-
-
 .estabelecimentos, .roteiros, .interesses {
     background-color: white;
     border-radius: 20px;
@@ -14,9 +12,9 @@ h3{
     align-items: center;
     gap: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    text-decoration: none; 
-    color: inherit; 
-    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .estabelecimentos:hover {
@@ -28,20 +26,25 @@ h3{
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
+
+.roteiros:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
 .ilustracao {
-     width: 140px;       
-    height: 105px;        
+    width: 140px;
+    height: 105px;
     object-fit: cover;
     border-radius: 10px;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 .selecao {
-  display: grid;
-  grid-template-columns: auto auto auto; 
-  justify-content: center;
-  overflow: auto;
-  gap: 50px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    overflow: auto;
+    gap: 50px;
 }
 
 
@@ -56,32 +59,13 @@ h3{
 
 .cabecalho-pagina {
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    margin: 2% 5%; 
+    justify-content: space-between;
+    align-items: center;
+    margin: 2% 5%;
 }
 
 
 .cabecalho-pagina h1 {
     margin: 0;
 }
-
-
-.btn-criar {
-    background-color: var(--cor-secundaria);
-    color: white;
-    padding: 10px 22px;
-    font-family: var(--fonte-texto);
-    font-weight: bold;
-    font-size: 16px;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.btn-criar:hover {
-    background-color: #7bab54; 
-    transform: translateY(-2px);
-}
-
 

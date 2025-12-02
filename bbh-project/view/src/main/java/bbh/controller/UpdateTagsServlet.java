@@ -19,9 +19,6 @@ public class UpdateTagsServlet extends BaseServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(UpdateTagsServlet.class.getName());
 
-    /**
-     * Fábrica de TagService — sobrescreva em testes para injetar mocks.
-     */
     protected TagService createTagService() {
         return new TagService();
     }

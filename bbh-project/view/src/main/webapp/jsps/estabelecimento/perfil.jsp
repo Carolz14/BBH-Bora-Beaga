@@ -25,34 +25,42 @@
         <%@ include file="../header.jsp" %>
 
         <main>
-            <div class="container">
-                <h1 class="pagina-titulo">Perfil</h1>
+           <div class="container">
+            <h1 class="pagina-titulo">Perfil</h1>
 
-                <div class="perfil">
+            <%-- Exibe mensagem de erro, se houver --%>
+            <c:if test="${not empty requestScope.erro}">
+                <p style="color: red;">${requestScope.erro}</p>
+            </c:if>
+            
+            <form class="perfil" 
+                  action="${pageContext.request.contextPath}/bbh/AtualizarEstabelecimentoController" 
+                  method="POST" 
+                  enctype="multipart/form-data">
 
-                    <div class="perfil-avatar-section">
 
-                        <div class="foto-perfil"></div>
-                        <select class="categorias-estabelecimentos">
-                            <option>Categorias</option>
-                            <option>Categoria1</option>
-                            <option>Categoria2</option>
-                        </select>
-                    </div>
-
-                    <div id="infos">
-                        <p>Nome: ${sessionScope.usuario.nome}</p>
-                        <p>Email: ${sessionScope.usuario.email}</p>
-                        <p>Naturalidade: ${sessionScope.usuario.naturalidade}</p>
-                        <p>CNPJ: ${sessionScope.usuario.CNPJ}</p>
-                        <p>Endereço: ${sessionScope.usuario.endereco}</p>
-                        <p>Contato: ${sessionScope.usuario.contato}</p>
-                        <a href="${pageContext.request.contextPath}/estabelecimento/tags" class="botao-tags">
-                            Gerenciar Tags
-                        </a>
-                    </div>
+                <div id="infos">
+                    <p>Nome: ${sessionScope.usuario.nome}</p>
+                    <p>Email: ${sessionScope.usuario.email}</p>
+                    <p>Naturalidade: ${sessionScope.usuario.naturalidade}</p>
+                    <p>CNPJ: ${sessionScope.usuario.CNPJ}</p>
+                    <p>Endereço: ${sessionScope.usuario.endereco}</p>
+                    <p>Contato: ${sessionScope.usuario.contato}</p>
+                    
+            
+                    <label for="imagem" style="margin-top: 10px; display: block;">Alterar foto:</label>
+                    <input type="file" name="imagem" id="imagem" accept="image/*">
+                    <label for="descricao"><strong>Descrição:</strong></label>
+                    <textarea name="descricao" id="descricao" rows="5">${sessionScope.usuario.descricao}</textarea>
+                    
+                    <a href="${pageContext.request.contextPath}/estabelecimento/tags" class="botao" style="margin-top: 15px;">
+                        Gerenciar Tags
+                    </a>
+                    
+                    <button type="submit" class="botao" style="margin-top: 15px;">Salvar Alterações</button>
                 </div>
-            </div>
+            </form>
+        </div>
         </main>
 
 

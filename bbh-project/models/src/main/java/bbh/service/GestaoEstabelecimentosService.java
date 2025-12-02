@@ -16,4 +16,7 @@ public class GestaoEstabelecimentosService {
     public List<Usuario> listarEstabelecimentos() throws PersistenciaException {
         return EstabelecimentoDAO.getInstance().listarEstabelecimentos();
     }
+    public Usuario listarEstabelecimentoPorId(long id) throws PersistenciaException{
+        return EstabelecimentoDAO.getInstance().listarEstabelecimentoPorId(id);
+    }
 }

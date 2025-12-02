@@ -3,16 +3,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@312&display=swap');
 :root {
-    --fonte-logo: "Nunito", sans-serif;
-    --fonte-texto: "Lato", sans-serif;
+    --fonte-logo: "Fraunces", serif;
+    --fonte-texto: "Roboto Slab", serif;
     --fonte-cursiva: "Parisienne", cursive;
     --cor-fundo: #f3f3f3;
     --cor-primaria: #f9e470;
     --cor-secundaria: #93c665;
     --cor-borda: #6c757d;
 }
-
 
 /*=========Seção inicial==========*/
 
@@ -51,7 +51,6 @@
     transform: translateY(-50%);
     width: 20px;
     height: 20px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="%23888" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>');
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -59,9 +58,9 @@
 
 .resultados-section {
     width: 100%;
-    max-width: 900px;
-    margin: 12px auto 36px auto; /* espaçamento coerente */
-    padding: 8px 6px;
+    max-width: 850px;
+    margin: 5px auto 36px auto; /* espaçamento coerente */
+    padding: 4px 6px;
     box-sizing: border-box;
     display: none;              /* oculta por padrão - JSP adiciona .mostrar para exibir */
     flex-direction: column;
@@ -74,41 +73,29 @@
     display: flex;
 }
 
-/* título e subtítulo */
-.resultados-titulo,
-.resultados-section h2 {
-    font-family: var(--fonte-texto);
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #333;
-    margin: 0;
-    text-align: center;
-}
-
 /* grid responsivo que ocupa espaço normal */
 .resultados-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
+  display: flex;
+  flex-direction: column;
     width: 100%;
-    margin-top: 8px;
+    margin-top: 2px;
 }
 
 /* CARD de resultado - sem imagem por padrão: texto centralizado */
 .resultado-card {
     background-color: white;
     border-radius: 14px;
-    padding: 14px;
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center; /* centraliza texto quando não há mini-thumb */
     text-align: center;
-    gap: 12px;
+   margin: 2px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     text-decoration: none;
     color: inherit;
     transition: transform .15s ease, box-shadow .15s ease;
-    min-height: 76px;
+   
 }
 
 /* hover e foco para cartão */
@@ -122,41 +109,12 @@
 /* texto do card */
 .resultado-card p {
     margin: 0;
-    font-weight: 700;
+    
     font-family: var(--fonte-texto);
 }
 
-/* ------------------------- Thumb (não visível) -------------------------
-   - Se no futuro nosso grupo resolver mostrar imagens, adicionar a classe "has-thumb" ao anchor .resultado-card
-     dentro do JSP para ativar o espaço reservado.
-   - Sem essa classe, a mini-thumb não ocupa espaço nem altera o layout.
-   ---------------------------------------------------------------------------------------------- */
 
-   .resultado-card .thumb {
-    display: none; /* invisível */
-}
 
-/* Quando a classe 'has-thumb' for adicionada, o layout vai se ajustar e mostrar a thumb na esquerda e o seu alinhamento à esquerda */
-.resultado-card.has-thumb {
-    justify-content: flex-start;
-    text-align: left;
-}
-
-.resultado-card.has-thumb .thumb {
-    display: block;
-    width: 96px;
-    height: 72px;
-    object-fit: cover;
-    border-radius: 8px;
-    flex-shrink: 0;
-    margin-right: 12px;
-}
-
-.resultado-card.has-thumb .meta {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
 
 /* --------- Responsividade  */
 @media (max-width: 720px) {
