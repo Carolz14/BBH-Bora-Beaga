@@ -29,9 +29,17 @@
                             <c:when test="${not empty promocoes}">
                                 <c:forEach var="p" items="${promocoes}">
                                     <div class="promocao-card">
-                                        <p class="promocao-nome">${p.nome}</p>
-                                        <p class="promocao-descricao">${p.descricao}</p>
-                                        <p class="promocao-data">${p.data}</p>
+                                        <div class="card-topo">
+                                            <p class="promocao-nome">${p.nome}</p>
+                                            <p class="promocao-descricao">${p.descricao}</p>
+                                        </div>
+                                        <p class="promocao-data">Válido até: ${p.data}</p>
+
+                                        <div class="card-actions">
+                                            <a href="<%= request.getContextPath()%>/bbh/CadastroPromocao?acao=carregarEdicao&id=${p.id}" class="btn-acao btn-editar">Editar</a>
+
+                                            <a href="<%= request.getContextPath()%>/bbh/CadastroPromocao?acao=excluir&id=${p.id}" class="btn-acao btn-excluir" onclick="return confirm('Tem certeza que deseja excluir esta promoção?');">Excluir</a>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </c:when>
@@ -43,26 +51,36 @@
                 </div>
 
                 <div class="promocao-form-section">
-                    <h2 class="section-titulo">Nova Promoção</h2>
+                    <h2 class="section-titulo">${not empty promocaoEdit ? 'Editar Promoção' : 'Nova Promoção'}</h2>
 
                     <form name="formPromocao" method="POST"
                           action="<%= request.getContextPath()%>/bbh/CadastroPromocao">
 
+                        <input type="hidden" name="idPromocao" value="${promocaoEdit.id}">
+
+                        <input type="hidden" name="acao" value="${not empty promocaoEdit ? 'atualizar' : 'cadastrar'}">
+
                         <label for="nomePromocao">Nome:</label>
-                        <input id="nomePromocao" type="text" name="nomePromocao" required>
+                        <input id="nomePromocao" type="text" name="nomePromocao" value="${promocaoEdit.nome}" required>
 
                         <label for="descricaoPromocao">Descrição:</label>
-                        <input id="descricaoPromocao" type="text" name="descricaoPromocao">
+                        <input id="descricaoPromocao" type="text" name="descricaoPromocao" value="${promocaoEdit.descricao}">
 
                         <input type="hidden" name="idEstab" value="${sessionScope.usuario.id}">
 
                         <label for="dataPromocao">Validade:</label>
-                        <input id="dataPromocao" type="date" name="dataPromocao" required>
+                        <input id="dataPromocao" type="date" name="dataPromocao" value="${promocaoEdit.data}" required>
 
-                        <button class="botao-submit" type="button"
-                                onclick="validarCamposPromocao(document.formPromocao)">
-                            Criar Promoção
-                        </button>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button class="botao-submit" type="button"
+                                    onclick="validarCamposPromocao(document.formPromocao)">
+                                ${not empty promocaoEdit ? 'Salvar Alterações' : 'Criar Promoção'}
+                            </button>
+
+                            <c:if test="${not empty promocaoEdit}">
+                                <a href="promocoes.jsp" style="color: #666; text-decoration: none; font-size: 14px;">Cancelar</a>
+                            </c:if>
+                        </div>
                     </form>
                 </div>
             </div>

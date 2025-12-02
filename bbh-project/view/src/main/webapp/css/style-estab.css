@@ -324,3 +324,38 @@ input:focus {
 .botao-submit:hover {
     background-color: #7fb04e; 
 }
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.btn-acao {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+    font-family: var(--fonte-texto);
+    transition: opacity 0.2s;
+}
+
+.btn-editar {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.btn-excluir {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btn-acao:hover {
+    opacity: 0.8;
+}
