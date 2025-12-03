@@ -78,6 +78,10 @@
                     <i class="fa-solid fa-monument"></i>
                     <span>Monumentos</span>
                 </a>
+                <a href="${pageContext.request.contextPath}/bbh/todasPromocoes" class="category-item">
+                    <i class="fa-solid fa-tags"></i>
+                    <span>Promoções</span>
+                </a>
             </div>
             </section>
 
@@ -87,7 +91,7 @@
                 <div class="promocoes-list">
                     <c:choose>
                         <c:when test="${not empty promocoes}">
-                            <c:forEach var="p" items="${promocoes}">
+                            <c:forEach var="p" items="${promocoes}" end="2">
 
                                 <div class="promocao-card">
                                     <div class="card-topo">

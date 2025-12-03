@@ -50,7 +50,7 @@
                 <li><a href="${pageContext.request.contextPath}/jsps/estabelecimento/painel.jsp">Painel</a></li>
             </c:if>
             <c:if test="${ControleAutorizacao.checkPermissao('promocoes', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="../estabelecimento/promocoes.jsp">Promoções</a></li>
+                <li><a href="${pageContext.request.contextPath}/bbh/promocoes">Promoções</a></li>
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('gerenciarEventos', sessionScope.usuario.usuarioTipo)}">
