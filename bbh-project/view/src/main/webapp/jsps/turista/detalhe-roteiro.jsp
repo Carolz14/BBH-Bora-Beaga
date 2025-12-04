@@ -37,7 +37,7 @@
 
                         <main>
                             <div class="container">
-                                <a href="lista-roteiros.jsp" class="back-link">Voltar</a>
+                                <a href="${pageContext.request.contextPath}/bbh/feed"" class="back-link">Voltar</a>
 
                                 <div class="roteiro">
 

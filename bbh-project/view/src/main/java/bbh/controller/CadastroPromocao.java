@@ -19,26 +19,74 @@ public class CadastroPromocao extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            String id = request.getParameter("idEstab");
-            Long idEstabelecimento = Long.valueOf(id);
-
-            // Pegando parâmetros
+            String acao = request.getParameter("acao");
             String nome = request.getParameter("nomePromocao");
             String descricao = request.getParameter("descricaoPromocao");
-            LocalDate data = LocalDate.parse(request.getParameter("dataPromocao"));
-
-            // Criando a promoção com o ID do estabelecimento
-            Promocao promocao = new Promocao(nome, descricao, data, idEstabelecimento);
-
-            // Chamada correta
+            String dataStr = request.getParameter("dataPromocao");
+            LocalDate data = (dataStr != null && !dataStr.isEmpty()) ? LocalDate.parse(dataStr) : null;
+            
             GestaoPromocoesService service = new GestaoPromocoesService();
-            service.cadastrarPromocao(promocao);
+
+            if ("cadastrar".equals(acao)) {
+                String idEstabStr = request.getParameter("idEstab");
+                Long idEstabelecimento = Long.valueOf(idEstabStr);
+                
+                Promocao promocao = new Promocao(nome, descricao, data, idEstabelecimento);
+                service.cadastrarPromocao(promocao);
+                
+            } else if ("atualizar".equals(acao)) {
+                String idPromocaoStr = request.getParameter("idPromocao");
+                Long idPromocao = Long.valueOf(idPromocaoStr);
+                String idEstabStr = request.getParameter("idEstab");
+                Long idEstabelecimento = Long.valueOf(idEstabStr);
+
+                Promocao promocao = new Promocao();
+                promocao.setId(idPromocao);
+                promocao.setNome(nome);
+                promocao.setDescricao(descricao);
+                promocao.setData(data);
+                promocao.setIdEstabelecimento(idEstabelecimento);
+                
+                service.atualizarPromocao(promocao);
+            }
 
             response.sendRedirect(request.getContextPath() + "/bbh/promocoes");
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("erro", "Erro ao cadastrar promoção: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/bbh/promocoes");
+        }
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        try {
+            String acao = request.getParameter("acao");
+            String idStr = request.getParameter("id");
+            
+            GestaoPromocoesService service = new GestaoPromocoesService();
+            
+            if (idStr != null && !idStr.isEmpty()) {
+                Long idPromocao = Long.valueOf(idStr);
+                Long idEstab = service.buscarEstabelecimenoPorPromocao(idPromocao);
+                if ("excluir".equals(acao)) {
+                    service.removerVinculo(idEstab, idPromocao);
+                    
+                    response.sendRedirect(request.getContextPath() + "/bbh/promocoes");
+                    
+                } else if ("carregarEdicao".equals(acao)) {
+                    Promocao p = service.buscarPorId(idPromocao);
+                    request.setAttribute("promocaoEdit", p);
+                    request.getRequestDispatcher("/jsps/estabelecimento/promocoes.jsp").forward(request, response);
+                }
+            } else {
+                response.sendRedirect(request.getContextPath() + "/bbh/promocoes");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/bbh/promocoes");
         }
     }

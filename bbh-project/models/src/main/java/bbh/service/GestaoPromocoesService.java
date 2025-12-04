@@ -18,6 +18,7 @@ public class GestaoPromocoesService {
     }
 
     public List<Promocao> listarPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
+        dao.excluirPromocoesVencidas();
         return dao.listarPorEstabelecimento(idEstabelecimento);
     }
 
@@ -30,6 +31,15 @@ public class GestaoPromocoesService {
     }
 
     public List<Promocao> listarTodas() throws PersistenciaException {
+        dao.excluirPromocoesVencidas();
         return dao.listarTodas();
+    }
+    
+    public void atualizarPromocao(Promocao promocao) throws PersistenciaException {
+        dao.atualizar(promocao);
+    }
+    
+    public Promocao buscarPorId(Long id) throws PersistenciaException {
+        return dao.pesquisar(id);
     }
 }

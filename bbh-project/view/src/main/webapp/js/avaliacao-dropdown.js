@@ -1,12 +1,9 @@
 (function () {
     'use strict';
-    // showConfirmModal: usa o modal já presente no JSP (#confirmDeleteModal)
-    // retorna Promise<boolean> que resolve true se confirmar, false se cancelar/fechar
     function showConfirmModal(message) {
         return new Promise((resolve) => {
             const modal = document.getElementById('confirmDeleteModal');
             if (!modal) {
-                // fallback para confirm nativo se modal não existir
                 resolve(window.confirm(message));
                 return;
             }
@@ -16,24 +13,19 @@
             const btnCancel = document.getElementById('confirmCancelBtn');
             const btnClose = document.getElementById('confirmCloseBtn');
 
-            // atualiza mensagem
             if (msgEl) msgEl.textContent = message || 'Confirmar?';
 
-            // mostra modal
             modal.classList.add('show');
             modal.setAttribute('aria-hidden', 'false');
 
-            // foco acessível no botão confirmar
             setTimeout(() => btnConfirm && btnConfirm.focus(), 30);
             function cleanup(result) {
-                // remover listeners
                 btnConfirm && btnConfirm.removeEventListener('click', onConfirm);
                 btnCancel && btnCancel.removeEventListener('click', onCancel);
                 btnClose && btnClose.removeEventListener('click', onCancel);
                 modal && modal.removeEventListener('click', onBackdrop);
                 document.removeEventListener('keydown', onKeydown);
 
-                // esconder modal
                 modal.classList.remove('show');
                 modal.setAttribute('aria-hidden', 'true');
 
@@ -64,7 +56,6 @@
     }
 
     document.addEventListener('click', function (e) {
-        // 1) Toggle do menu
         const toggle = e.target.closest('.action-toggle');
         if (toggle) {
             e.preventDefault();
@@ -85,7 +76,7 @@
             closeAll();
         }
 
-        // 2) REMOVER mídia (com modal estilizado)
+
         const rem = e.target.closest('.action-remove');
         if (rem) {
             e.preventDefault();
@@ -101,7 +92,7 @@
                     body: "id=" + encodeURIComponent(id)
                 }).then(r => {
                     if (!r.ok) throw new Error();
-                    item.remove();   // remove o card do DOM
+                    item.remove();
                     closeAll();
                 }).catch(() => alert("Erro ao remover mídia"));
             });
@@ -109,7 +100,6 @@
             return;
         }
 
-        // 3) ATUALIZAR mídia
         const upd = e.target.closest('.action-update');
         if (upd) {
             e.preventDefault();
@@ -124,7 +114,6 @@
                 delete fileInput.dataset.opening;
                 fileInput.removeEventListener('change', onChange);
 
-                // Submit seguro para multipart/form-data
                 if (updForm.requestSubmit) updForm.requestSubmit();
                 else updForm.submit();
             };
