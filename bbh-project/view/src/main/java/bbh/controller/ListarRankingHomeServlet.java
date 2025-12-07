@@ -9,13 +9,13 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/feed")
+@WebServlet("/rankingHome/listar")
 public class ListarRankingHomeServlet extends BaseServlet {
 
     private final RankingEstabelecimentoService rankingService = new RankingEstabelecimentoService();
 
-    private final int limiteBuscas = 3;
-    private final int avalicoesMinimasNecessarias = 3;
+    private final int limiteBuscas = 2;
+    private final int avalicoesMinimasNecessarias = 1;
     private final int janelaDeTempoDias = 7;
 
     @Override
@@ -28,7 +28,7 @@ public class ListarRankingHomeServlet extends BaseServlet {
                     avalicoesMinimasNecessarias, janelaDeTempoDias);
             req.setAttribute("topMedias", topMedias);
             req.setAttribute("topVisitacoes", topVisitacoes);
-            req.getRequestDispatcher("/jsps/turista/pagina-principal.jsp").include(req, resp);
+            req.getRequestDispatcher("/jsps/turista/ranking-home.jsp").include(req, resp);
 
         } catch (PersistenciaException e) {
             throw new ServletException("Erro ao carregar rankings para a home: " + e.getMessage(), e);

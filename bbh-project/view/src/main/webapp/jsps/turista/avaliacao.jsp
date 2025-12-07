@@ -2,8 +2,9 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <head>
     <title>Avaliações</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacoes.css" />
 </head>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacoes.css" />
+
 
 <section class="avaliacoes">
     <h1 style="margin-bottom:15px; margin-left:5px">Avaliações</h1>

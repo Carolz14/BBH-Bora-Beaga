@@ -22,6 +22,7 @@ public class RankingEstabelecimentoService {
         switch (tipo) {
             case "mais_visitacoes":
             case "mais-visitacoes":
+            case "visitacoes":
                 return rankingEstabelecimentoDAO.listarComOsMaioresNumerosDeVisitacoes(limiteDeBuscas,numeroAvaliacoesMin, filtroDias);
 
             case "media":

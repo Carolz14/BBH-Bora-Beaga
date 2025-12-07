@@ -285,3 +285,8 @@
     color: var(--cor-primaria);
     margin-right: 8px;
 }
+
+.subtexto > span{
+    font-weight: 300;
+    font-size: 13px;
+}

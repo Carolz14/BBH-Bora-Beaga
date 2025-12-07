@@ -36,16 +36,17 @@ public class RankingEstabelecimentoDAO {
                 WHERE u.usuario_tipo = 'ESTABELECIMENTO'
                 GROUP BY u.id, u.nome
                 HAVING COUNT(a.id_avaliacao) >= ?
-                ORDER BY """ + orderByClause + """
+                ORDER BY %s
                 LIMIT ?
-                """;
+                """.formatted(orderByClause);
 
         List<RankingEstabelecimento> lista = new ArrayList<>();
 
         long millisWindow = TimeUnit.DAYS.toMillis(Math.max(0, filtroDias));
         Timestamp limiteTimestamp = new Timestamp(Instant.now().toEpochMilli() - millisWindow);
 
-        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setTimestamp(1, limiteTimestamp);
             ps.setInt(2, numeroAvaliacoesMin);

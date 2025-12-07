@@ -57,9 +57,6 @@ public class InitDB {
                     """;
             stmt.executeUpdate(sqlRoteiros);
             System.out.println("Tabela 'roteiros' verificada/criada com sucesso.");
-
-          
-            // verifica se há registros e poem "usuarios iniciais"
             try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM usuarios")) {
                 rs.next();
                 int total = rs.getInt("total");
