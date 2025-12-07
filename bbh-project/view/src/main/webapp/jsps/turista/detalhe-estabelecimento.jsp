@@ -21,7 +21,7 @@
         <main>
             <div class="container">
 
-                <a href="${pageContext.request.contextPath}/jsps/turista/pagina-principal.jsp" class="back-link">Voltar</a>
+                <a href="${pageContext.request.contextPath}/bbh/feed" class="back-link">Voltar</a>
 
                 <c:if test="${not empty estabelecimento}">
                     <div class="estabelecimento">
