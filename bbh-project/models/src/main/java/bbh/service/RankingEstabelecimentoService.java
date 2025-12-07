@@ -10,7 +10,7 @@ public class RankingEstabelecimentoService {
 
     private final RankingEstabelecimentoDAO rankingEstabelecimentoDAO;
 
-    public RankingEstabelecimentoService(RankingEstabelecimentoDAO dao) {
+    public RankingEstabelecimentoService() {
         this.rankingEstabelecimentoDAO = new RankingEstabelecimentoDAO();
     }
 
