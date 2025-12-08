@@ -42,7 +42,7 @@
     </header>
 
     <section class="proximos4-section">
-        <h2>Próximos 4 eventos</h2>
+        <h2>Eventos próximos:</h2>
         <div class="eventos-grid">
             <% if (proximos4 != null && !proximos4.isEmpty()) {
                 for (Evento e : proximos4) { %>

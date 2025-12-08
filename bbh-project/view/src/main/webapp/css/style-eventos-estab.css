@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@300;700;900&family=Roboto+Slab:wght@300;400;700&display=swap');
+
+:root {
+    --fonte-logo: "Fraunces", serif;
+    --fonte-texto: "Roboto Slab", serif;
+    --fonte-cursiva: "Parisienne", cursive;
+    --cor-fundo: #ffffff;
+    --cor-primaria: #f9e470;
+    --cor-secundaria: #93c665;
+    --cor-borda: #dcdcdc;
+}
+
+.conteudo-eventos-estab {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    box-sizing: border-box;
+    font-family: var(--fonte-texto);
+}
+
+.eventos-titulo {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--cor-primaria);
+    padding-bottom: 10px;
+}
+
+.eventos-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.evento-card {
+    background-color: #f9f9f9;
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 20px;
+    width: 250px;
+    max-width: 300px;
+    flex-grow: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.evento-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cor-secundaria);
+}
+
+.evento-nome {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.evento-desc {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.evento-data {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--cor-secundaria);
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed #ccc;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.btn-acao {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    color: white;
+}
+
+.btn-editar {
+    background-color: #f0ad4e;
+}
+
+.btn-excluir {
+    background-color: #d9534f;
+}
+
+.evento-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: 700;
+}
+
+input, textarea {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    background-color: transparent;
+    outline: none;
+    font-family: var(--fonte-texto);
+    font-size: 16px;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--cor-secundaria);
+}
+
+.btn-criar {
+    background-color: var(--cor-secundaria);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: fit-content;
+    margin-top: 10px;
+}
+
+.btn-criar:hover {
+    background-color: #7fb04e;
+}
