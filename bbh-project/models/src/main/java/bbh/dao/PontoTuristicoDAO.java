@@ -54,7 +54,8 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
     @Override
     public PontoTuristico pesquisar(Long id) throws PersistenciaException {
         PontoTuristico pt = null;
-        String sql = "SELECT id, nome, endereco, descricao, ativo FROM ponto_turistico WHERE id = ?";
+        
+        String sql = "SELECT id, nome, endereco, descricao, imagem_url, ativo FROM ponto_turistico WHERE id = ?";
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -68,6 +69,8 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
                     pt.setNome(rs.getString("nome"));
                     pt.setEndereco(rs.getString("endereco"));
                     pt.setDescricao(rs.getString("descricao"));
+                    pt.setImagemUrl(rs.getString("imagem_url"));
+                    
                     pt.setAtivo(rs.getBoolean("ativo"));
                 }
             }
@@ -79,9 +82,10 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
         return pt;
     }
 
-    public List<PontoTuristico> listarAtivos() throws PersistenciaException {
+    public List<PontoTuristico> listarTodos() throws PersistenciaException {
         List<PontoTuristico> lista = new ArrayList<>();
-        String sql = "SELECT id, nome, endereco, descricao, ativo FROM ponto_turistico WHERE ativo = TRUE";
+        
+        String sql = "SELECT id, nome, endereco, categoria, descricao, imagem_url, ativo FROM ponto_turistico";
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -93,15 +97,42 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
                 pt.setNome(rs.getString("nome"));
                 pt.setEndereco(rs.getString("endereco"));
                 pt.setDescricao(rs.getString("descricao"));
+                pt.setImagemUrl(rs.getString("imagem_url")); 
+                
                 pt.setAtivo(rs.getBoolean("ativo"));
 
                 lista.add(pt);
             }
 
         } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao listar pontos turísticos ativos: " + e.getMessage(), e);
+            throw new PersistenciaException("Erro ao listar todos: " + e.getMessage(), e);
         }
 
+        return lista;
+    }
+
+    public List<PontoTuristico> listarAtivos() throws PersistenciaException {
+        List<PontoTuristico> lista = new ArrayList<>();
+        String sql = "SELECT id, nome, endereco, descricao, imagem_url, ativo FROM ponto_turistico WHERE ativo = TRUE";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                PontoTuristico pt = new PontoTuristico();
+                pt.setId(rs.getLong("id"));
+                pt.setNome(rs.getString("nome"));
+                pt.setEndereco(rs.getString("endereco"));
+                pt.setDescricao(rs.getString("descricao"));
+                pt.setImagemUrl(rs.getString("imagem_url"));
+                
+                pt.setAtivo(rs.getBoolean("ativo"));
+                lista.add(pt);
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao listar ativos: " + e.getMessage(), e);
+        }
         return lista;
     }
     

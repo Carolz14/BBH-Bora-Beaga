@@ -22,7 +22,7 @@ import java.util.List;
 )
 public class CadastroPontoTuristico extends HttpServlet {
 
-    private static final String UPLOAD_DIR = "imagens_pontos";
+    private static final String UPLOAD_DIR = "C:" + File.separator + "bbh_imagens";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -117,10 +117,9 @@ public class CadastroPontoTuristico extends HttpServlet {
     }
 
     private String realizarUpload(HttpServletRequest request) throws IOException, ServletException {
-        String applicationPath = request.getServletContext().getRealPath("");
-        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
-
-        File uploadDir = new File(uploadFilePath);
+        
+        // 1. Cria a pasta C:\bbh_imagens se não existir
+        File uploadDir = new File(UPLOAD_DIR);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
@@ -130,9 +129,18 @@ public class CadastroPontoTuristico extends HttpServlet {
             if (part.getName().equals("imagem")) {
                 fileName = getFileName(part);
                 if (fileName != null && !fileName.isEmpty()) {
+                    // Remove espaços
+                    fileName = fileName.replaceAll("\\s+", "_");
+                    
                     String novoNome = UUID.randomUUID().toString() + "_" + fileName;
-                    part.write(uploadFilePath + File.separator + novoNome);
-                    return UPLOAD_DIR + "/" + novoNome;
+                    
+                    // 2. Salva o arquivo na pasta fixa
+                    part.write(UPLOAD_DIR + File.separator + novoNome);
+                    
+                    System.out.println("ARQUIVO SALVO EM: " + UPLOAD_DIR + File.separator + novoNome);
+                    
+                    // 3. Retorna APENAS o nome do arquivo para salvar no banco
+                    return novoNome; 
                 }
             }
         }
