@@ -5,18 +5,18 @@ public class Local {
     private String nome;
     private String endereco;
     private String categoria;
-   // private String descricao;
+    private String descricao;
  
     private boolean ativo = true;
 
     public Local() {}
 
-    public Local(Long id, String nome, String endereco, String categoria) {
+    public Local(Long id, String nome, String endereco, String categoria, String descricao) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
         this.categoria = categoria;
-        //this.descricao = descricao;
+        this.descricao = descricao;
     }
 
     public Long getId() { 
@@ -47,13 +47,12 @@ public class Local {
         this.categoria = categoria; 
     }
 
-   /* public String getDescricao() { 
+   public String getDescricao() { 
         return descricao; 
     }
     public void setDescricao(String descricao) { 
         this.descricao = descricao; 
     } 
-    */
 
     public boolean isAtivo() { 
         return ativo; 

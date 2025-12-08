@@ -291,6 +291,23 @@ public class CriarTabelas {
         System.out.println("Tabela 'eventos' criada (ou já existia).");
     }
 }
+    private static void criarTabelaPontoTuristico() throws SQLException {
+        String sql = """
+            CREATE TABLE IF NOT EXISTS ponto_turistico (
+                id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(150) NOT NULL,
+                endereco VARCHAR(255) NOT NULL,
+                imagem_url VARCHAR(255),
+                descricao TEXT,
+                ativo BOOLEAN DEFAULT TRUE
+            );
+        """;
+
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sql);
+            System.out.println("Tabela 'ponto_turistico' criada (ou já existia).");
+        }
+    }
 
 
     public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
@@ -303,5 +320,6 @@ public class CriarTabelas {
         criarTabelaEventos();
         criarTabelaAvaliacao();
         criarTabelaAvaliacaoMidia();
+        criarTabelaPontoTuristico();
     }
 }

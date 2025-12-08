@@ -39,7 +39,7 @@ public class LocalDAO {
         List<Local> locais = new ArrayList<>();
 
         String sql = """
-                    SELECT id, nome, endereco, usuario_tipo
+                    SELECT id, nome, endereco, usuario_tipo, descricao
                     FROM usuarios
                     WHERE LOWER(nome) LIKE LOWER(?)
                       AND usuario_tipo = 'ESTABELECIMENTO'
@@ -58,7 +58,7 @@ public class LocalDAO {
                     local.setId(rs.getLong("id"));
                     local.setNome(rs.getString("nome"));
                     local.setCategoria("Estabelecimento");
-                    // local.setDescricao(rs.getString("descricao"));
+                    local.setDescricao(rs.getString("descricao"));
                     locais.add(local);
                 }
             }
@@ -73,7 +73,7 @@ public class LocalDAO {
     public Local buscarPorId(Long id) throws PersistenciaException {
         Local local = null;
 
-        String sql = "SELECT id, nome, endereco, usuario_tipo "
+        String sql = "SELECT id, nome, endereco, usuario_tipo, descricao "
                 + "FROM usuarios WHERE id = ? AND usuario_tipo = 'ESTABELECIMENTO'";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -87,6 +87,7 @@ public class LocalDAO {
                     local.setNome(rs.getString("nome"));
                     local.setEndereco(rs.getString("endereco"));
                     local.setCategoria("Estabelecimento");
+                    local.setDescricao(rs.getString("descricao"));
                 }
             }
 

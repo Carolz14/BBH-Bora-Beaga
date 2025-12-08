@@ -1,0 +1,221 @@
+
+.grid-pontos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 50px;
+    justify-content: center;
+}
+
+.separador {
+    width: 100%;
+    height: 2px;
+    background-color: var(--cor-primaria);
+    margin: 40px 0;
+    opacity: 0.6;
+}
+
+.ponto-card {
+    background-color: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, border-color 0.2s;
+}
+
+.ponto-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.card-img-container {
+    width: 100%;
+    height: 160px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-family: var(--fonte-texto);
+    font-size: 18px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.card-address {
+    font-family: var(--fonte-texto);
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.card-desc {
+    font-family: var(--fonte-texto);
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.btn-card {
+    flex: 1;
+    padding: 8px 0;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: var(--fonte-texto);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    border: none;
+}
+
+.btn-card:hover {
+    opacity: 0.85;
+}
+
+.btn-edit {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #d9534f; 
+    color: white;
+}
+
+.form-section {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+    border: 1px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-family: var(--fonte-texto);
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input[type="text"] {
+    font-family: var(--fonte-texto);
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus {
+    border-color: var(--cor-secundaria);
+}
+
+.upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: var(--fonte-texto);
+    color: #555;
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.upload-label:hover {
+    background-color: #fff;
+    border-color: var(--cor-secundaria);
+    color: var(--cor-secundaria);
+}
+
+.btn-cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ccc;
+    color: #333;
+    text-decoration: none;
+    font-family: var(--fonte-texto);
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 12px;
+    transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #bbb;
+}
+
+.submit-btn {
+    background-color: var(--cor-secundaria);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: var(--fonte-texto);
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #7fb04e;
+}
