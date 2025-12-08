@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="bbh.domain.Evento"%>
-<%@page import="java.util.List"%>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -10,6 +9,7 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-eventos-estab.css">
+    <script src="${pageContext.request.contextPath}/js/validarEvento.js" defer></script>
 </head>
 
 <body>
@@ -19,87 +19,109 @@
 <main>
     <div class="conteudo-eventos-estab">
 
-        <h1 class="eventos-titulo">Criar novo evento</h1>
+        <!-- TÍTULO PRINCIPAL -->
+        <h1 class="eventos-titulo">Gerenciar Eventos</h1>
 
-        <form class="evento-form" action="${pageContext.request.contextPath}/evento?action=add" method="POST">
+        <!-- LISTA DE EVENTOS CADASTRADOS -->
+        <div class="eventos-section">
+            <h2 class="eventos-titulo">Eventos Cadastrados</h2>
 
-            <label>Nome do evento</label>
-            <input type="text" name="nome" required>
+            <div class="eventos-list">
 
-            <label>Data</label>
-            <input type="date" name="dataEvento" required>
+                <c:choose>
+                    <c:when test="${not empty meusEventos}">
+                        <c:forEach var="e" items="${meusEventos}">
 
-            <label>Horário</label>
-            <input type="time" name="horarioEvento" required>
+                            <div class="evento-card">
 
-            <label>Descrição</label>
-            <textarea name="descricao"></textarea>
+                                <div class="card-topo">
+                                    <p class="evento-nome">${e.nome}</p>
+                                    <p class="evento-desc">${e.descricao}</p>
+                                </div>
 
-            <button class="btn-criar" type="submit">Criar Evento</button>
-        </form>
+                                <p class="evento-data">
+                                    ${e.data} — ${e.horario}
+                                </p>
 
-       
-        <h2 class="eventos-titulo" style="margin-top:40px;">Meus próximos eventos</h2>
+                                <!-- BOTÕES -->
+                                <div class="card-actions">
 
-        <div class="eventos-list">
-            <%
-                List<Evento> meus = (List<Evento>) request.getAttribute("meusEventos");
+                                    <!-- EDITAR (expande formulário abaixo) -->
+                                    <a href="#" class="btn-acao btn-editar"
+                                       onclick="document.getElementById('formEdit${e.id}').classList.toggle('show'); return false;">
+                                        Editar
+                                    </a>
 
-                if (meus != null && !meus.isEmpty()) {
-                    for (Evento e : meus) {
-            %>
+                                    <!-- EXCLUIR (POST real, sem GET) -->
+                                    <form action="${pageContext.request.contextPath}/evento?action=delete"
+                                          method="POST"
+                                          onsubmit="return confirm('Excluir este evento?');"
+                                          style="display:inline;">
+                                        <input type="hidden" name="id" value="${e.id}">
+                                        <button type="submit" class="btn-acao btn-excluir">Excluir</button>
+                                    </form>
+                                </div>
 
-            <div class="evento-card">
-                <p class="evento-nome"><%= e.getNome() %></p>
-                <p class="evento-desc"><%= e.getDescricao() %></p>
-                <p class="evento-data">
-                    <%= e.getData() %> — <%= e.getHorario() %>
-                </p>
+                                <!-- FORMULÁRIO DE EDIÇÃO -->
+                                <form id="formEdit${e.id}"
+                                      class="evento-form"
+                                      action="${pageContext.request.contextPath}/evento?action=update"
+                                      method="POST"
+                                      style="display:none; margin-top:15px;">
 
-                <div class="card-actions">
-                    <a href="#" class="btn-acao btn-editar"
-                       onclick="document.getElementById('formEdit<%= e.getId() %>').classList.toggle('show'); return false;">
-                        Editar
-                    </a>
+                                    <input type="hidden" name="id" value="${e.id}">
 
-                    <a href="${pageContext.request.contextPath}/evento?action=delete&id=<%= e.getId() %>"
-                       class="btn-acao btn-excluir"
-                       onclick="return confirm('Excluir este evento?');">
-                        Excluir
-                    </a>
-                </div>
-                
-                <form id="formEdit<%= e.getId() %>"
-                      class="evento-form"
-                      action="${pageContext.request.contextPath}/evento?action=update"
-                      method="POST"
-                      style="display:none; margin-top:15px;">
+                                    <label>Nome</label>
+                                    <input type="text" name="nome" value="${e.nome}" required>
 
-                    <input type="hidden" name="id" value="<%= e.getId() %>">
+                                    <label>Descrição</label>
+                                    <textarea name="descricao">${e.descricao}</textarea>
 
-                    <label>Nome</label>
-                    <input type="text" name="nome" value="<%= e.getNome() %>" required>
+                                    <label>Data</label>
+                                    <input type="date" name="dataEvento" value="${e.data}" required>
 
-                    <label>Descrição</label>
-                    <textarea name="descricao"><%= e.getDescricao() %></textarea>
+                                    <label>Horário</label>
+                                    <input type="time" name="horarioEvento" value="${e.horario}" required>
 
-                    <label>Data</label>
-                    <input type="date" name="dataEvento" value="<%= e.getData() %>" required>
+                                    <button class="btn-criar" type="submit">Salvar Alterações</button>
+                                </form>
 
-                    <label>Horário</label>
-                    <input type="time" name="horarioEvento" value="<%= e.getHorario() %>" required>
+                            </div>
 
-                    <button class="btn-criar">Salvar alterações</button>
-                </form>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Nenhum evento cadastrado.</p>
+                    </c:otherwise>
+                </c:choose>
 
             </div>
-
-            <%  }} else { %>
-
-            <p>Nenhum evento cadastrado.</p>
-
-            <% } %>
         </div>
+
+        <!-- FORMULÁRIO DE NOVO EVENTO -->
+        <div class="evento-form-section">
+            <h2 class="eventos-titulo">Criar Novo Evento</h2>
+
+            <form name="formEvento"
+                  method="POST"
+                  action="${pageContext.request.contextPath}/evento?action=add">
+
+                <label>Nome do evento</label>
+                <input type="text" name="nome" required>
+
+                <label>Descrição</label>
+                <textarea name="descricao"></textarea>
+
+                <label>Data</label>
+                <input type="date" name="dataEvento" required>
+
+                <label>Horário</label>
+                <input type="time" name="horarioEvento" required>
+
+                <button class="btn-criar" type="submit">Criar Evento</button>
+            </form>
+        </div>
+
     </div>
 </main>
 
