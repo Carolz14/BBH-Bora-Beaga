@@ -7,6 +7,7 @@ public class PontoTuristico {
     private String endereco;
     private String descricao;
     private String imagemUrl;
+    private String tag;
     private boolean ativo = true;
 
     public PontoTuristico() {
@@ -16,7 +17,6 @@ public class PontoTuristico {
         this.nome = nome;
         this.endereco = endereco;
         this.descricao = descricao;
-        this.imagemUrl = imagemUrl;
     }
 
     public Long getId() {
@@ -66,4 +66,13 @@ public class PontoTuristico {
     public void setImagemUrl(String imagemUrl) {
         this.imagemUrl = imagemUrl;
     }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
 }

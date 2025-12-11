@@ -28,7 +28,8 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
 
     @Override
     public void inserir(PontoTuristico pt) throws PersistenciaException {
-        String sql = "INSERT INTO ponto_turistico (nome, endereco, descricao, imagem_url) VALUES (?, ?, ?, ?)";
+        // ATUALIZADO: Incluindo a coluna 'tag'
+        String sql = "INSERT INTO ponto_turistico (nome, endereco, descricao, imagem_url, tag) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -37,6 +38,10 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
             ps.setString(2, pt.getEndereco());
             ps.setString(3, pt.getDescricao());
             ps.setString(4, pt.getImagemUrl());
+            
+            // Se a tag for nula, salva como string vazia ou um valor padrão para não quebrar
+            ps.setString(5, pt.getTag() != null ? pt.getTag() : ""); 
+
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -55,7 +60,8 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
     public PontoTuristico pesquisar(Long id) throws PersistenciaException {
         PontoTuristico pt = null;
         
-        String sql = "SELECT id, nome, endereco, descricao, imagem_url, ativo FROM ponto_turistico WHERE id = ?";
+        // ATUALIZADO: Trazendo a 'tag' no SELECT
+        String sql = "SELECT id, nome, endereco, descricao, imagem_url, tag, ativo FROM ponto_turistico WHERE id = ?";
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -71,6 +77,9 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
                     pt.setDescricao(rs.getString("descricao"));
                     pt.setImagemUrl(rs.getString("imagem_url"));
                     
+                    // Preenche a tag
+                    pt.setTag(rs.getString("tag"));
+                    
                     pt.setAtivo(rs.getBoolean("ativo"));
                 }
             }
@@ -85,7 +94,8 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
     public List<PontoTuristico> listarTodos() throws PersistenciaException {
         List<PontoTuristico> lista = new ArrayList<>();
         
-        String sql = "SELECT id, nome, endereco, categoria, descricao, imagem_url, ativo FROM ponto_turistico";
+        // ATUALIZADO: Trazendo a 'tag' no SELECT
+        String sql = "SELECT id, nome, endereco, descricao, imagem_url, tag, ativo FROM ponto_turistico";
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -98,7 +108,7 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
                 pt.setEndereco(rs.getString("endereco"));
                 pt.setDescricao(rs.getString("descricao"));
                 pt.setImagemUrl(rs.getString("imagem_url")); 
-                
+                pt.setTag(rs.getString("tag")); // Preenche a tag
                 pt.setAtivo(rs.getBoolean("ativo"));
 
                 lista.add(pt);
@@ -113,7 +123,9 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
 
     public List<PontoTuristico> listarAtivos() throws PersistenciaException {
         List<PontoTuristico> lista = new ArrayList<>();
-        String sql = "SELECT id, nome, endereco, descricao, imagem_url, ativo FROM ponto_turistico WHERE ativo = TRUE";
+        
+        // ATUALIZADO: Trazendo a 'tag' no SELECT
+        String sql = "SELECT id, nome, endereco, descricao, imagem_url, tag, ativo FROM ponto_turistico WHERE ativo = TRUE";
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -126,8 +138,9 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
                 pt.setEndereco(rs.getString("endereco"));
                 pt.setDescricao(rs.getString("descricao"));
                 pt.setImagemUrl(rs.getString("imagem_url"));
-                
+                pt.setTag(rs.getString("tag")); // Preenche a tag
                 pt.setAtivo(rs.getBoolean("ativo"));
+                
                 lista.add(pt);
             }
         } catch (SQLException e) {
@@ -138,7 +151,9 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
     
     public List<PontoTuristico> pesquisarPorNome(String termo) throws PersistenciaException {
         List<PontoTuristico> lista = new ArrayList<>();
-        String sql = "SELECT id, nome, endereco, descricao, ativo FROM ponto_turistico WHERE nome LIKE ? AND ativo = TRUE";
+        
+        // ATUALIZADO: Trazendo a 'tag' no SELECT
+        String sql = "SELECT id, nome, endereco, descricao, imagem_url, tag, ativo FROM ponto_turistico WHERE nome LIKE ? AND ativo = TRUE";
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -152,7 +167,10 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
                     pt.setNome(rs.getString("nome"));
                     pt.setEndereco(rs.getString("endereco"));
                     pt.setDescricao(rs.getString("descricao"));
+                    pt.setImagemUrl(rs.getString("imagem_url")); 
+                    pt.setTag(rs.getString("tag")); // Preenche a tag
                     pt.setAtivo(rs.getBoolean("ativo"));
+                    
                     lista.add(pt);
                 }
             }
@@ -165,7 +183,8 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
     }
 
     public void atualizar(PontoTuristico pt) throws PersistenciaException {
-        String sql = "UPDATE ponto_turistico SET nome=?, endereco=?, descricao=? WHERE id=?";
+        // ATUALIZADO: Incluí tag, imagem_url e ativo no UPDATE (estava faltando no seu código antigo)
+        String sql = "UPDATE ponto_turistico SET nome=?, endereco=?, descricao=?, imagem_url=?, tag=?, ativo=? WHERE id=?";
 
         try (Connection conn = ConexaoBD.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -173,7 +192,10 @@ public class PontoTuristicoDAO implements GenericDeleteDAO<PontoTuristico, Long>
             ps.setString(1, pt.getNome());
             ps.setString(2, pt.getEndereco());
             ps.setString(3, pt.getDescricao());
-            ps.setLong(4, pt.getId());
+            ps.setString(4, pt.getImagemUrl());
+            ps.setString(5, pt.getTag());
+            ps.setBoolean(6, pt.isAtivo());
+            ps.setLong(7, pt.getId());
 
             ps.executeUpdate();
 

@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html lang="pt">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bora Beagá</title>
-     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-principal.css">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bora Beagá</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-principal.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-estab.css">
@@ -17,12 +17,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
               integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
-       <link rel="icon" href="../../imagens/icon-page.png">
-</head>
+        <link rel="icon" href="../../imagens/icon-page.png">
+    </head>
 
-<body>
-    
-  
+    <body>
+
+
 
 
     <body>
@@ -41,48 +41,70 @@
                 </div>
 
                 <section class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
+
+                    <c:if test="${not empty sessionScope.erro}">
+                        <h3 class="resultados-titulo" style="color: #d9534f;">${sessionScope.erro}</h3>
+                    </c:if>
+
                     <c:if test="${not empty sessionScope.resultados}">
                         <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
                         <div class="resultados-grid">
                             <c:forEach var="local" items="${sessionScope.resultados}">
-                                <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${local.id}" class="resultado-card">
-                                    <p>${local.nome}</p>
+
+                                <c:choose>
+                                    <c:when test="${local.categoria == 'Estabelecimento'}">
+                                        <c:url var="linkDetalhe" value="/bbh/DetalheEstabelecimentoController">
+                                            <c:param name="id" value="${local.id}"/>
+                                        </c:url>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:url var="linkDetalhe" value="/bbh/DetalhePontoTuristico">
+                                            <c:param name="id" value="${local.id}"/>
+                                        </c:url>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <a href="${linkDetalhe}" class="resultado-card">
+                                    <div class="resultado-img-placeholder">
+                                        <i class="fa-solid fa-map-location-dot resultado-icon-placeholder"></i>
+                                    </div>
+
+                                    <div class="resultado-info">
+                                        <p>${local.nome}</p>
+                                        <span>${local.categoria}</span>
+                                    </div>
                                 </a>
                             </c:forEach>
                         </div>
                     </c:if>
-
-                    <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
-                        <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
-                    </c:if>
                 </section>
 
-                 <div class="quick-filters">
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=restaurante" class="category-item">
-                    <i class="fa-solid fa-utensils"></i>
-                    <span>Restaurantes</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=museus" class="category-item">
-                    <i class="fa-solid fa-landmark"></i>
-                    <span>Museus</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=bar" class="category-item">
-                    <i class="fa-solid fa-martini-glass"></i>
-                    <span>Bares</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=parque" class="category-item">
-                    <i class="fa-solid fa-tree"></i>
-                    <span>Parques</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=monumentos" class="category-item">
-                    <i class="fa-solid fa-monument"></i>
-                    <span>Monumentos</span>
-                </a>
-                <a href="${pageContext.request.contextPath}/bbh/todasPromocoes" class="category-item">
-                    <i class="fa-solid fa-tags"></i>
-                    <span>Promoções</span>
-                </a>
-            </div>
+                <div class="quick-filters">
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=restaurante" class="category-item">
+                        <i class="fa-solid fa-utensils"></i>
+                        <span>Restaurantes</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=museus" class="category-item">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span>Museus</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=bar" class="category-item">
+                        <i class="fa-solid fa-martini-glass"></i>
+                        <span>Bares</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=parque" class="category-item">
+                        <i class="fa-solid fa-tree"></i>
+                        <span>Parques</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/EstabelecimentosController?tag=monumentos" class="category-item">
+                        <i class="fa-solid fa-monument"></i>
+                        <span>Monumentos</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/bbh/todasPromocoes" class="category-item">
+                        <i class="fa-solid fa-tags"></i>
+                        <span>Promoções</span>
+                    </a>
+                </div>
             </section>
 
             <section class="nearby-section">
@@ -118,43 +140,43 @@
                 </div>
             </section>
 
-        
 
-        <section class="ranking">
-            <h1>Locais do momento</h1>
-            <div class="ranking-list">
-                <a href="detalhe-estabelecimento.jsp" class="ranking-item">
-                    <span class="rank-number">1</span>
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 1" class="rank-img">
-                    <p class="rank-name">Nome do Estabelecimento 1</p>
-                    <div class="rank-rating">
-                        <i class="fas fa-star"></i>
-                        <span>4.9</span>
-                    </div>
-                </a>
-                <a href="detalhe-estabelecimento.jsp" class="ranking-item">
-                    <span class="rank-number">2</span>
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 2" class="rank-img">
-                    <p class="rank-name">Nome do Estabelecimento 2</p>
-                    <div class="rank-rating">
-                        <i class="fas fa-star"></i>
-                        <span>4.8</span>
-                    </div>
-                </a>
-                <a href="detalhe-estabelecimento.jsp" class="ranking-item">
-                    <span class="rank-number">3</span>
-                    <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 3" class="rank-img">
-                    <p class="rank-name">Nome do Estabelecimento 3</p>
-                    <div class="rank-rating">
-                        <i class="fas fa-star"></i>
-                        <span>4.7</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-    </main>
-    
-    <%@ include file="../footer.jsp" %>
 
-</body>
+            <section class="ranking">
+                <h1>Locais do momento</h1>
+                <div class="ranking-list">
+                    <a href="detalhe-estabelecimento.jsp" class="ranking-item">
+                        <span class="rank-number">1</span>
+                        <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 1" class="rank-img">
+                        <p class="rank-name">Nome do Estabelecimento 1</p>
+                        <div class="rank-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.9</span>
+                        </div>
+                    </a>
+                    <a href="detalhe-estabelecimento.jsp" class="ranking-item">
+                        <span class="rank-number">2</span>
+                        <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 2" class="rank-img">
+                        <p class="rank-name">Nome do Estabelecimento 2</p>
+                        <div class="rank-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.8</span>
+                        </div>
+                    </a>
+                    <a href="detalhe-estabelecimento.jsp" class="ranking-item">
+                        <span class="rank-number">3</span>
+                        <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 3" class="rank-img">
+                        <p class="rank-name">Nome do Estabelecimento 3</p>
+                        <div class="rank-rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.7</span>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <%@ include file="../footer.jsp" %>
+
+    </body>
 </html>

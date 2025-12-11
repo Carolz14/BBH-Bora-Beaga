@@ -12,9 +12,7 @@
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/painel.css">
-
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pontoturistico.css">
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     </head>
     <body>
@@ -22,20 +20,35 @@
         <%@ include file="../header.jsp" %>
 
         <main>
-            <div class="container" style="padding: 40px 20px;">
+            <div class="container">
 
-                <h1 class="pagina-titulo" style="text-align: center; margin-bottom: 30px;">Gerenciar Pontos Turísticos</h1>
+                <h1 class="pagina-titulo text-center">Gerenciar Pontos Turísticos</h1>
+
+                <div class="painel-search-bar">
+                    <form action="${pageContext.request.contextPath}/bbh/CadastroPontoTuristico" method="get">
+                        <input type="text" name="busca" placeholder="Pesquisar ponto turístico..." value="${param.busca}">
+                        <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
+
+                        <c:if test="${not empty param.busca}">
+                            <a href="${pageContext.request.contextPath}/bbh/CadastroPontoTuristico" class="btn-limpar-busca">
+                                <i class="fa-solid fa-xmark"></i>
+                            </a>
+                        </c:if>
+                    </form>
+                </div>
 
                 <div class="grid-pontos">
                     <c:choose>
                         <c:when test="${not empty pontos}">
-                            <c:forEach var="p" items="${pontos}">
+
+                            <c:set var="limiteLoop" value="${(not empty param.busca or not empty param.verTodos) ? pontos.size() : 2}" />
+
+                            <c:forEach var="p" items="${pontos}" end="${limiteLoop}">
                                 <div class="ponto-card">
                                     <div class="card-img-container">
                                         <c:choose>
                                             <c:when test="${not empty p.imagemUrl}">
-                                                <img src="${pageContext.request.contextPath}/imagem?nome=${p.imagemUrl}" 
-                                                     alt="${p.nome}" class="card-img">
+                                                <img src="${pageContext.request.contextPath}/imagem?nome=${p.imagemUrl}" alt="${p.nome}" class="card-img">
                                             </c:when>
                                             <c:otherwise>
                                                 <i class="fa-solid fa-image" style="font-size: 40px; color: #ccc;"></i>
@@ -64,16 +77,27 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <p style="text-align: center; width: 100%; color: #666;">Nenhum ponto turístico cadastrado ainda.</p>
+                            <p class="text-center w-100 grey-text">Nenhum ponto turístico encontrado.</p>
                         </c:otherwise>
                     </c:choose>
                 </div>
+
+                <c:if test="${pontos.size() > 3 and empty param.busca and empty param.verTodos}">
+                    <a href="${pageContext.request.contextPath}/bbh/CadastroPontoTuristico?verTodos=true" class="btn-ver-todos">
+                        Ver todos os pontos turísticos <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+                </c:if>
+                <c:if test="${not empty param.verTodos}">
+                    <a href="${pageContext.request.contextPath}/bbh/CadastroPontoTuristico" class="btn-ver-todos">
+                        Mostrar menos <i class="fa-solid fa-chevron-up"></i>
+                    </a>
+                </c:if>
 
                 <div class="separador"></div>
 
                 <div class="form-section" id="formulario">
                     <div class="perfil-form">
-                        <h2 class="pagina-titulo" style="text-align: center; margin-bottom: 20px;">
+                        <h2 class="pagina-titulo text-center">
                             ${not empty pontoEdit ? 'Editar Ponto Turístico' : 'Cadastrar Novo Ponto'}
                         </h2>
 
@@ -84,29 +108,43 @@
 
                             <div class="form-group">
                                 <label for="nome">Nome do Local:</label>
-                                <input style="min-height: 40px;" type="text" id="nome" name="nome" 
+                                <input class="input-padrao" type="text" id="nome" name="nome" 
                                        placeholder="Ex: Praça da Liberdade" 
                                        value="${pontoEdit.nome}" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="endereco">Endereço Completo:</label>
-                                <input style="min-height: 40px;" type="text" id="endereco" name="endereco" 
+                                <input class="input-padrao" type="text" id="endereco" name="endereco" 
                                        placeholder="Ex: Av. Brasil, 2000 - Savassi" 
                                        value="${pontoEdit.endereco}" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="descricao">Descrição:</label>
-                                <input style="min-height: 100px;" type="text" id="descricao" name="descricao" 
+                                <input class="input-area" type="text" id="descricao" name="descricao" 
                                        placeholder="Conte um pouco sobre o local..." 
                                        value="${pontoEdit.descricao}">
                             </div>
 
                             <div class="form-group">
+                                <label for="tag">Categoria Principal:</label>
+                                <select id="tag" name="tag" class="input-select">
+                                    <option value="" disabled ${empty pontoEdit.tag ? 'selected' : ''}>Selecione uma categoria...</option>
+                                    <option value="lazer" ${pontoEdit.tag == 'lazer' ? 'selected' : ''}>Lazer</option>
+                                    <option value="parque" ${pontoEdit.tag == 'parque' ? 'selected' : ''}>Parque</option>
+                                    <option value="familia" ${pontoEdit.tag == 'familia' ? 'selected' : ''}>Família</option>
+                                    <option value="igrejas" ${pontoEdit.tag == 'igrejas' ? 'selected' : ''}>Igrejas</option>
+                                    <option value="monumentos" ${pontoEdit.tag == 'monumentos' ? 'selected' : ''}>Monumentos</option>
+                                    <option value="museus" ${pontoEdit.tag == 'museus' ? 'selected' : ''}>Museus</option>
+                                    <option value="outros" ${pontoEdit.tag == 'outros' ? 'selected' : ''}>Outros</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label>Imagem do Local:</label>
                                 <c:if test="${not empty pontoEdit}">
-                                    <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Deixe vazio para manter a imagem atual.</p>
+                                    <p class="aviso-edicao">Deixe vazio para manter a imagem atual.</p>
                                 </c:if>
 
                                 <input type="file" id="imagem-upload" name="imagem" accept="image/*" style="display: none;">
@@ -115,8 +153,8 @@
                                 </label>
                             </div>
 
-                            <div class="form-group" style="display: flex; gap: 10px; margin-top: 20px;">
-                                <button type="submit" class="submit-btn" style="flex: 1;">
+                            <div class="form-group actions-group">
+                                <button type="submit" class="submit-btn flex-1">
                                     ${not empty pontoEdit ? 'Salvar Alterações' : 'Cadastrar'}
                                 </button>
 

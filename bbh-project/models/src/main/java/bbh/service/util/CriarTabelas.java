@@ -299,6 +299,7 @@ public class CriarTabelas {
                 endereco VARCHAR(255) NOT NULL,
                 imagem_url VARCHAR(255),
                 descricao TEXT,
+                tag VARCHAR(50),
                 ativo BOOLEAN DEFAULT TRUE
             );
         """;

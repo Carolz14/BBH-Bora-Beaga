@@ -32,4 +32,8 @@ public class GestaoPontoTuristico {
     public PontoTuristico buscarPorId(Long id) throws PersistenciaException {
         return dao.pesquisar(id);
     }
+    
+    public List<PontoTuristico> pesquisarPorNome(String nome) throws PersistenciaException {
+        return dao.pesquisarPorNome(nome);
+    }
 }

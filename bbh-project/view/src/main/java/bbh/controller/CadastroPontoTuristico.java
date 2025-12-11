@@ -16,9 +16,9 @@ import java.util.List;
 
 @WebServlet("/bbh/CadastroPontoTuristico")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
-    maxFileSize = 1024 * 1024 * 10,       // 10MB
-    maxRequestSize = 1024 * 1024 * 50     // 50MB
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class CadastroPontoTuristico extends HttpServlet {
 
@@ -35,39 +35,42 @@ public class CadastroPontoTuristico extends HttpServlet {
             String nome = request.getParameter("nome");
             String endereco = request.getParameter("endereco");
             String descricao = request.getParameter("descricao");
+            String tag = request.getParameter("tag");
 
             GestaoPontoTuristico service = new GestaoPontoTuristico();
 
             if ("cadastrar".equals(acao)) {
-                
+
                 String imagemUrl = realizarUpload(request);
-                
+
                 PontoTuristico pt = new PontoTuristico();
                 pt.setNome(nome);
                 pt.setEndereco(endereco);
                 pt.setDescricao(descricao);
                 pt.setImagemUrl(imagemUrl);
+                pt.setTag(tag);
 
                 service.cadastrar(pt);
 
             } else if ("atualizar".equals(acao)) {
                 String idParam = request.getParameter("id");
-                if(idParam != null && !idParam.isEmpty()){
+                if (idParam != null && !idParam.isEmpty()) {
                     Long id = Long.valueOf(idParam);
-                    
+
                     PontoTuristico pt = new PontoTuristico();
                     pt.setId(id);
                     pt.setNome(nome);
                     pt.setEndereco(endereco);
                     pt.setDescricao(descricao);
-                    
+                    pt.setTag(tag);
+
                     Part filePart = request.getPart("imagem");
                     if (filePart != null && filePart.getSize() > 0) {
                         String imagemUrl = realizarUpload(request);
                         pt.setImagemUrl(imagemUrl);
                     } else {
                         PontoTuristico antigo = service.buscarPorId(id);
-                        if(antigo != null) {
+                        if (antigo != null) {
                             pt.setImagemUrl(antigo.getImagemUrl());
                         }
                     }
@@ -86,38 +89,43 @@ public class CadastroPontoTuristico extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         try {
             GestaoPontoTuristico service = new GestaoPontoTuristico();
             String acao = request.getParameter("acao");
             String idStr = request.getParameter("id");
+            String busca = request.getParameter("busca");
 
             if ("excluir".equals(acao) && idStr != null) {
                 service.excluir(Long.valueOf(idStr));
                 response.sendRedirect(request.getContextPath() + "/bbh/CadastroPontoTuristico");
                 return;
-            } 
-            else if ("editar".equals(acao) && idStr != null) {
+            } else if ("editar".equals(acao) && idStr != null) {
                 PontoTuristico pt = service.buscarPorId(Long.valueOf(idStr));
                 request.setAttribute("pontoEdit", pt);
             }
+            List<PontoTuristico> lista;
 
-            List<PontoTuristico> lista = service.listarTodos();
+            if (busca != null && !busca.trim().isEmpty()) {
+                lista = service.pesquisarPorNome(busca);
+            } else {
+                lista = service.listarTodos();
+            }
+
             request.setAttribute("pontos", lista);
-            
+
             request.getRequestDispatcher("/jsps/admin/painel.jsp").forward(request, response);
 
         } catch (Exception e) {
-            System.out.println("ERRO NO DOGET (CadastroPontoTuristico): " + e.getMessage());
+            System.out.println("ERRO NO DOGET: " + e.getMessage());
             e.printStackTrace();
-            
             request.setAttribute("erro", "Erro ao carregar dados: " + e.getMessage());
             request.getRequestDispatcher("/jsps/admin/painel.jsp").forward(request, response);
         }
     }
 
     private String realizarUpload(HttpServletRequest request) throws IOException, ServletException {
-        
+
         // 1. Cria a pasta C:\bbh_imagens se não existir
         File uploadDir = new File(UPLOAD_DIR);
         if (!uploadDir.exists()) {
@@ -131,16 +139,16 @@ public class CadastroPontoTuristico extends HttpServlet {
                 if (fileName != null && !fileName.isEmpty()) {
                     // Remove espaços
                     fileName = fileName.replaceAll("\\s+", "_");
-                    
+
                     String novoNome = UUID.randomUUID().toString() + "_" + fileName;
-                    
+
                     // 2. Salva o arquivo na pasta fixa
                     part.write(UPLOAD_DIR + File.separator + novoNome);
-                    
+
                     System.out.println("ARQUIVO SALVO EM: " + UPLOAD_DIR + File.separator + novoNome);
-                    
+
                     // 3. Retorna APENAS o nome do arquivo para salvar no banco
-                    return novoNome; 
+                    return novoNome;
                 }
             }
         }

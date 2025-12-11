@@ -1,13 +1,11 @@
 package bbh.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import bbh.common.PersistenciaException;
-import bbh.domain.Usuario;
-import bbh.service.GestaoEstabelecimentosService;
-import bbh.service.TagService;
+import bbh.domain.Local;
+import bbh.service.LocalService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,32 +20,27 @@ public class EstabelecimentosController extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            GestaoEstabelecimentosService gestaoEstabelecimentosService = new GestaoEstabelecimentosService();
-            TagService tagService = new TagService();
+            LocalService localService = new LocalService();
             String tag = request.getParameter("tag");
+            List<Local> resultados;
 
-            List<Long> listaIdEstabelecimentos = tagService.listarEstabelecimentosViaTag(tag);
-            List<Usuario> listaEstabelecimentos = new ArrayList<>();
-            for (Long id : listaIdEstabelecimentos) {
-                try {
-                    Usuario estabelecimento = gestaoEstabelecimentosService.listarEstabelecimentoPorId(id);
-                    if (estabelecimento != null) {
-                        listaEstabelecimentos.add(estabelecimento);
-                    }
-                } catch (PersistenciaException e) {
-                    throw new PersistenciaException("Erro ao buscar estabelecimento por ID através da tag" + e.getMessage(), e);
-                }
+            if (tag != null && !tag.isEmpty()) {
+                resultados = localService.buscarPorTag(tag);
+                
+                String tagFormatada = tag.substring(0, 1).toUpperCase() + tag.substring(1);
+                request.setAttribute("tituloPagina", tagFormatada);
+            } else {
+                resultados = localService.pesquisarPorNome(""); 
+                request.setAttribute("tituloPagina", "Todos os Locais");
             }
 
-            request.setAttribute("estabelecimentos", listaEstabelecimentos);
-            request.getSession().setAttribute("estabelecimentos", listaEstabelecimentos);
-            response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
+            request.setAttribute("listaLocais", resultados);
+     
+            request.getRequestDispatcher("/jsps/turista/lista-estabelecimento.jsp").forward(request, response);
             
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao listar estabelecimentos");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao listar locais: " + e.getMessage());
         }
-
     }
-
 }

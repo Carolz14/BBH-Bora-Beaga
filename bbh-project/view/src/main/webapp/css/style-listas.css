@@ -69,3 +69,41 @@ h3{
     margin: 0;
 }
 
+.sem-foto {
+    width: 140px;
+    height: 105px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 40px;
+    flex-shrink: 0;
+}
+
+.categoria-label {
+    background-color: #e9ecef;
+    color: #666;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: var(--fonte-texto);
+    text-transform: uppercase;
+    margin-top: auto; 
+}
+
+.back-link:hover {
+    color: var(--cor-primaria);
+}
+
+/* Mensagem de "Nenhum local encontrado" */
+.mensagem-vazio {
+    grid-column: 1 / -1; /* Faz ocupar toda a largura da grid */
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    font-family: var(--fonte-texto);
+    margin-top: 40px;
+}
