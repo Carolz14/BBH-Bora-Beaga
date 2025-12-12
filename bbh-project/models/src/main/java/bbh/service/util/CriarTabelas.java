@@ -291,6 +291,32 @@ public class CriarTabelas {
         System.out.println("Tabela 'eventos' criada (ou já existia).");
     }
 }
+    public static void criarTabelaSuporte() throws SQLException {
+    String sql = """
+        CREATE TABLE IF NOT EXISTS tickets (
+            id BIGINT AUTO_INCREMENT PRIMARY KEY,
+            usuario_id BIGINT NOT NULL,
+            usuario_email VARCHAR(255) NOT NULL,
+            assunto VARCHAR(255) NOT NULL,
+            mensagem TEXT NOT NULL,
+            resposta TEXT,
+            respondido_por BIGINT,
+            status VARCHAR(30) NOT NULL DEFAULT 'ABERTO',
+            criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            ativo BOOLEAN DEFAULT TRUE,
+            FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+            FOREIGN KEY (respondido_por) REFERENCES usuarios(id)
+                ON DELETE SET NULL ON UPDATE CASCADE
+        ) ENGINE=InnoDB;
+    """;
+
+    try (Connection con = ConexaoBD.getConnection();
+         Statement stmt = con.createStatement()) {
+        stmt.executeUpdate(sql);
+        System.out.println("Tabela 'tickets' criada (ou já existia).");
+    }
+}
 
 
     public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
@@ -303,5 +329,6 @@ public class CriarTabelas {
         criarTabelaEventos();
         criarTabelaAvaliacao();
         criarTabelaAvaliacaoMidia();
+        criarTabelaSuporte();
     }
 }
