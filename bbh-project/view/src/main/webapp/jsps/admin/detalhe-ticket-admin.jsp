@@ -1,7 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
-<c:if test="${empty sessionScope.usuario}">
+<c:if test="${empty sessionScope.usuario || sessionScope.usuario.usuarioTipo != 'ADMINISTRADOR'}">
     <c:redirect url="${pageContext.request.contextPath}/login.jsp"/>
 </c:if>
 
@@ -34,33 +34,22 @@
 
         <p><strong>Aberto em:</strong> ${ticket.dataAbertura}</p>
 
-        <hrA
+        <hr>
 
         <h2>Conversa</h2>
 
         <div class="mensagem usuario">
-            <strong>Você:</strong><br>
+            <strong>Usuário:</strong><br>
             ${ticket.mensagem}
         </div>
 
         <c:forEach var="m" items="${ticket.mensagens}">
             <div class="mensagem ${m.autorTipo == 'ADMIN' ? 'admin' : 'usuario'}">
-                <strong>
-                    <c:choose>
-                        <c:when test="${m.autorTipo == 'ADMIN'}">
-                            Admin
-                        </c:when>
-                        <c:otherwise>
-                            Você
-                        </c:otherwise>
-                    </c:choose>:
-                </strong><br>
-                
+                <strong>${m.autorTipo}:</strong><br>
                 ${m.mensagem}
                 <div class="data">${m.dataFormatada}</div>
             </div>
         </c:forEach>
-
 
         <c:if test="${ticket.status != 'CONCLUIDO'}">
             <hr>
@@ -74,6 +63,14 @@
                           required></textarea>
 
                 <button class="btn-responder">Responder</button>
+            </form>
+
+            <form action="${pageContext.request.contextPath}/bbh/suporte"
+                  method="post" style="margin-top:15px;">
+                <input type="hidden" name="acao" value="concluir">
+                <input type="hidden" name="id" value="${ticket.id}">
+
+                <button class="btn-concluir">Marcar como concluído</button>
             </form>
         </c:if>
 

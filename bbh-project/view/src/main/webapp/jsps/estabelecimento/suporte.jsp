@@ -17,82 +17,68 @@
 
 <body>
 
-    <%@ include file="../header.jsp" %>
+<%@ include file="../header.jsp" %>
 
-    <main class="container-suporte">
+<main class="container-suporte">
 
-        <h1 class="titulo">Suporte</h1>
-        <p class="descricao">Envie dúvidas, problemas ou sugestões ao administrador.</p>
+    <h1 class="titulo">Suporte</h1>
+    <p class="descricao">Envie dúvidas, problemas ou sugestões ao administrador.</p>
 
-        <section class="abrir-ticket">
-            <h2>Abrir novo ticket</h2>
+    <section class="abrir-ticket">
+        <h2>Abrir novo ticket</h2>
 
-            <form method="POST" action="${pageContext.request.contextPath}/bbh/suporte">
+        <form method="POST" action="${pageContext.request.contextPath}/bbh/suporte">
+            <input type="hidden" name="acao" value="abrir">
 
-                <input type="hidden" name="acao" value="abrir">
+            <label>Assunto:</label>
+            <input type="text" name="titulo" required>
 
-                <label>Assunto:</label>
-                <input type="text" name="titulo" required>
+            <label>Mensagem:</label>
+            <textarea name="mensagem" required></textarea>
 
-                <label>Mensagem:</label>
-                <textarea name="mensagem" required></textarea>
+            <button class="btn-enviar">Enviar</button>
+        </form>
+    </section>
 
-                <button class="btn-enviar">Enviar</button>
-            </form>
-        </section>
+    <section class="meus-tickets">
+        <h2>Meus Tickets</h2>
 
-        <section class="meus-tickets">
-            <h2>Meus Tickets</h2>
+        <c:choose>
+            <c:when test="${empty meusTickets}">
+                <p>Nenhum ticket encontrado.</p>
+            </c:when>
 
-            <c:choose>
+            <c:otherwise>
+                <div class="lista-ticket">
 
-                <c:when test="${empty meusTickets}">
-                    <p>Nenhum ticket encontrado.</p>
-                </c:when>
+                    <c:forEach var="ticket" items="${meusTickets}">
+                        <a class="card-ticket link-card"
+                           href="${pageContext.request.contextPath}/bbh/suporte?acao=ver&id=${ticket.id}">
 
-                <c:otherwise>
+                            <h3>#${ticket.id} — ${ticket.assunto}</h3>
 
-                    <div class="lista-ticket">
+                            <p class="status">
+                                Status:
+                                <span class="${ticket.status}">
+                                    ${ticket.status}
+                                </span>
+                            </p>
 
-                        <c:forEach var="ticket" items="${meusTickets}">
+                            <p class="data">
+                                Aberto em: ${ticket.dataAbertura}
+                            </p>
 
-                            <div class="card-ticket">
+                        </a>
+                    </c:forEach>
 
-                                <h3>#${ticket.id} — ${ticket.assunto}</h3>
+                </div>
+            </c:otherwise>
+        </c:choose>
 
-                                <p>${ticket.mensagem}</p>
+    </section>
 
-                                <p class="status">
-                                    Status:
-                                    <span class="${ticket.status}">
-                                        ${ticket.status}
-                                    </span>
-                                </p>
+</main>
 
-                                <c:if test="${not empty ticket.resposta}">
-                                    <p class="resposta-admin">
-                                        <strong>Resposta do administrador:</strong><br>
-                                        ${ticket.resposta}
-                                    </p>
-                                </c:if>
-
-                                <p class="data">Aberto em: ${ticket.dataAbertura}</p>
-
-                            </div>
-
-                        </c:forEach>
-
-                    </div>
-
-                </c:otherwise>
-
-            </c:choose>
-
-        </section>
-
-    </main>
-
-    <%@ include file="../footer.jsp" %>
-
+<%@ include file="../footer.jsp" %>
 </body>
 </html>
