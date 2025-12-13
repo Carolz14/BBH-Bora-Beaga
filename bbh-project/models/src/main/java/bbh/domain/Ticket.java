@@ -1,18 +1,22 @@
 package bbh.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ticket {
+
     private Long id;
     private Long usuarioId;
     private String usuarioEmail;
     private String assunto;
     private String mensagem;
-    private String resposta;
-    private Long respondidoPor;
     private String status;
     private LocalDateTime criadoEm;
     private Boolean ativo;
+
+    private List<TicketMensagem> mensagens = new ArrayList<>();
 
     public Ticket() {
         this.ativo = Boolean.TRUE;
@@ -59,22 +63,6 @@ public class Ticket {
         this.mensagem = mensagem;
     }
 
-    public String getResposta() {
-        return resposta;
-    }
-
-    public void setResposta(String resposta) {
-        this.resposta = resposta;
-    }
-
-    public Long getRespondidoPor() {
-        return respondidoPor;
-    }
-
-    public void setRespondidoPor(Long respondidoPor) {
-        this.respondidoPor = respondidoPor;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -97,5 +85,18 @@ public class Ticket {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public List<TicketMensagem> getMensagens() {
+        return mensagens;
+    }
+
+    public void setMensagens(List<TicketMensagem> mensagens) {
+        this.mensagens = mensagens;
+    }
+
+    public String getDataAbertura() {
+        if (criadoEm == null) return "";
+        return criadoEm.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
 }
