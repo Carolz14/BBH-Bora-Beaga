@@ -26,52 +26,68 @@
 
         <p><strong>Assunto:</strong> ${ticket.assunto}</p>
 
-        <p><strong>Status:</strong>
-            <span class="${ticket.status}">
-                ${ticket.status}
-            </span>
+        <p class="status">
+            Status:
+            <span class="${ticket.status}">${ticket.status}</span>
         </p>
 
-        <p><strong>Aberto em:</strong> ${ticket.dataAbertura}</p>
+        <p class="data">
+            Aberto em: ${ticket.dataAbertura}
+        </p>
 
         <hr>
 
         <h2>Conversa</h2>
 
-        <div class="mensagem usuario">
-            <strong>Usuário:</strong><br>
-            ${ticket.mensagem}
+        <div class="conversa">
+
+            <div class="mensagem outro">
+                <div class="autor">Usuário</div>
+                ${ticket.mensagem}
+                <div class="data">${ticket.dataAbertura}</div>
+            </div>
+
+            <c:forEach var="m" items="${ticket.mensagens}">
+                <c:set var="minha"
+                       value="${m.autorTipo == 'ADMIN'}"/>
+
+                <div class="mensagem ${minha ? 'eu' : 'outro'}">
+                    <div class="autor">
+                        ${minha ? 'Você' : 'Usuário'}
+                    </div>
+
+                    ${m.mensagem}
+
+                    <div class="data">${m.dataFormatada}</div>
+                </div>
+            </c:forEach>
+
         </div>
 
-        <c:forEach var="m" items="${ticket.mensagens}">
-            <div class="mensagem ${m.autorTipo == 'ADMIN' ? 'admin' : 'usuario'}">
-                <strong>${m.autorTipo}:</strong><br>
-                ${m.mensagem}
-                <div class="data">${m.dataFormatada}</div>
-            </div>
-        </c:forEach>
-
         <c:if test="${ticket.status != 'CONCLUIDO'}">
-            <hr>
 
-            <form action="${pageContext.request.contextPath}/bbh/suporte" method="post">
+            <form class="form-resposta"
+                  action="${pageContext.request.contextPath}/bbh/suporte"
+                  method="post">
+
                 <input type="hidden" name="acao" value="mensagem">
                 <input type="hidden" name="ticketId" value="${ticket.id}">
 
                 <textarea name="mensagem"
-                          placeholder="Digite sua resposta..."
+                          placeholder="Responder ao usuário..."
                           required></textarea>
 
-                <button class="btn-responder">Responder</button>
+                <button class="btn-responder">Enviar</button>
             </form>
 
             <form action="${pageContext.request.contextPath}/bbh/suporte"
-                  method="post" style="margin-top:15px;">
+                  method="post">
                 <input type="hidden" name="acao" value="concluir">
                 <input type="hidden" name="id" value="${ticket.id}">
 
                 <button class="btn-concluir">Marcar como concluído</button>
             </form>
+
         </c:if>
 
         <hr>

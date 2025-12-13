@@ -26,46 +26,62 @@
 
         <p><strong>Assunto:</strong> ${ticket.assunto}</p>
 
-        <p><strong>Status:</strong>
-            <span class="${ticket.status}">
-                ${ticket.status}
+    <div class="ticket-info">
+
+        <div class="ticket-linha">
+            <span class="label">Assunto</span>
+            <span class="valor">${ticket.assunto}</span>
+        </div>
+
+        <div class="ticket-linha">
+            <span class="label">Status</span>
+            <span class="valor status">
+                <span class="${ticket.status}">${ticket.status}</span>
             </span>
-        </p>
+        </div>
 
-        <p><strong>Aberto em:</strong> ${ticket.dataAbertura}</p>
+        <div class="ticket-linha">
+            <span class="label">Aberto em</span>
+            <span class="valor">${ticket.dataAbertura}</span>
+        </div>
 
-        <hrA
+    </div>
+
+
+        <hr>
 
         <h2>Conversa</h2>
 
-        <div class="mensagem usuario">
-            <strong>Você:</strong><br>
-            ${ticket.mensagem}
+        <div class="conversa">
+
+            <div class="mensagem eu">
+                <div class="autor">Você</div>
+                ${ticket.mensagem}
+                <div class="data">${ticket.dataAbertura}</div>
+            </div>
+
+            <c:forEach var="m" items="${ticket.mensagens}">
+                <c:set var="minha"
+                       value="${m.autorTipo != 'ADMIN'}"/>
+
+                <div class="mensagem ${minha ? 'eu' : 'outro'}">
+                    <div class="autor">
+                        ${minha ? 'Você' : 'Admin'}
+                    </div>
+
+                    ${m.mensagem}
+
+                    <div class="data">${m.dataFormatada}</div>
+                </div>
+            </c:forEach>
+
         </div>
 
-        <c:forEach var="m" items="${ticket.mensagens}">
-            <div class="mensagem ${m.autorTipo == 'ADMIN' ? 'admin' : 'usuario'}">
-                <strong>
-                    <c:choose>
-                        <c:when test="${m.autorTipo == 'ADMIN'}">
-                            Admin
-                        </c:when>
-                        <c:otherwise>
-                            Você
-                        </c:otherwise>
-                    </c:choose>:
-                </strong><br>
-                
-                ${m.mensagem}
-                <div class="data">${m.dataFormatada}</div>
-            </div>
-        </c:forEach>
-
-
         <c:if test="${ticket.status != 'CONCLUIDO'}">
-            <hr>
+            <form class="form-resposta"
+                  action="${pageContext.request.contextPath}/bbh/suporte"
+                  method="post">
 
-            <form action="${pageContext.request.contextPath}/bbh/suporte" method="post">
                 <input type="hidden" name="acao" value="mensagem">
                 <input type="hidden" name="ticketId" value="${ticket.id}">
 
@@ -73,7 +89,7 @@
                           placeholder="Digite sua resposta..."
                           required></textarea>
 
-                <button class="btn-responder">Responder</button>
+                <button class="btn-responder">Enviar</button>
             </form>
         </c:if>
 
