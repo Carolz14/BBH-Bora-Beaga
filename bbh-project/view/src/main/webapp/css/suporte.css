@@ -1,0 +1,176 @@
+.container-suporte {
+    max-width: 1000px;
+    background: #ffffff;
+    margin: 40px auto;
+    padding: 32px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Títulos */
+.titulo {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.descricao {
+    color: #666;
+    margin-bottom: 35px;
+    font-size: 15px;
+}
+
+/* Seções */
+h2 {
+    border-left: 5px solid #93c665;
+    padding-left: 12px;
+    margin-bottom: 18px;
+    font-size: 20px;
+}
+
+/* ===== FORM ===== */
+.abrir-ticket form {
+    background: #f9faf9;
+    padding: 25px;
+    border-radius: 14px;
+    border: 1px solid #e3e3e3;
+    margin-bottom: 40px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.btn-enviar {
+    background: #93c665;
+    border: none;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.btn-enviar:hover {
+    background: #7fb24f;
+}
+
+/* ===== LISTAGEM ===== */
+.lista-ticket {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* ===== CARD ===== */
+.card-ticket {
+    background: #fdfdfd;
+    border-radius: 16px;
+    padding: 22px;
+    border: 1px solid #e6e6e6;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-ticket:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+/* Cabeçalho do card */
+.card-ticket h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Texto */
+.card-ticket p {
+    margin-bottom: 8px;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* ===== STATUS ===== */
+.status {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.status span {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 12px;
+    display: inline-block;
+}
+
+/* Badges */
+.status .ABERTO {
+    background: #fdecea;
+    color: #d9534f;
+}
+
+.status .ANDAMENTO {
+    background: #fff3cd;
+    color: #f0ad4e;
+}
+
+.status .CONCLUIDO {
+    background: #e6f4ea;
+    color: #4cae4c;
+}
+
+/* ===== RESPOSTA ADMIN ===== */
+.resposta-admin {
+    background: #ffffff;
+    border-left: 4px solid #93c665;
+    padding: 14px;
+    margin-top: 14px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* ===== DATA ===== */
+.data {
+    margin-top: 10px;
+    color: #888;
+    font-size: 12px;
+}
+
+/* ===== ADMIN ===== */
+.admin-acoes {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.admin-acoes textarea {
+    min-height: 90px;
+}
+
+.btn-concluir {
+    background: #4cae4c;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-concluir:hover {
+    background: #3d8b3d;
+}
