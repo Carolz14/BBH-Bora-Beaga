@@ -4,7 +4,7 @@
     <h1>Locais do momento</h1>
 
     <div class="ranking-block">
-        <h2>Top por Nota</h2>
+        <h2 style="margin-bottom:10px">Top por Nota</h2>
         <div class="ranking-list">
             <c:choose>
                 <c:when test="${not empty topMedias}">
@@ -34,14 +34,14 @@
         </div>
 
         <p>
-            <a href="${pageContext.request.contextPath}/ranking/listar?metric=medias&limit=20&minRatings=1&dias=7">
+            <a href="${pageContext.request.contextPath}/rankingCompleto/listar?metric=medias">
                 Ver todos por média
             </a>
         </p>
     </div>
 
     <div class="ranking-block">
-        <h2>Top por Visitação (últimos <c:out value="${param.dias != null ? param.dias : 7}" /> dias)</h2>
+        <h2 style="margin-bottom:10px" >Top por Visitação (últimos <c:out value="${param.dias != null ? param.dias : 7}" /> dias)</h2>
         <div class="ranking-list">
             <c:choose>
                 <c:when test="${not empty topVisitacoes}">
@@ -70,7 +70,7 @@
         </div>
 
         <p>
-            <a href="${pageContext.request.contextPath}/ranking/listar?metric=visitacoes&limit=20&minRatings=1&dias=7">
+            <a href="${pageContext.request.contextPath}/rankingCompleto/listar?metric=visitacoes">
                 Ver todos por visitações
             </a>
         </p>

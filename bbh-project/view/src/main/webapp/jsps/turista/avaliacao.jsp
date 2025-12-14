@@ -133,7 +133,7 @@
 
                     <!-- controles de arquivo -->
                     <div class="file-controls">
-                        <button type="button" class="btn-file-trigger btn-simple">📷 Inserir mídia</button>
+                        <button type="button" class="btn-file-trigger btn-simple">Inserir mídia</button>
                         <button type="button" id="btn-clear-file" class="btn-clear-file btn-simple-remove">Remover</button>
                     </div>
 
