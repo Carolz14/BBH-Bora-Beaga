@@ -69,7 +69,7 @@ li a:hover {
     font-family: var(--fonte-logo);
     font-size: 40px;
     margin: 1% 0%;
-  
+
 }
 
 #logo{
@@ -79,8 +79,8 @@ li a:hover {
 
 #icon{
     width: 50px;
-     margin: 1% 0%;
-  
+    margin: 1% 0%;
+
 }
 footer {
     margin-top: 5%;
@@ -99,8 +99,8 @@ main {
 p,
 h2,h1, h3, a{
     font-family: var(--fonte-texto);
-      font-weight: normal;
-      text-decoration: none;
+    font-weight: normal;
+    text-decoration: none;
 }
 
 h1 {
@@ -108,7 +108,7 @@ h1 {
 }
 
 .back-link {
-     margin: 2% 5%;
+    margin: 2% 5%;
     display: block;
     margin-bottom: 1rem;
     color: #555;
@@ -129,19 +129,41 @@ h1 {
 }
 
 .botao-submit{
-    text-align: center; 
-    display: block; 
-    text-decoration: none; 
-    margin-top: 10px; 
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    margin-top: 10px;
     font-size: 14px;
 }
 
 #nenhumaPromocao{
-    text-align: center; 
+    text-align: center;
     width: 100%;
 }
 
 #textoPromocao{
     color: #666;
     font-size: 18px;
+}
+
+.resultado-info p {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.resultado-info span {
+    font-size: 12px;
+    color: #666;
+    background: #e0e0e0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.resultado-info {
+    padding: 10px;
 }

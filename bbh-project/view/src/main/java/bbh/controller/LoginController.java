@@ -38,7 +38,7 @@ public class LoginController extends HttpServlet {
                 UsuarioTipo tipo = usuario.getUsuarioTipo();
                 switch (tipo) {
                     case ADMINISTRADOR:
-                        response.sendRedirect(request.getContextPath() + "/jsps/admin/painel.jsp");
+                        response.sendRedirect(request.getContextPath() + "/bbh/CadastroPontoTuristico");
                         break;
                     case TURISTA:
                         response.sendRedirect(request.getContextPath() + "/bbh/feed");
