@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<c:url value='/css/style-tags.css' />">
     <link rel="stylesheet" href="<c:url value='/css/style-geral.css' />">
+     <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
 </head>
 <body>
    <div class="pagecontainer">

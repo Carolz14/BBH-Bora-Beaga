@@ -11,6 +11,7 @@
     --cor-primaria: #f9e470;
     --cor-primaria-hover: rgb(224, 198, 55);
     --cor-secundaria: #93c665;
+    --cor-secundaria-hover: #7eb450
     --cor-borda: #6c757d;
 }
 
@@ -38,30 +39,7 @@ margin: 2px;
     padding: 0 20px;
 }
 
-.back-link {
-    display: block;
-    margin-bottom: 1rem;
-    color: #555;
-    text-decoration: none;
-    font-family: var(--fonte-texto);
-}
 
-input {
-    font-family: var(--fonte-texto);
-    padding: 5px;
-    border-radius: 10px;
-    font-size: 100%;
-    outline: none;
-    border: 2px solid rgb(200, 200, 200);
-    background-color: transparent;
-    margin: 5px;
-    width: 100%;
-}
-
-input:focus {
-    outline: none;
-    border-color: var(--cor-secundaria);
-}
 
 
 
@@ -253,17 +231,7 @@ input:focus {
     transition: all 0.2s ease;
 }
 
-input {
-    font-family: var(--fonte-texto);
-    padding: 5px;
-    border-radius: 15px;
-    font-size: 100%;
-    outline: none;
-    border: 2px solid rgb(200, 200, 200);
-    background-color: transparent;
-    margin: 5px;
-    width: 100%;
-}
+
 
 #modal-titulo{
     padding: 5px;
@@ -279,9 +247,9 @@ input {
     padding: 2px;
 }
 #paradasTexto{
-       font-family: var(--fonte-texto);
+     font-family: var(--fonte-texto);
     padding: 5px;
-    border-radius: 15px;
+    border-radius: 12px;
     font-size: 100%;
     outline: none;
     border: 2px solid rgb(200, 200, 200);
@@ -323,3 +291,5 @@ input {
 .btn-atualizar:hover {
     background-color: var(--cor-primaria-hover); 
 }
+
+

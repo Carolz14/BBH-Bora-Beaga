@@ -58,7 +58,7 @@
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('perfilEstab', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="../estabelecimento/perfil.jsp">Perfil</a></li>
+                <li><a href="${pageContext.request.contextPath}/jsps/estabelecimento/perfil.jsp">Perfil</a></li>
             </c:if>
             </ul>
         </nav>

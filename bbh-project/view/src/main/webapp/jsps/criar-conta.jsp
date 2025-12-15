@@ -9,6 +9,7 @@
         <title>Bora Beagá</title>
         <link rel="stylesheet" href="../css/style-login.css">
         <script src="../js/validacao.js" defer></script>
+        <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
     </head>
 
     <body>
@@ -60,14 +61,14 @@
                             <option value="TO" label="TO"></option>
                             <option value="Fora do Brasil" label="Fora do Brasil"></option>
                         </select>
-                        <input type="text" name="nome" class="em" placeholder="Nome" required>
-                        <input type="email" name="email" class="em" placeholder="Email">
-                        <input type="password" name="senha" class="sen" placeholder="Senha">
+                        <input type="text" name="nome" class="em" placeholder="Nome" required class="caixas">
+                        <input type="email" name="email" class="em" placeholder="Email" class="caixas">
+                        <input type="password" name="senha" class="sen" placeholder="Senha" class="caixas">
 
                         <div id="camposEstab" style="display: none;">
-                            <input type="text" name="endereco" class="em" placeholder="Endereço">
-                            <input type="text" name="contato" class="em" placeholder="Contato">
-                            <input type="text" name="cnpj" class="em" placeholder="CNPJ">
+                            <input type="text" name="endereco" class="em" placeholder="Endereço" class="caixas">
+                            <input type="text" name="contato" class="em" placeholder="Contato" class="caixas">
+                            <input type="text" name="cnpj" class="em" placeholder="CNPJ" class="caixas">
                         </div>
                         <button type="button"  onclick="validarCamposCadastro(document.formCadastro)">Criar conta</button>
 

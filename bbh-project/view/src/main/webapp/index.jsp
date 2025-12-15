@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Bora Beagá</title>
         <link rel="stylesheet" href="css/style-login.css">
-       <link rel="icon" href="imagens/icon-page.png">
+      <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
         <script src="js/validacao.js" defer></script>
     </head>
 
@@ -24,8 +24,8 @@
                 <h1>Login</h1>
                 <div>
                     <form name="formLogin" method="post" action="bbh/LoginController" >
-                        <input type="email" name="email" id="email" placeholder="Email" required>
-                        <input type="password" name="senha" id="senha" placeholder="Senha" required>
+                        <input type="email" name="email" id="email" placeholder="Email" required class="caixas">
+                        <input type="password" name="senha" id="senha" placeholder="Senha" required class="caixas">
                         <button type="button"  onclick="validarCamposLogin(document.formLogin)">Entrar</button>
                         <button type="button" onclick="window.location.href='jsps/criar-conta.jsp'">Criar conta</button>
                     </form>

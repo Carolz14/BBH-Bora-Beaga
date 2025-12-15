@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/eventos.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style-estab.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style-geral.css">
+    <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
 </head>
 
 <body>
