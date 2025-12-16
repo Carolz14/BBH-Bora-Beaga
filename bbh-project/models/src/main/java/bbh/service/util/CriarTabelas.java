@@ -309,6 +309,24 @@ public class CriarTabelas {
             System.out.println("Tabela 'ponto_turistico' criada (ou já existia).");
         }
     }
+    
+    private static void criarTabelaListaInteresse() throws SQLException{
+        String sql = """
+                CREATE TABLE lista_interesse (
+                    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                    id_turista BIGINT NOT NULL,
+                    id_item BIGINT NOT NULL,
+                    tipo_item VARCHAR(50) NOT NULL, -- 'ESTABELECIMENTO' ou 'PONTO_TURISTICO'
+                    data_salvo TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (id_turista) REFERENCES usuarios(id),
+                    UNIQUE KEY unique_interesse (id_turista, id_item, tipo_item) -- Evita duplicatas
+                );
+                """;
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sql);
+            System.out.println("Tabela 'litsa_interesse' criada (ou já existia).");
+        }
+    }
 
 
     public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
@@ -322,5 +340,6 @@ public class CriarTabelas {
         criarTabelaAvaliacao();
         criarTabelaAvaliacaoMidia();
         criarTabelaPontoTuristico();
+        criarTabelaListaInteresse();
     }
 }
