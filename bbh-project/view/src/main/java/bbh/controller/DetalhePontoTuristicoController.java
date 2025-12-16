@@ -2,7 +2,7 @@ package bbh.controller;
 
 import bbh.common.PersistenciaException;
 import bbh.domain.PontoTuristico;
-import bbh.service.GestaoPontoTuristico;
+import bbh.service.GestaoPontoTuristicoService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,7 +22,7 @@ public class DetalhePontoTuristicoController extends HttpServlet {
         if (idStr != null && !idStr.isEmpty()) {
             try {
                 Long id = Long.valueOf(idStr);
-                GestaoPontoTuristico service = new GestaoPontoTuristico();       
+                GestaoPontoTuristicoService service = new GestaoPontoTuristicoService();       
                 PontoTuristico ponto = service.buscarPorId(id);
                 request.setAttribute("ponto", ponto);
                 request.getRequestDispatcher("/jsps/turista/detalhe-pontoturistico.jsp").forward(request, response);
