@@ -1,23 +1,21 @@
 package bbh.domain;
 
-public class Local {
+public class PontoTuristico {
 
     private Long id;
     private String nome;
     private String endereco;
-    private String categoria;
     private String descricao;
     private String imagemUrl;
+    private String tag;
     private boolean ativo = true;
 
-    public Local() {
+    public PontoTuristico() {
     }
 
-    public Local(Long id, String nome, String endereco, String categoria, String descricao) {
-        this.id = id;
+    public PontoTuristico(String nome, String endereco, String descricao) {
         this.nome = nome;
         this.endereco = endereco;
-        this.categoria = categoria;
         this.descricao = descricao;
     }
 
@@ -45,12 +43,20 @@ public class Local {
         this.endereco = endereco;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     public String getImagemUrl() {
@@ -61,18 +67,12 @@ public class Local {
         this.imagemUrl = imagemUrl;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getTag() {
+        return tag;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-    public boolean isAtivo() {
-        return ativo;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import bbh.common.PersistenciaException;
 import bbh.dao.LocalDAO;
 import bbh.domain.Local;
+import java.util.ArrayList;
 
 public class LocalService {
 
@@ -23,6 +24,12 @@ public class LocalService {
         }
         return dao.buscarPorId(id);
     }
-
+    
+    public List<Local> buscarPorTag(String tag) throws PersistenciaException {
+        if (tag == null || tag.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return dao.buscarPorTag(tag);
+    }
   
 }

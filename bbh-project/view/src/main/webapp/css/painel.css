@@ -30,7 +30,7 @@
     font-family: var(--fonte-texto);
 }
 
-input{
+input {
     font-family: var(--fonte-texto);
     padding: 5px;
     border-radius: 10px;
@@ -47,7 +47,6 @@ input:focus {
     border-color: var(--cor-secundaria);
 }
 
-
 .pagina-titulo {
     font-family: var(--fonte-texto);
     font-size: 1.8em;
@@ -55,7 +54,7 @@ input:focus {
     margin-bottom: 25px;
 }
 
-.perfil{
+.perfil {
     display: flex;
     gap: 50px;
     margin: 0 auto;
@@ -65,10 +64,6 @@ input:focus {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
     max-width: fit-content;
 }
-
-
-
-
 
 .perfil-form-section {
     flex: 1;
@@ -93,8 +88,6 @@ input:focus {
     font-size: 0.9em;
 }
 
-
-
 .upload-btn {
     display: inline-block;
     width: 100%;
@@ -114,9 +107,8 @@ input:focus {
     background-color: #7bab54;
 }
 
-
 .imagem-preview-container {
-    display: none; 
+    display: none;
     margin-top: 20px;
     width: 100%;
     max-height: 400px;
@@ -128,18 +120,16 @@ input:focus {
     align-items: center;
 }
 
-
 .imagem-preview-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
 }
-
 
 .submit-btn {
     width: 100%;
     padding: 14px;
-    background-color: var(--cor-primaria); 
+    background-color: var(--cor-primaria);
     color: #333;
     font-family: var(--fonte-texto);
     font-weight: bold;
@@ -148,10 +138,108 @@ input:focus {
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
-    margin-top: 10px; 
+    margin-top: 10px;
 }
 
 .submit-btn:hover {
-    background-color: #e4d168; 
+    background-color: #e4d168;
     transform: translateY(-2px);
 }
+
+.painel-search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 10px;
+}
+
+.painel-search-bar form {
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    gap: 10px;
+}
+
+.painel-search-bar input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    font-family: var(--fonte-texto);
+}
+
+.btn-search {
+    background-color: var(--cor-primaria);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-search:hover {
+    filter: brightness(0.9);
+}
+
+.btn-ver-todos {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    color: var(--cor-secundaria);
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Utilitários */
+.text-center { text-align: center; }
+.w-100 { width: 100%; }
+.grey-text { color: #666; }
+.flex-1 { flex: 1; }
+
+/* Inputs Específicos */
+.input-padrao { min-height: 40px; }
+.input-area { min-height: 100px; resize: vertical; }
+
+/* Select de Categoria */
+.input-select {
+    width: 100%; padding: 10px; border-radius: 10px;
+    border: 2px solid rgb(200, 200, 200);
+    font-family: var(--fonte-texto); background: transparent;
+    cursor: pointer;
+}
+.input-select:focus { outline: none; border-color: var(--cor-secundaria); }
+
+/* Label de Upload (Estilo diferente do botão padrão) */
+.upload-label {
+    display: block; text-align: center; background-color: #f0f0f0;
+    color: #555; padding: 12px; border-radius: 10px;
+    border: 2px dashed #ccc; cursor: pointer;
+    font-family: var(--fonte-texto); font-weight: bold;
+    transition: background-color 0.2s;
+}
+.upload-label:hover { background-color: #e0e0e0; border-color: #aaa; }
+
+/* Grupo de Botões (Salvar/Cancelar) */
+.actions-group { display: flex; gap: 10px; margin-top: 20px; align-items: stretch; }
+
+/* Botão Cancelar */
+.btn-cancel {
+    flex: 1; text-align: center; background-color: #ccc;
+    color: #333; padding: 14px; border-radius: 10px;
+    text-decoration: none; font-family: var(--fonte-texto);
+    font-weight: bold; transition: background-color 0.2s; border: none;
+}
+.btn-cancel:hover { background-color: #bbb; }
+
+/* Botão Limpar Busca (X) */
+.btn-limpar-busca {
+    padding: 0 10px; color: #d9534f; display: flex;
+    align-items: center; justify-content: center;
+    text-decoration: none; font-size: 1.2em; transition: color 0.2s;
+}
+.btn-limpar-busca:hover { color: #c9302c; }
+
+/* Pequenos avisos */
+.aviso-edicao { font-size: 12px; color: #666; margin-bottom: 5px; font-family: var(--fonte-texto); }
