@@ -1,3 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+:root {
+    --fonte-logo: "Fraunces", serif;
+    --fonte-texto: "Roboto Slab", serif;
+    --fonte-cursiva: "Parisienne", cursive;
+    --cor-fundo: #f3f3f3;
+    --cor-primaria: #f9e470;
+    --cor-primaria-hover: rgb(224, 198, 55);
+    --cor-secundaria: #93c665;
+    --cor-secundaria-hover: #7eb450
+    --cor-borda: #6c757d;
+}
+
+.roteiros a{
+text-decoration: none;
+color: black;
+}
+
+.roteiros div{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.roteiros div button{
+margin: 2px;
+}
+
+
 .container {
     width: 100%;
     max-width: 900px;
@@ -5,30 +39,7 @@
     padding: 0 20px;
 }
 
-.back-link {
-    display: block;
-    margin-bottom: 1rem;
-    color: #555;
-    text-decoration: none;
-    font-family: var(--fonte-texto);
-}
 
-input {
-    font-family: var(--fonte-texto);
-    padding: 5px;
-    border-radius: 10px;
-    font-size: 100%;
-    outline: none;
-    border: 2px solid rgb(200, 200, 200);
-    background-color: transparent;
-    margin: 5px;
-    width: 100%;
-}
-
-input:focus {
-    outline: none;
-    border-color: var(--cor-secundaria);
-}
 
 
 
@@ -129,7 +140,7 @@ input:focus {
 
 
 
-.btn-criar {
+.btn-criar, .btn{
     background-color: var(--cor-secundaria);
     color: white;
     padding: 10px 22px;
@@ -139,13 +150,16 @@ input:focus {
     text-decoration: none;
     border-radius: 8px;
     border: none;
+    margin: 5px;
 }
 
 .btn-criar:hover {
     background-color: #7bab54;
 }
 
-
+.btn:hover {
+    background-color: #7bab54;
+}
 
 .modal-roteiro {
     position: fixed;
@@ -217,10 +231,25 @@ input:focus {
     transition: all 0.2s ease;
 }
 
-input {
-    font-family: var(--fonte-texto);
+
+
+#modal-titulo{
     padding: 5px;
-    border-radius: 15px;
+    margin-top: 5px
+}
+
+#formRoteiro{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 2px;
+    padding: 2px;
+}
+#paradasTexto{
+     font-family: var(--fonte-texto);
+    padding: 5px;
+    border-radius: 12px;
     font-size: 100%;
     outline: none;
     border: 2px solid rgb(200, 200, 200);
@@ -229,29 +258,22 @@ input {
     width: 100%;
 }
 
-
-
-
-
 .roteiro-container {
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     padding: 20px;
     margin-bottom: 15px; 
-    
-  
     display: flex;
     justify-content: space-between; 
     align-items: center; 
-    
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 
 
-.btn-excluir {
-    background-color: #e7d03c; 
+.btn-excluir, .btn-atualizar {
+    background-color: var(--cor-primaria); 
     color: white;
     font-family: var(--fonte-texto);
     font-size: 14px;
@@ -264,5 +286,10 @@ input {
 }
 
 .btn-excluir:hover {
-    background-color: #bbc02b; 
+    background-color: var(--cor-primaria-hover); 
 }
+.btn-atualizar:hover {
+    background-color: var(--cor-primaria-hover); 
+}
+
+

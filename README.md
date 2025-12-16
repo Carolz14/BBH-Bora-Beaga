@@ -102,7 +102,7 @@ Bora Beagá é um sistema que visa auxiliar turistas e moradores da cidade de Be
 | 2      | CSU06       | 3              |
 | 2      | CSU11       | 4              |
 | 2      | CSU02       | 6              |
-| 3      | CSU12 + CSU14   | 1          |
+| 3      | CSU02 + CSU14   | 1          |
 | 3      | CSU08 + CSU09   | 2          |
 | 3      | CSU16           | 3          |
 | 3      | CSU17 + CSU19   | 4          |
