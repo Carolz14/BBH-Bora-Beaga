@@ -5,7 +5,6 @@ import java.util.List;
 
 import bbh.common.PersistenciaException;
 import bbh.dao.RoteiroDAO;
-
 import bbh.domain.Roteiro;
 
 public class GestaoRoteirosService {
@@ -21,6 +20,10 @@ public class GestaoRoteirosService {
     public void salvarRoteiro(Roteiro roteiro) throws PersistenciaException {
 
         roteiroDAO.inserir(roteiro);
+    }
+     public void atualizarRoteiro(Roteiro roteiro) throws PersistenciaException {
+
+        roteiroDAO.atualizar(roteiro);
     }
 
     public void excluirRoteiro(Roteiro roteiro) throws PersistenciaException {

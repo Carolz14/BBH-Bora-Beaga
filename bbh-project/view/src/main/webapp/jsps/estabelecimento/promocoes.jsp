@@ -10,7 +10,7 @@
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-estab.css">
-
+ <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
         <script src="<%= request.getContextPath()%>/js/validarPromocao.js" defer></script>
     </head>
     <body>
