@@ -65,6 +65,13 @@ public class ControleAutorizacao {
         permissao = new Permissao("gerenciarEventos");
         permissao.addUsuarioGrupo(UsuarioTipo.ESTABELECIMENTO);
         permissoes.put(permissao.getRecurso(), permissao);
+        
+        permissao = new Permissao("suporte");
+        permissao.addUsuarioGrupo(UsuarioTipo.ADMINISTRADOR);
+        permissao.addUsuarioGrupo(UsuarioTipo.ESTABELECIMENTO);
+        permissao.addUsuarioGrupo(UsuarioTipo.GUIA);
+        permissoes.put(permissao.getRecurso(), permissao);
+
     }
 
     public static boolean checkPermissao(String permissao, UsuarioTipo usuario) {
