@@ -35,15 +35,15 @@
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('interesse', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="${pageContext.request.contextPath}/jsps/turista/lista-interesses.jsp">Lista de Interesse</a></li>
+                <li><a href="${pageContext.request.contextPath}/bbh/MeusInteressesController">Lista de Interesse</a></li>
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('locais', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="${pageContext.request.contextPath}/jsps/admin/painel.jsp">Painel</a></li>
+                <li><a href="${pageContext.request.contextPath}/bbh/CadastroPontoTuristico">Painel</a></li>
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('usuario', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="${pageContext.request.contextPath}/jsps/admin/usuarios.jsp">Usuários</a></li>
+                <li><a href="${pageContext.request.contextPath}/bbh/usuarios">Usuários</a></li>
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('perfil', sessionScope.usuario.usuarioTipo)}">

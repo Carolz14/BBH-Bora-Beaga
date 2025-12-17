@@ -53,7 +53,7 @@ public class PesquisaLocalServlet extends HttpServlet {
         session.setAttribute("erro", erro);
 
         String contextPath = request.getContextPath();
-        response.sendRedirect(contextPath + "/jsps/turista/pagina-principal.jsp");
+        response.sendRedirect(contextPath + "/bbh/feed");
     }
     
 

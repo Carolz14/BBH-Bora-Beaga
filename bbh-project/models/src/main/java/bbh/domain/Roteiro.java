@@ -1,7 +1,5 @@
 package bbh.domain;
 
-import java.util.List;
-
 public class Roteiro {
 
     private Long id;
@@ -15,6 +13,10 @@ public class Roteiro {
     public Roteiro(String nome, String descricao) {
         this.nome = nome;
         this.descricao = descricao;
+      
+    }
+
+      public Roteiro() {
       
     }
 

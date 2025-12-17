@@ -7,9 +7,10 @@
     <meta charset="UTF-8">
     <title>Gerenciar Eventos</title>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-eventos-estab.css">
-    <script src="${pageContext.request.contextPath}/js/validarEvento.js" defer></script>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/eventos.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style-estab.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style-geral.css">
+    <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
 </head>
 
 <body>

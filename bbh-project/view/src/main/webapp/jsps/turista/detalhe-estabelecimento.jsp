@@ -25,11 +25,25 @@
 
                 <c:if test="${not empty estabelecimento}">
                     <div class="estabelecimento">
-                       
-                    <div class="estabelecimento-imagem">
-                      <img src="/imagens-bbh/${estabelecimento.imagemUrl}"
-         alt="Imagem de ${estabelecimento.nome}">
-                    </div>
+                        <c:set var="chaveUnica" value="${estabelecimento.id}_ESTABELECIMENTO" />
+
+                        <a href="${pageContext.request.contextPath}/bbh/InteresseController?id=${estabelecimento.id}&categoria=Estabelecimento" 
+                           class="btn-favorito-detalhe" 
+                           title="Salvar na lista de interesse">
+
+                            <c:choose>
+                                <c:when test="${sessionScope.idsInteresse.contains(chaveUnica)}">
+                                    <i class="fa-solid fa-heart" style="color: #e74c3c;"></i> 
+                                </c:when>
+                                <c:otherwise>
+                                    <i class="fa-regular fa-heart" style="color: #ccc;"></i> 
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                        <div class="estabelecimento-imagem">
+                            <img src="/imagens-bbh/${estabelecimento.imagemUrl}"
+                                 alt="Imagem de ${estabelecimento.nome}">
+                        </div>
 
                         <div class="estabelecimento-detalhes">
                             <h1><c:out value="${estabelecimento.nome}" /></h1>
@@ -43,15 +57,15 @@
                                 <small>(baseada em <c:out value="${avaliacoes.size()}" /> avaliações)</small>
                             </div>
 
-                        <div class="informacao">
-                            <p><strong>Descrição:</strong> ${estabelecimento.descricao}</p>
-                            <p><strong>Contato:</strong> ${estabelecimento.contato}</p>
-                            <p><strong>Endereço:</strong> ${estabelecimento.endereco}</p>
+                            <div class="informacao">
+                                <p><strong>Descrição:</strong> ${estabelecimento.descricao}</p>
+                                <p><strong>Contato:</strong> ${estabelecimento.contato}</p>
+                                <p><strong>Endereço:</strong> ${estabelecimento.endereco}</p>
+                            </div>
                         </div>
-                    </div>
 
-                    
-                       
+
+
                     </div>
                     <jsp:include page="/avaliacao/listar" flush="true">
                         <jsp:param name="id" value="${estabelecimento.id}" />
@@ -60,11 +74,10 @@
                 </div>
             </c:if>
 
-                <c:if test="${empty estabelecimento}">
-                    <p>Estabelecimento não encontrado.</p>
-                </c:if>
+            <c:if test="${empty estabelecimento}">
+                <p>Estabelecimento não encontrado.</p>
+            </c:if>
 
-            </div>
         </main>
         <%@ include file="../footer.jsp" %>
     </body>

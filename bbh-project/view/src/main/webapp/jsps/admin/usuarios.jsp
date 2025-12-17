@@ -10,6 +10,7 @@
     <title>Bora Beagá - Usuários</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/usuarios.css">
+     <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
 </head>
 
 <body>

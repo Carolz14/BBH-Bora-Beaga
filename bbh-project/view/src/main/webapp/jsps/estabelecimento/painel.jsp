@@ -10,6 +10,7 @@
         <title>Bora Beagá</title>
         <link rel="stylesheet" href="../../css/style-estab.css">
         <link rel="stylesheet" href="../../css/style-geral.css">
+         <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
     </head>
     <body>
         
