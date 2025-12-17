@@ -32,7 +32,7 @@
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('interesse', sessionScope.usuario.usuarioTipo)}">
-                <li><a href="${pageContext.request.contextPath}/jsps/turista/lista-interesses.jsp">Lista de Interesse</a></li>
+                <li><a href="${pageContext.request.contextPath}/bbh/MeusInteressesController">Lista de Interesse</a></li>
             </c:if>
 
             <c:if test="${ControleAutorizacao.checkPermissao('locais', sessionScope.usuario.usuarioTipo)}">
