@@ -293,3 +293,34 @@ margin: 2px;
 }
 
 
+li{
+    font-style: var(--fonte-texto);
+}
+
+.avaliacao-form {
+    display: inline-block;
+}
+
+.estrelas {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.estrelas input {
+    display: none; 
+}
+
+.estrelas label {
+    font-size: 1.5em;
+    color: #ccc; 
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 2px;
+}
+
+.estrelas label:hover,
+.estrelas label:hover ~ label,
+.estrelas input:checked ~ label {
+    color: #ffc107; 
+}
