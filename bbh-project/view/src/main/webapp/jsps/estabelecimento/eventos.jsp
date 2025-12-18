@@ -1,14 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="bbh.domain.Evento"%>
-<%@page import="bbh.domain.Usuario"%>
-<%@page import="bbh.domain.util.UsuarioTipo"%>
-<%@page import="java.util.List"%>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Eventos</title>
 
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/eventos.css">
@@ -21,87 +17,113 @@
 
 <%@ include file="../header.jsp" %>
 
-<%
-    List<Evento> meusEventos = (List<Evento>) request.getAttribute("meusEventos");
-
-    String msg = (String) request.getAttribute("msg");
-    String erro = (String) request.getAttribute("erro");
-%>
-
 <main>
+    <div class="conteudo-eventos-estab">
 
-    <% if (msg != null) { %>
-        <p class="msg-sucesso"><%= msg %></p>
-    <% } %>
+        <!-- TÍTULO PRINCIPAL -->
+        <h1 class="eventos-titulo">Gerenciar Eventos</h1>
 
-    <% if (erro != null) { %>
-        <p class="msg-erro"><%= erro %></p>
-    <% } %>
+        <!-- LISTA DE EVENTOS CADASTRADOS -->
+        <div class="eventos-section">
+            <h2 class="eventos-titulo">Eventos Cadastrados</h2>
 
-    <div class="container-estab">
-        <div class="card-gerenciar">
-            <h1>Gerenciar Eventos</h1>
+            <div class="eventos-list">
 
-            <form action="<%= request.getContextPath() %>/evento?action=add" method="POST" class="form-evento">
-                <label for="nome">Nome</label>
-                <input id="nome" type="text" name="nome" required>
+                <c:choose>
+                    <c:when test="${not empty meusEventos}">
+                        <c:forEach var="e" items="${meusEventos}">
 
-                <label for="dataEvento">Data</label>
-                <input id="dataEvento" type="date" name="dataEvento" required>
+                            <div class="evento-card">
 
-                <label for="horarioEvento">Horário</label>
-                <input id="horarioEvento" type="time" name="horarioEvento" required>
+                                <div class="card-topo">
+                                    <p class="evento-nome">${e.nome}</p>
+                                    <p class="evento-desc">${e.descricao}</p>
+                                </div>
 
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao"></textarea>
+                                <p class="evento-data">
+                                    ${e.data} — ${e.horario}
+                                </p>
 
-                <button type="submit" class="btn criar-evento-btn">Criar Evento</button>
+                                <!-- BOTÕES -->
+                                <div class="card-actions">
+
+                                    <!-- EDITAR (expande formulário abaixo) -->
+                                    <a href="#" class="btn-acao btn-editar"
+                                       onclick="document.getElementById('formEdit${e.id}').classList.toggle('show'); return false;">
+                                        Editar
+                                    </a>
+
+                                    <!-- EXCLUIR (POST real, sem GET) -->
+                                    <form action="${pageContext.request.contextPath}/evento?action=delete"
+                                          method="POST"
+                                          onsubmit="return confirm('Excluir este evento?');"
+                                          style="display:inline;">
+                                        <input type="hidden" name="id" value="${e.id}">
+                                        <button type="submit" class="btn-acao btn-excluir">Excluir</button>
+                                    </form>
+                                </div>
+
+                                <!-- FORMULÁRIO DE EDIÇÃO -->
+                                <form id="formEdit${e.id}"
+                                      class="evento-form"
+                                      action="${pageContext.request.contextPath}/evento?action=update"
+                                      method="POST"
+                                      style="display:none; margin-top:15px;">
+
+                                    <input type="hidden" name="id" value="${e.id}">
+
+                                    <label>Nome</label>
+                                    <input type="text" name="nome" value="${e.nome}" required>
+
+                                    <label>Descrição</label>
+                                    <textarea name="descricao">${e.descricao}</textarea>
+
+                                    <label>Data</label>
+                                    <input type="date" name="dataEvento" value="${e.data}" required>
+
+                                    <label>Horário</label>
+                                    <input type="time" name="horarioEvento" value="${e.horario}" required>
+
+                                    <button class="btn-criar" type="submit">Salvar Alterações</button>
+                                </form>
+
+                            </div>
+
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Nenhum evento cadastrado.</p>
+                    </c:otherwise>
+                </c:choose>
+
+            </div>
+        </div>
+
+        <!-- FORMULÁRIO DE NOVO EVENTO -->
+        <div class="evento-form-section">
+            <h2 class="eventos-titulo">Criar Novo Evento</h2>
+
+            <form name="formEvento"
+                  method="POST"
+                  action="${pageContext.request.contextPath}/evento?action=add">
+
+                <label>Nome do evento</label>
+                <input type="text" name="nome" required>
+
+                <label>Descrição</label>
+                <textarea name="descricao"></textarea>
+
+                <label>Data</label>
+                <input type="date" name="dataEvento" required>
+
+                <label>Horário</label>
+                <input type="time" name="horarioEvento" required>
+
+                <button class="btn-criar" type="submit">Criar Evento</button>
             </form>
         </div>
 
-        <h2>Meus próximos eventos</h2>
-
-        <section class="eventos">
-            <% if (meusEventos != null && !meusEventos.isEmpty()) {
-               for (Evento e : meusEventos) { %>
-
-            <div class="evento evento-gerenciar">
-                <div class="evento-img"></div>
-                <div class="info-gerenciar">
-                    <h3><%= e.getNome() %></h3>
-                    <p><%= e.getData() %> às <%= e.getHorario() %></p>
-
-                    <form action="<%= request.getContextPath() %>/evento?action=update" method="POST" class="form-editar">
-                        <input type="hidden" name="id" value="<%= e.getId() %>">
-
-                        <label>Nome:</label>
-                        <input type="text" name="nome" value="<%= e.getNome() %>" required>
-
-                        <label>Descrição:</label>
-                        <textarea name="descricao"><%= e.getDescricao() %></textarea>
-
-                        <label>Data:</label>
-                        <input type="date" name="dataEvento" value="<%= e.getData() %>" required>
-
-                        <label>Horário:</label>
-                        <input type="time" name="horarioEvento" value="<%= e.getHorario() %>" required>
-
-                        <button class="btn btn-salvar">Salvar</button>
-                    </form>
-
-                    <form action="<%= request.getContextPath() %>/evento?action=delete" method="POST" class="form-excluir">
-                        <input type="hidden" name="id" value="<%= e.getId() %>">
-                        <button class="btn btn-remover">Excluir</button>
-                    </form>
-                </div>
-            </div>
-
-            <% } } else { %>
-                <p>Nenhum evento cadastrado</p>
-            <% } %>
-        </section>
     </div>
-
 </main>
 
 <%@ include file="../footer.jsp" %>
