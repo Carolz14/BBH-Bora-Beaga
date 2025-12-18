@@ -74,4 +74,25 @@ public class AvaliacaoRoteiroDAO {
         return media;
     }
 
+public int pesquisarNota(Long roteiroId, Long usuarioId) throws PersistenciaException {
+
+        String sql = "SELECT nota FROM avaliacao_roteiros WHERE roteiro_id = ? AND usuario_id = ?";
+        int nota = 0;
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, roteiroId);
+  ps.setLong(2, usuarioId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                   nota = rs.getInt("nota");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao pesquisar nota: " + e.getMessage(), e);
+        }
+        return nota;
+    }
+
 }

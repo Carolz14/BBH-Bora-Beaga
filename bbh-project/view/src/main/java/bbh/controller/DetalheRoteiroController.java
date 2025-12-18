@@ -5,20 +5,23 @@ import java.io.IOException;
 import bbh.common.PersistenciaException;
 import bbh.domain.Roteiro;
 import bbh.domain.Usuario;
+import bbh.service.GestaoAvaliacaoRoteiroService;
 import bbh.service.GestaoRoteirosService;
 import bbh.service.GestaoUsuariosService;
-
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/bbh/DetalheRoteiroController")
 public class DetalheRoteiroController extends HttpServlet {
 
     private GestaoRoteirosService roteiroService = new GestaoRoteirosService();
     private GestaoUsuariosService usuarioService = new GestaoUsuariosService();
+    private GestaoAvaliacaoRoteiroService avaliacaoService = new GestaoAvaliacaoRoteiroService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,16 +36,23 @@ public class DetalheRoteiroController extends HttpServlet {
 
         try {
             Long id = Long.parseLong(idParam);
-         
+
             Roteiro roteiro = roteiroService.pesquisarPorId(id);
 
             if (roteiro != null) {
                 Usuario autor = usuarioService.pesquisarPorId(roteiro.getUsuarioId());
-                request.setAttribute("roteiro", roteiro);
+                double media = avaliacaoService.mediaRoteiro(id);
+                String mediaFormatada = String.format("%.1f", media);
+                HttpSession session = request.getSession(false);
+                Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
+
+               int  minhaNota = avaliacaoService.pesquisarNota(id, usuarioLogado.getId());
+               request.setAttribute("roteiro", roteiro);
                 request.setAttribute("autor", autor);
-        
-               response.sendRedirect(request.getContextPath() + "/jsps/turista/detalhe-roteiro.jsp?id=" + id); 
-             
+                request.setAttribute("mediaNota", mediaFormatada); 
+                request.setAttribute("minhaNota", minhaNota);    
+                RequestDispatcher rd = request.getRequestDispatcher("/jsps/turista/detalhe-roteiro.jsp");
+                rd.forward(request, response);
             } else {
                 response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-roteiros.jsp");
             }

@@ -19,4 +19,7 @@ public class GestaoAvaliacaoRoteiroService {
     public double mediaRoteiro (Long roteiroId) throws PersistenciaException  {
        return avaliacaoDAO.media(roteiroId); 
     }
+    public int pesquisarNota (Long roteiroId, Long usuarioId) throws  PersistenciaException  {
+       return avaliacaoDAO.pesquisarNota(roteiroId, usuarioId); 
+    }
 }
