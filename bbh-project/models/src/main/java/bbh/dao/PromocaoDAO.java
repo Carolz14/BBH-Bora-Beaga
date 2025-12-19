@@ -59,7 +59,10 @@ public class PromocaoDAO {
     }
 
     public Promocao pesquisar(Long id) throws PersistenciaException {
-        String sql = "SELECT * FROM promocao WHERE id = ?";
+        String sql = "SELECT p.id, p.nome, p.descricao, p.data, pe.id_usuario "
+                + "FROM promocao p "
+                + "JOIN promocao_estabelecimento pe ON pe.id_promocao = p.id "
+                + "WHERE p.id = ?";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -67,21 +70,43 @@ public class PromocaoDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-
                     Promocao p = new Promocao();
                     p.setId(rs.getLong("id"));
                     p.setNome(rs.getString("nome"));
                     p.setDescricao(rs.getString("descricao"));
-                    p.setData(rs.getDate("data").toLocalDate());
+
+                    if (rs.getDate("data") != null) {
+                        p.setData(rs.getDate("data").toLocalDate());
+                    }
+
+                    p.setIdEstabelecimento(rs.getLong("id_usuario"));
+
                     return p;
                 }
             }
 
         } catch (SQLException e) {
-            throw new PersistenciaException("Erro ao pesquisar promoção: " + e.getMessage(), e);
+            throw new PersistenciaException("Erro ao pesquisar promoção pelo ID: " + e.getMessage(), e);
         }
 
         return null;
+    }
+
+    public void atualizar(Promocao p) throws PersistenciaException {
+        String sql = "UPDATE promocao SET nome = ?, descricao = ?, data = ? WHERE id = ?";
+
+        try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, p.getNome());
+            ps.setString(2, p.getDescricao());
+            ps.setDate(3, java.sql.Date.valueOf(p.getData()));
+            ps.setLong(4, p.getId());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao atualizar promoção: " + e.getMessage(), e);
+        }
     }
 
     public List<Promocao> listarPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
@@ -177,5 +202,27 @@ public class PromocaoDAO {
         }
 
         return lista;
+    }
+    
+    public void excluirPromocoesVencidas() throws PersistenciaException {
+        String sqlVinculo = "DELETE FROM promocao_estabelecimento WHERE id_promocao IN (SELECT id FROM promocao WHERE data < ?)";
+        String sqlPromocao = "DELETE FROM promocao WHERE data < ?"; 
+
+        try (Connection conn = ConexaoBD.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try {
+                try (PreparedStatement ps1 = conn.prepareStatement(sqlVinculo)) {
+                    ps1.setDate(1, java.sql.Date.valueOf(java.time.LocalDate.now()));
+                    ps1.executeUpdate();
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao limpar promoções vencidas: " + e.getMessage(), e);
+        }
     }
 }

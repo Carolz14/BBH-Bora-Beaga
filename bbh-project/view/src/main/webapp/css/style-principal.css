@@ -1,16 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@312&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+
 :root {
     --fonte-logo: "Fraunces", serif;
     --fonte-texto: "Roboto Slab", serif;
     --fonte-cursiva: "Parisienne", cursive;
     --cor-fundo: #f3f3f3;
     --cor-primaria: #f9e470;
+    --cor-primaria-hover: rgb(224, 198, 55);
     --cor-secundaria: #93c665;
+    --cor-secundaria-hover: #7eb450;
     --cor-borda: #6c757d;
 }
 
@@ -34,6 +36,7 @@
     margin: 0 auto 20px auto;
     box-sizing: border-box;
 }
+
 .search-bar input {
     width: 100%;
     padding: 15px;
@@ -43,6 +46,7 @@
     outline: none;
     box-sizing: border-box;
 }
+
 .search-bar::before {
     content: '';
     position: absolute;
@@ -54,15 +58,18 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
+
 /* ===++=== RESULTADOS DE PESQUISA (abaixo da barra de pesquisa) ===++=== */
 
 .resultados-section {
     width: 100%;
     max-width: 850px;
-    margin: 5px auto 36px auto; /* espaçamento coerente */
+    margin: 5px auto 36px auto;
+    /* espaçamento coerente */
     padding: 4px 6px;
     box-sizing: border-box;
-    display: none;              /* oculta por padrão - JSP adiciona .mostrar para exibir */
+    display: none;
+    /* oculta por padrão - JSP adiciona .mostrar para exibir */
     flex-direction: column;
     gap: 18px;
     transition: all 0.18s ease;
@@ -75,8 +82,8 @@
 
 /* grid responsivo que ocupa espaço normal */
 .resultados-grid {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin-top: 2px;
 }
@@ -88,28 +95,29 @@
     padding: 20px;
     display: flex;
     align-items: center;
-    justify-content: center; /* centraliza texto quando não há mini-thumb */
+    justify-content: center;
+    /* centraliza texto quando não há mini-thumb */
     text-align: center;
-   margin: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    margin: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     text-decoration: none;
     color: inherit;
     transition: transform .15s ease, box-shadow .15s ease;
-   
+
 }
 
 /* hover e foco para cartão */
 .resultado-card:hover,
 .resultado-card:focus {
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     outline: none;
 }
 
 /* texto do card */
 .resultado-card p {
     margin: 0;
-    
+
     font-family: var(--fonte-texto);
 }
 
@@ -122,10 +130,12 @@
         grid-template-columns: 1fr;
         gap: 12px;
     }
+
     .resultado-card {
         padding: 12px;
         min-height: 64px;
     }
+
     .resultado-card.has-thumb .thumb {
         width: 84px;
         height: 64px;
@@ -133,7 +143,11 @@
 }
 
 /* garante espaçamento coerente entre seções do layout */
-.welcome-section, .resultados-section, .quick-filters, .nearby-section, .ranking {
+.welcome-section,
+.resultados-section,
+.quick-filters,
+.nearby-section,
+.ranking {
     margin-bottom: 24px;
 }
 
@@ -149,25 +163,25 @@
 
 .category-item {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 110px; 
-    height: 100px; 
+    width: 110px;
+    height: 100px;
     background-color: var(--cor-secundaria);
     border-radius: 15px;
-    color: white; 
-    text-decoration: none; 
+    color: white;
+    text-decoration: none;
     transition: background-color 0.3s ease;
 }
 
 .category-item:hover {
-    background-color: #7eb450; 
+    background-color: var(--cor-secundaria-hover);
 }
 
 .category-item i {
-    font-size: 2rem; 
-    margin-bottom: 8px; 
+    font-size: 2rem;
+    margin-bottom: 8px;
 }
 
 .category-item span {
@@ -181,52 +195,40 @@
 
 /* ======= Seção Perto de Você ======== */
 
-
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 900px;
-    margin: 0 auto;  
-    gap: 40px;
+.tituloPromocao {
+    font-family: var(--fonte-texto);
+    margin-bottom: 20px;
 }
 
-.card {
-    background-color: white;
-    border-radius: 20px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    text-decoration: none; 
-    color: inherit; 
-    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+.promocoes-list {
+    justify-content: center;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+.botao-submit {
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
-.card img {
-    width: 140px;       
-    height: 105px;        
-    object-fit: cover;
-    border-radius: 10px;
-    flex-shrink: 0;     
+#nenhumaPromocao {
+    text-align: center;
+    width: 100%;
 }
 
-.card p {
-    font-weight: 700;
+#textoPromocao {
+    color: #666;
+    font-size: 18px;
 }
-
 
 /* ======= Seção Ranking ======== */
 
 
 
 
-.ranking-list { max-width: 900px;
+.ranking-list {
+    max-width: 900px;
     margin: 0 auto 50px auto;
     display: flex;
     flex-direction: column;
@@ -236,7 +238,8 @@
 .ranking-item {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espaço entre os elementos dentro do card */
+    gap: 20px;
+    /* Espaço entre os elementos dentro do card */
     background-color: #fff;
     padding: 15px;
     border-radius: 15px;
@@ -255,7 +258,8 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--cor-secundaria);
-    min-width: 25px; /* Garante alinhamento se houver mais de 9 itens */
+    min-width: 25px;
+    /* Garante alinhamento se houver mais de 9 itens */
     text-align: center;
 }
 
@@ -269,8 +273,10 @@
 .rank-name {
     font-weight: 700;
     font-size: 1.1rem;
-    margin: 0; /* Reseta a margem padrão do parágrafo */
-    flex-grow: 1; /* Faz o nome empurrar a avaliação para o final */
+    margin: 0;
+    /* Reseta a margem padrão do parágrafo */
+    flex-grow: 1;
+    /* Faz o nome empurrar a avaliação para o final */
 }
 
 .rank-rating {
@@ -278,7 +284,8 @@
     align-items: center;
     font-size: 1.1rem;
     font-weight: 700;
-    white-space: nowrap; /* Impede que o ícone e o número quebrem linha */
+    white-space: nowrap;
+    /* Impede que o ícone e o número quebrem linha */
 }
 
 .rank-rating .fa-star {

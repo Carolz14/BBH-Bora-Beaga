@@ -1,0 +1,181 @@
+/* IMPORTS GERAIS */
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@300;700;900&family=Roboto+Slab:wght@300;400;700&display=swap');
+
+/* VARIÁVEIS */
+:root {
+    --fonte-logo: "Fraunces", serif;
+    --fonte-texto: "Roboto Slab", serif;
+    --fonte-cursiva: "Parisienne", cursive;
+
+    --cor-fundo: #ffffff;
+    --cor-primaria: #f9e470;
+    --cor-secundaria: #93c665;
+    --cor-borda: #e0e0e0;
+}
+
+/* CONTAINER PRINCIPAL */
+.conteudo-eventos-estab {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    font-family: var(--fonte-texto);
+}
+
+/* TÍTULOS */
+.eventos-titulo {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--cor-primaria);
+    padding-bottom: 10px;
+    font-family: var(--fonte-texto);
+}
+
+/* LISTA DE EVENTOS */
+.eventos-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-top: 20px;
+}
+
+/* CARD */
+.evento-card {
+    background-color: #fafafa;
+    border: 2px solid var(--cor-borda);
+    border-radius: 15px;
+    padding: 20px;
+    flex: 1;
+    min-width: 260px;
+    max-width: 290px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    transition: all 0.25s ease;
+}
+.evento-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.evento-nome {
+    font-size: 20px;
+    font-weight: 800;
+    color: #333;
+}
+
+.evento-desc {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #666;
+}
+
+.evento-data {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--cor-secundaria);
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed #ccc;
+}
+
+/* BOTÕES DO CARD */
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.btn-acao {
+    flex: 1;
+    text-decoration: none;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: var(--fonte-texto);
+    color: white;
+    transition: opacity 0.25s;
+}
+.btn-acao:hover {
+    opacity: 0.8;
+}
+
+.btn-editar {
+    background-color: #f0ad4e;
+}
+
+.btn-excluir {
+    background-color: #d9534f;
+}
+
+/* FORMULÁRIO DE CRIAÇÃO / EDIÇÃO */
+.evento-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: var(--fonte-texto);
+    margin-top: 10px;
+}
+
+input,
+textarea {
+    font-family: var(--fonte-texto);
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid var(--cor-borda);
+    background: none;
+    outline: none;
+    margin-top: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--cor-secundaria);
+}
+
+textarea {
+    resize: none;
+    min-height: 90px;
+}
+
+/* BOTÃO PRINCIPAL */
+.btn-criar {
+    background-color: var(--cor-secundaria);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 18px;
+    width: fit-content;
+    transition: background 0.3s;
+}
+
+.btn-criar:hover {
+    background-color: #7fb04e;
+}
+
+/* FORM EDIT VISÍVEL */
+.show {
+    display: block !important;
+}

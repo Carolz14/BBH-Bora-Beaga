@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bbh.common.PersistenciaException;
-
 import bbh.domain.Roteiro;
 import bbh.service.util.ConexaoBD;
 
@@ -31,18 +30,17 @@ public class RoteiroDAO {
 
     public void inserir(Roteiro roteiro) throws PersistenciaException {
 
-       String sql = "INSERT INTO roteiros (nome, descricao, paradas_texto, usuario_id, habilitado) "
+        String sql = "INSERT INTO roteiros (nome, descricao, paradas_texto, usuario_id, habilitado) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
-      
         try (Connection conn = ConexaoBD.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, roteiro.getNome());
             ps.setString(2, roteiro.getDescricao());
 
-          ps.setString(3, roteiro.getParadas()); 
-            ps.setLong(4, roteiro.getUsuarioId());     
+            ps.setString(3, roteiro.getParadas());
+            ps.setLong(4, roteiro.getUsuarioId());
             ps.setBoolean(5, roteiro.getHabilitado());
 
             ps.executeUpdate();
@@ -52,7 +50,7 @@ public class RoteiroDAO {
                     roteiro.setId(rs.getLong(1));
                 }
             }
-           
+
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao inserir roteiro: " + e.getMessage(), e);
         }
@@ -61,7 +59,7 @@ public class RoteiroDAO {
     public List<Roteiro> pesquisarAutor(Long usuarioId) throws PersistenciaException {
         List<Roteiro> roteirosUsuario = new ArrayList<>();
 
-        String sql = "SELECT id, nome, descricao, usuario_id, habilitado "
+        String sql = "SELECT id, nome, descricao, paradas_texto, usuario_id, habilitado "
                 + "FROM roteiros WHERE usuario_id = ? AND habilitado = TRUE";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -76,7 +74,7 @@ public class RoteiroDAO {
                     roteiro.setId(rs.getLong("id"));
                     roteiro.setUsuarioId(rs.getLong("usuario_id"));
                     roteiro.setHabilitado(rs.getBoolean("habilitado"));
-
+                    roteiro.setParadas(rs.getString("paradas_texto"));
                     roteirosUsuario.add(roteiro);
                 }
             }
@@ -119,7 +117,7 @@ public class RoteiroDAO {
     public Roteiro pesquisar(Long id) throws PersistenciaException {
         Roteiro roteiro = null;
 
-    String sql = "SELECT id, nome, descricao, paradas_texto, usuario_id, habilitado "
+        String sql = "SELECT id, nome, descricao, paradas_texto, usuario_id, habilitado "
                 + "FROM roteiros WHERE id = ?";
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -133,8 +131,8 @@ public class RoteiroDAO {
                     roteiro.setId(rs.getLong("id"));
                     roteiro.setUsuarioId(rs.getLong("usuario_id"));
                     roteiro.setHabilitado(rs.getBoolean("habilitado"));
-roteiro.setParadas(rs.getString("paradas_texto"));
-                    
+                    roteiro.setParadas(rs.getString("paradas_texto"));
+
                 }
             }
 
@@ -163,12 +161,10 @@ roteiro.setParadas(rs.getString("paradas_texto"));
         }
     }
 
-   
-
     public List<Roteiro> pesquisarOutros(Long usuarioId) throws PersistenciaException {
         List<Roteiro> roteirosOutros = new ArrayList<>();
         String sql = "SELECT id, nome, descricao, usuario_id, habilitado "
-                + "FROM roteiros WHERE usuario_id != ? AND habilitado = TRUE"; 
+                + "FROM roteiros WHERE usuario_id != ? AND habilitado = TRUE";
 
         try (Connection conn = ConexaoBD.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -192,4 +188,23 @@ roteiro.setParadas(rs.getString("paradas_texto"));
         return roteirosOutros;
     }
 
+    public void atualizar(Roteiro roteiro) throws PersistenciaException {
+
+        String sql = "UPDATE roteiros SET nome = ?,  descricao = ?, paradas_texto = ? WHERE id = ?";
+
+        try (Connection conn = ConexaoBD.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, roteiro.getNome());
+            ps.setString(2, roteiro.getDescricao());
+
+            ps.setString(3, roteiro.getParadas());
+            ps.setLong(4, roteiro.getId());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Erro ao inserir roteiro: " + e.getMessage(), e);
+        }
+    }
 }

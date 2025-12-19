@@ -3,13 +3,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+
 :root {
     --fonte-logo: "Fraunces", serif;
     --fonte-texto: "Roboto Slab", serif;
     --fonte-cursiva: "Parisienne", cursive;
-    --cor-fundo: #ffffff;
+    --cor-fundo: #f3f3f3;
     --cor-primaria: #f9e470;
+    --cor-primaria-hover: rgb(224, 198, 55);
     --cor-secundaria: #93c665;
+    --cor-secundaria-hover: #7eb450;
     --cor-borda: #6c757d;
 }
 
@@ -18,11 +21,6 @@
     padding: 0;
 }
 
-body {
-    background-color: var(--cor-fundo);
- 
-
-}
 
 .container-pagina {
     width: 94%;
@@ -323,4 +321,39 @@ input:focus {
 
 .botao-submit:hover {
     background-color: #7fb04e; 
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.btn-acao {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+    font-family: var(--fonte-texto);
+    transition: opacity 0.2s;
+}
+
+.btn-editar {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.btn-excluir {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btn-acao:hover {
+    opacity: 0.8;
 }

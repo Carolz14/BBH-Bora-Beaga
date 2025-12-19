@@ -8,8 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Evento</title>
 
-    <link rel="stylesheet" href="../../css/eventos.css">
-    <link rel="stylesheet" href="../../css/style-geral.css">
+    <!-- CSS correto -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-detalhe-evento.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
 </head>
 
 <body>
@@ -24,28 +25,23 @@
     }
 %>
 
-<main class="main-detalhe">
+<main class="main-detalhe-evento">
 
     <section class="card-detalhe-evento">
+        
+        <div class="imagem-evento"></div>
 
-        <div class="evento-img grande"></div>
+        <div class="conteudo-detalhe">
+            <h1 class="titulo-evento"><%= evento.getNome() %></h1>
 
-        <div class="detalhe-info">
-            <h1><%= evento.getNome() %></h1>
+            <p class="linha-info"><strong>Data:</strong> <%= evento.getData() %></p>
+            <p class="linha-info"><strong>Horário:</strong> <%= evento.getHorario() %></p>
 
-            <p class="detalhe-data">
-                <strong>Data:</strong> <%= evento.getData() %>
-            </p>
-
-            <p class="detalhe-horario">
-                <strong>Horário:</strong> <%= evento.getHorario() %>
-            </p>
-
-            <p class="detalhe-desc">
+            <p class="descricao-evento">
                 <%= evento.getDescricao() %>
             </p>
 
-            <a class="btn-voltar" href="${pageContext.request.contextPath}/evento">
+            <a class="botao-voltar" href="${pageContext.request.contextPath}/evento">
                 Voltar para Eventos
             </a>
         </div>

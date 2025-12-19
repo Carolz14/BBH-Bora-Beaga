@@ -14,8 +14,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
               integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="icon" href="../../imagens/icon-page.png">
-    </head>
+       <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
+</head>
+
+
 
     <body>
 
@@ -34,20 +36,41 @@
                 </div>
 
                 <section class="resultados-section ${not empty sessionScope.resultados || not empty sessionScope.erro ? 'mostrar' : ''}">
+
+                    <c:if test="${not empty sessionScope.erro}">
+                        <h3 class="resultados-titulo" style="color: #d9534f;">${sessionScope.erro}</h3>
+                    </c:if>
+
                     <c:if test="${not empty sessionScope.resultados}">
                         <h2 class="resultados-titulo">Resultados da pesquisa</h2>
                         <div class="resultados-grid">
                             <c:forEach var="local" items="${sessionScope.resultados}">
-                                <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${local.id}"
-                                   class="resultado-card">
-                                    <p>${local.nome}</p>
+
+                                <c:choose>
+                                    <c:when test="${local.categoria == 'Estabelecimento'}">
+                                        <c:url var="linkDetalhe" value="/bbh/DetalheEstabelecimentoController">
+                                            <c:param name="id" value="${local.id}"/>
+                                        </c:url>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:url var="linkDetalhe" value="/bbh/DetalhePontoTuristico">
+                                            <c:param name="id" value="${local.id}"/>
+                                        </c:url>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <a href="${linkDetalhe}" class="resultado-card">
+                                    <div class="resultado-img-placeholder">
+                                        <i class="fa-solid fa-map-location-dot resultado-icon-placeholder"></i>
+                                    </div>
+
+                                    <div class="resultado-info">
+                                        <p>${local.nome}</p>
+                                        <span>${local.categoria}</span>
+                                    </div>
                                 </a>
                             </c:forEach>
                         </div>
-                    </c:if>
-
-                    <c:if test="${empty resultados && not empty nomeBusca && empty erro}">
-                        <h2 class="resultados-titulo">Nenhum estabelecimento encontrado.</h2>
                     </c:if>
                 </section>
 
@@ -72,6 +95,10 @@
                         <i class="fa-solid fa-monument"></i>
                         <span>Monumentos</span>
                     </a>
+                    <a href="${pageContext.request.contextPath}/bbh/todasPromocoes" class="category-item">
+                        <i class="fa-solid fa-tags"></i>
+                        <span>Promoções</span>
+                    </a>
                 </div>
             </section>
 
@@ -81,7 +108,8 @@
                 <div class="promocoes-list">
                     <c:choose>
                         <c:when test="${not empty promocoes}">
-                            <c:forEach var="p" items="${promocoes}">
+                            <c:forEach var="p" items="${promocoes}" end="2">
+
                                 <div class="promocao-card">
                                     <div class="card-topo">
                                         <p class="promocao-nome"><c:out value="${p.nome}"/></p>
