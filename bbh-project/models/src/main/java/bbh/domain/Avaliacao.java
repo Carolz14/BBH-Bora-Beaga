@@ -38,7 +38,7 @@ public class Avaliacao {
         comentario = c;
     }
 
-    public void setIdAvaliação(long idA) {
+    public void setIdAvaliacao(long idA) {
         idAvaliacao = idA;
     }
 

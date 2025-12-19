@@ -40,7 +40,7 @@ public class AvaliacaoDAO {
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs != null && rs.next()) {
                     long idCriado = rs.getLong(1);
-                    avaliacao.setIdAvaliação(idCriado);
+                    avaliacao.setIdAvaliacao(idCriado);
                     return avaliacao;
                 } else {
                     throw new PersistenciaException("Inserção realizada mas não foi possível obter o id gerado.");
