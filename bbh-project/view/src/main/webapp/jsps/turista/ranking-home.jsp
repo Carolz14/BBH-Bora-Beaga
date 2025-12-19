@@ -15,7 +15,7 @@
     <div class="slides-wrapper">
 
         <div id="visitacoes" class="slide-content">
-            <h2 style="margin-bottom:15px">Top por Visitação (últimos <c:out value="${param.dias != null ? param.dias : 7}" /> dias)</h2>
+            <h2 style="margin-bottom:15px">Mais visitados na última semana</h2>
 
             <div class="ranking-list">
                 <c:choose>
@@ -23,7 +23,8 @@
                         <c:forEach var="r" items="${topVisitacoes}" varStatus="st">
                             <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${r.idEstabelecimento}" class="ranking-item">
                                 <span class="rank-number"><c:out value="${st.index + 1}" /></span>
-                                <img src="${pageContext.request.contextPath}/imagens/restaurante.jpeg" alt="Foto" class="rank-img" />
+                              <img src="/imagens-bbh/${r.imagemUrl}"
+                                     alt="Imagem de ${r.nomeEstabelecimento}">
                                 <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>
                                 <div class="rank-visitacoes">
                                     <i class="fas fa-users"></i> <span><c:out value="${r.numeroDeVisitacoes}" /></span>
@@ -45,7 +46,7 @@
         </div>
 
         <div id="medias" class="slide-content">
-            <h2 style="margin-bottom:15px">Top por Nota Média</h2>
+            <h2 style="margin-bottom:15px">Melhor avaliados</h2>
 
             <div class="ranking-list">
                 <c:choose>
@@ -53,6 +54,8 @@
                         <c:forEach var="r" items="${topMedias}" varStatus="st">
                             <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${r.idEstabelecimento}" class="ranking-item">
                                 <span class="rank-number"><c:out value="${st.index + 1}" /></span>
+                                <img src="/imagens-bbh/${r.imagemUrl}"
+                                     alt="Imagem de ${r.nomeEstabelecimento}">
                                 <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>
                                 <div class="rank-rating">
                                     <i class="fas fa-star"></i> <span><c:out value="${r.notaMedia}" /></span>

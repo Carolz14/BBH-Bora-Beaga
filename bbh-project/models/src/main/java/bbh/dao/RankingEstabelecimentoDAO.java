@@ -28,13 +28,14 @@ public class RankingEstabelecimentoDAO {
         String sql = """
                 SELECT u.id AS id_estabelecimento,
                        u.nome AS nome_estabelecimento,
+                       u.imagem_url AS imagem_estabelecimento,
                        AVG(a.nota_avaliacao) AS nota_media,
                        COUNT(a.id_avaliacao) AS numero_avaliacoes,
                        SUM(CASE WHEN a.data_avaliacao >= ? THEN 1 ELSE 0 END) AS numero_visitacoes
                 FROM usuarios u
                 JOIN avaliacao a ON a.id_estabelecimento = u.id
                 WHERE u.usuario_tipo = 'ESTABELECIMENTO'
-                GROUP BY u.id, u.nome
+                GROUP BY u.id, u.nome, u.imagem_url
                 HAVING COUNT(a.id_avaliacao) >= ?
                     AND nota_media >= ?
                 ORDER BY %s
@@ -72,7 +73,8 @@ public class RankingEstabelecimentoDAO {
                 rs.getDouble("nota_media"),
                 rs.getInt("numero_avaliacoes"),
                 rs.getString("nome_estabelecimento"),
-                rs.getInt("numero_visitacoes"));
+                rs.getInt("numero_visitacoes"),
+                rs.getString("imagem_estabelecimento"));
                 
     }
 }

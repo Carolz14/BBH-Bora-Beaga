@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <head>
     <title>Avaliações</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacoes.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacao.css" />
 </head>
 
 

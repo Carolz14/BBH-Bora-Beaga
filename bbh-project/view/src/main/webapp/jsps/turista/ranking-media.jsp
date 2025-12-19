@@ -80,7 +80,9 @@
                                     <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${r.idEstabelecimento}"
                                        class="ranking-item">
                                         <span class="rank-number"><c:out value="${st.index + 1}" /></span>
-                                        <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>
+                                        <img src="/imagens-bbh/${r.imagemUrl}"
+                                     alt="Imagem de ${r.nomeEstabelecimento}">
+                                        <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>  
                                         <div class="rank-rating">
                                             <i class="fas fa-star"></i>
                                             <span><c:out value="${r.notaMedia}" /></span>
