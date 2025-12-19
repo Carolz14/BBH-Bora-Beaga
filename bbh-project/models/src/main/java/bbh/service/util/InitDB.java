@@ -72,6 +72,23 @@ public class InitDB {
                     """;
             stmt.executeUpdate(sqlAvaliacaoRoteiros);
             System.out.println("Tabela 'avaliacao_roteiros' verificada/criada com sucesso.");
+
+
+             String sqlComentariosRoteiros = """
+                    CREATE TABLE IF NOT EXISTS comentarios_roteiros (
+                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                        roteiro_id BIGINT NOT NULL,
+                        usuario_id BIGINT NOT NULL,
+                        texto TEXT NOT NULL,
+                        imagem_url VARCHAR(255), 
+                        data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        FOREIGN KEY (roteiro_id) REFERENCES roteiros(id),
+                        FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+                        UNIQUE(roteiro_id, usuario_id )
+                    );
+                    """;
+            stmt.executeUpdate(sqlComentariosRoteiros);
+            System.out.println("Tabela 'comentarios_roteiros' verificada/criada com sucesso.");
             // verifica se há registros e poem "usuarios iniciais"
             try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM usuarios")) {
                 rs.next();
