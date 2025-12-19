@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <head>
     <title>Avaliações</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacao.css" />
 </head>
 
 <section class="avaliacoes">
@@ -134,7 +135,7 @@
 
                     <!-- controles de arquivo -->
                     <div class="file-controls">
-                        <button type="button" class="btn-file-trigger btn-simple">📷 Inserir mídia</button>
+                        <button type="button" class="btn-file-trigger btn-simple">Inserir mídia</button>
                         <button type="button" id="btn-clear-file" class="btn-clear-file btn-simple-remove">Remover</button>
                     </div>
 
