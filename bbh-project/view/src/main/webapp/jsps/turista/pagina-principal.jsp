@@ -105,10 +105,11 @@
                     </c:choose>
                 </div>
             </section>
+            <h1>Locais do momento</h1>
             <jsp:include page="/rankingHome/listar" flush="true" />
         </main>
-
+        
         <%@ include file="../footer.jsp" %>
-
+      
     </body>
 </html>

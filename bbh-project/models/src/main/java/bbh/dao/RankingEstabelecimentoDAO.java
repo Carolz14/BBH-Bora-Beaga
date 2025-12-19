@@ -12,19 +12,19 @@ import java.util.concurrent.TimeUnit;
 public class RankingEstabelecimentoDAO {
 
     public List<RankingEstabelecimento> listarComAsMelhoresMedias(int limiteDeBuscas, int numeroAvaliacoesMin,
-            int filtroDias) throws PersistenciaException {
+            int filtroDias, double notaMinima) throws PersistenciaException {
         return executarConsultaRanking("nota_media DESC, numero_avaliacoes DESC, u.nome ASC",
-                limiteDeBuscas, numeroAvaliacoesMin, filtroDias);
+                limiteDeBuscas, numeroAvaliacoesMin, filtroDias, notaMinima);
     }
 
     public List<RankingEstabelecimento> listarComOsMaioresNumerosDeVisitacoes(int limiteDeBuscas,
-            int numeroAvaliacoesMin, int filtroDias) throws PersistenciaException {
+            int numeroAvaliacoesMin, int filtroDias, double notaMinima) throws PersistenciaException {
         return executarConsultaRanking("numero_visitacoes DESC, nota_media DESC, numero_avaliacoes ASC",
-                limiteDeBuscas, numeroAvaliacoesMin, filtroDias);
+                limiteDeBuscas, numeroAvaliacoesMin, filtroDias, notaMinima);
     }
 
     private List<RankingEstabelecimento> executarConsultaRanking(String orderByClause, int limiteDeBuscas,
-            int numeroAvaliacoesMin, int filtroDias) throws PersistenciaException {
+            int numeroAvaliacoesMin, int filtroDias, double notaMinima) throws PersistenciaException {
         String sql = """
                 SELECT u.id AS id_estabelecimento,
                        u.nome AS nome_estabelecimento,
@@ -36,6 +36,7 @@ public class RankingEstabelecimentoDAO {
                 WHERE u.usuario_tipo = 'ESTABELECIMENTO'
                 GROUP BY u.id, u.nome
                 HAVING COUNT(a.id_avaliacao) >= ?
+                    AND nota_media >= ?
                 ORDER BY %s
                 LIMIT ?
                 """.formatted(orderByClause);
@@ -50,7 +51,8 @@ public class RankingEstabelecimentoDAO {
 
             ps.setTimestamp(1, limiteTimestamp);
             ps.setInt(2, numeroAvaliacoesMin);
-            ps.setInt(3, limiteDeBuscas);
+            ps.setDouble(3, notaMinima);
+            ps.setInt(4, limiteDeBuscas);
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -71,5 +73,6 @@ public class RankingEstabelecimentoDAO {
                 rs.getInt("numero_avaliacoes"),
                 rs.getString("nome_estabelecimento"),
                 rs.getInt("numero_visitacoes"));
+                
     }
 }

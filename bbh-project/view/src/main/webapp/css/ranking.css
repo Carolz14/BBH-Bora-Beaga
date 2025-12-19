@@ -1,0 +1,225 @@
+:root{
+    --font-heading: "Fraunces", serif;
+}
+
+.ranking-list {
+    max-width: 900px;
+    margin: 0 auto 50px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* Espaço elegante entre os cards */
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espaço entre os elementos dentro do card */
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ranking-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.rank-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cor-secundaria);
+    min-width: 25px; /* Garante alinhamento se houver mais de 9 itens */
+    text-align: center;
+}
+
+.rank-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.rank-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0; /* Reseta a margem padrão do parágrafo */
+    flex-grow: 1; /* Faz o nome empurrar a avaliação para o final */
+}
+
+.rank-rating {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    white-space: nowrap; /* Impede que o ícone e o número quebrem linha */
+}
+
+.rank-rating .fa-star {
+    color: var(--cor-primaria);
+    margin-right: 8px;
+}
+.subtexto > span{
+    font-weight: 300;
+    font-size: 13px;
+}
+
+#ranking-title{
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+/* layout principal: sidebar + conteúdo */
+.layout-with-sidebar {
+    display: grid;
+    grid-template-columns: 450px 2fr; /* largura da sidebar + resto do conteúdo */
+    gap: 10px;
+    align-items: start;
+    margin-left: 15px;
+}
+
+/* sidebar */
+.filter-sidebar {
+    position: sticky;
+    align-self: center;
+    height: fit-content;
+    bottom: 30px;
+}
+
+/* adapta .filter-dropdown para aparência de painel estreito */
+.filter-dropdown {
+    width: 100%;
+    border-radius: 12px;
+    overflow: visible;
+    box-shadow: 0 8px 20px rgba(2,6,23,0.06);
+    border: 1px solid rgba(0,0,0,0.06);
+    background: #fff;
+}
+
+/* botão toggle: compacto */
+.filter-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    width: 100%;
+    padding: .6rem .8rem;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    min-height: 44px;
+}
+.filter-toggle .title {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+.filter-toggle .arrow {
+    font-size: 0.9rem;
+}
+
+/* painel: vertical e compacto */
+.filter-panel {
+    padding: 0.65rem;
+    transition: max-height .28s cubic-bezier(.2,.9,.2,1), opacity .18s ease;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* quando aberto */
+.filter-panel.open {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+
+
+/* botões menores para sidebar */
+.btn-primary {
+    background: #0ea5e9;
+    color: #fff;
+    padding: 0.45rem 0.7rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+.btn-link {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.9rem;
+}
+
+/* conteúdo principal: garantir separação e responsividade */
+.main-content {
+    min-width: 0;
+}
+
+/* ---- Campos do filtro lado a lado (duas colunas na sidebar) ---- */
+.filter-panel .ranking-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;               /* espaço entre os "cards" de cada campo */
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* cada .field vira um "bloco" que ocupa metade da largura disponível */
+.ranking-filter-form .field {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 0 1 calc(50% - 0.3rem); /* duas colunas ajustadas ao gap */
+    box-sizing: border-box;
+    min-width: 0;              /* importante para evitar overflow em flex */
+    padding: 0.15rem 0;        /* leve padding vertical para respiração */
+}
+
+/* label curto à esquerda; ajuste a largura se quiser mais/menos espaço ao label */
+.ranking-filter-form .label-text {
+    width: 36%;
+    min-width: 80px;
+    font-size: 0.85rem;
+    color: #374151;
+}
+
+/* input ocupa o resto do espaço do bloco */
+.ranking-filter-form input[type="number"],
+.ranking-filter-form select {
+    flex: 1 1 auto;
+    width: 60px;
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid rgba(15,23,42,0.08);
+    font-size: 0.95rem;
+}
+
+/* ações ocupam toda a linha (abaixo dos campos) */
+.ranking-filter-form .form-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
+}
+
+/* --- Responsivo: em telas pequenas volta a empilhar --- */
+@media (max-width: 520px) {
+    .ranking-filter-form .field {
+        flex: 0 1 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .ranking-filter-form .label-text {
+        width: auto;
+        min-width: 0;
+    }
+    .ranking-filter-form input[type="number"],
+    .ranking-filter-form select {
+        width: 100%;
+    }
+}
+
+

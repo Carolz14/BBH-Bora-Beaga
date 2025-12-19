@@ -7,6 +7,7 @@ public class RankingEstabelecimento {
     private final String nomeEstabelecimento;
     private final int numeroDeVisitacoes;
 
+
     public RankingEstabelecimento(long idE, double nM, int nA, String nE, int nDV){
         idEstabelecimento = idE;
         notaMedia = nM;

@@ -17,18 +17,18 @@ public class RankingEstabelecimentoService {
     public List<RankingEstabelecimento> buscarRankings(String tipoDoRanking,
             int limiteDeBuscas,
             int numeroAvaliacoesMin,
-            int filtroDias) throws PersistenciaException {
+            int filtroDias, double notaMinima) throws PersistenciaException {
         String tipo = tipoDoRanking == null ? "medias" : tipoDoRanking.trim().toLowerCase();
         switch (tipo) {
             case "mais_visitacoes":
             case "mais-visitacoes":
             case "visitacoes":
-                return rankingEstabelecimentoDAO.listarComOsMaioresNumerosDeVisitacoes(limiteDeBuscas,numeroAvaliacoesMin, filtroDias);
+                return rankingEstabelecimentoDAO.listarComOsMaioresNumerosDeVisitacoes(limiteDeBuscas,numeroAvaliacoesMin, filtroDias, notaMinima);
 
             case "media":
             case "medias":
             default:
-                return rankingEstabelecimentoDAO.listarComAsMelhoresMedias(limiteDeBuscas, numeroAvaliacoesMin, filtroDias);
+                return rankingEstabelecimentoDAO.listarComAsMelhoresMedias(limiteDeBuscas, numeroAvaliacoesMin, filtroDias, notaMinima);
         }
     }
 }

@@ -22,10 +22,10 @@ public class ListarRankingHomeServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             List<RankingEstabelecimento> topMedias = rankingService.buscarRankings("medias", limiteBuscas,
-                    avalicoesMinimasNecessarias, janelaDeTempoDias);
+                    avalicoesMinimasNecessarias, janelaDeTempoDias, 0.0);
 
             List<RankingEstabelecimento> topVisitacoes = rankingService.buscarRankings("visitacoes", limiteBuscas,
-                    avalicoesMinimasNecessarias, janelaDeTempoDias);
+                    avalicoesMinimasNecessarias, janelaDeTempoDias, 0.0);
             req.setAttribute("topMedias", topMedias);
             req.setAttribute("topVisitacoes", topVisitacoes);
             req.getRequestDispatcher("/jsps/turista/ranking-home.jsp").include(req, resp);
