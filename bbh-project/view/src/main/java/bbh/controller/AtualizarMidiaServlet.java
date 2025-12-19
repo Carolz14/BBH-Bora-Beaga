@@ -56,6 +56,7 @@ public class AtualizarMidiaServlet extends BaseServlet {
             return;
         }
         String idParam = req.getParameter("id");
+        String categoria = req.getParameter("categoria");
         if (idParam == null) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "id da mídia é obrigatório");
             return;

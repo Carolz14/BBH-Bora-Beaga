@@ -7,27 +7,31 @@ package bbh.domain;
 import java.sql.Timestamp;
 
 public class Avaliacao {
+
     private final long idUsuario;
     private long idAvaliacao;
     private final long idEstabelecimento;
     private int notaAvaliacao;
     private String comentario;
     private Timestamp dataAvaliacao;
+    private String categoria;
 
-    public Avaliacao(long idA, long idU, long idE, int nA, String c, Timestamp dA) {
+    public Avaliacao(long idA, long idU, long idE, int nA, String c, Timestamp dA, String cA) {
         idAvaliacao = idA;
         idUsuario = idU;
         idEstabelecimento = idE;
         notaAvaliacao = nA;
         comentario = c;
         dataAvaliacao = dA;
+        categoria = cA;
     }
 
-    public Avaliacao(long idU, long idE, int nA, String c) {
+    public Avaliacao(long idU, long idE, int nA, String c, String cA) {
         idUsuario = idU;
         idEstabelecimento = idE;
         notaAvaliacao = nA;
         comentario = c;
+        categoria = cA;
     }
 
     public void setDataAvaliacao(Timestamp d) {
@@ -44,6 +48,10 @@ public class Avaliacao {
 
     public void setNotaAvaliacao(int n) {
         notaAvaliacao = n;
+    }
+
+    public void setCategoria(String cA) {
+        categoria = cA;
     }
 
     public String getComentario() {
@@ -69,4 +77,9 @@ public class Avaliacao {
     public long getIdEstabelecimento() {
         return idEstabelecimento;
     }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
 }

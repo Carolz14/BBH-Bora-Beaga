@@ -27,6 +27,7 @@ public class ListarAvaliacaoCompletaServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idParam = req.getParameter("id");
+        String categoria = req.getParameter("categoria");
         if (idParam == null || idParam.isBlank()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parâmetro 'id' (estabelecimento) obrigatório.");
             return;
@@ -51,7 +52,7 @@ public class ListarAvaliacaoCompletaServlet extends BaseServlet {
         }
 
         try {
-            List<Avaliacao> avaliacoes = avaliacaoService.buscarAvaliacoesPorEstabelecimento(idEstabelecimento);
+            List<Avaliacao> avaliacoes = avaliacaoService.buscarAvaliacoesPorEstabelecimento(idEstabelecimento, categoria);
 
             Map<Long, List<MidiaAvaliacao>> midiasPorAvaliacao = new HashMap<>();
             for (Avaliacao av : avaliacoes) {
@@ -60,12 +61,13 @@ public class ListarAvaliacaoCompletaServlet extends BaseServlet {
                 midiasPorAvaliacao.put(idAvaliacao, listaMidias);
             }
             boolean ehAdmin = usuarioLogado.getUsuarioTipo() == UsuarioTipo.ADMINISTRADOR;
-            double media = avaliacaoService.calcularMedia(idEstabelecimento);
+            double media = avaliacaoService.calcularMedia(idEstabelecimento, categoria);
 
             req.setAttribute("avaliacoes", avaliacoes);
             req.setAttribute("midiasPorAvaliacao", midiasPorAvaliacao);
             req.setAttribute("media", media);
             req.setAttribute("estabelecimentoId", idEstabelecimento);
+            req.setAttribute("categoria", categoria);
             req.setAttribute("idUsuario", idUsuario);
             req.setAttribute("ehAdmin", ehAdmin);
 
