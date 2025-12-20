@@ -24,7 +24,7 @@ public class DetalheEstabelecimentoController extends HttpServlet {
             throws ServletException, IOException {
 
         String idParam = request.getParameter("id");
-        String categoria = "Estab";
+        String categoria = "ESTABELECIMENTO";
         if (idParam == null) {
             response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
             return;

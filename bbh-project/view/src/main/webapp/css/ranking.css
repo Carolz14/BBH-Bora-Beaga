@@ -13,9 +13,9 @@
 .ranking-item {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px; /* Reduzi um pouco o espaçamento entre a imagem e o texto */
     background-color: #fff;
-    padding: 15px;
+    padding: 10px 15px; /* Reduzi um pouco o padding vertical */
     border-radius: 15px;
     text-decoration: none;
     color: inherit;
@@ -37,10 +37,11 @@
 }
 
 .rank-img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 10px;
+    width: 40px !important;
+    height: 40px !important;
+    object-fit: cover; 
+    border-radius: 8px;
+    flex-shrink: 0; 
 }
 
 .rank-name {

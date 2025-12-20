@@ -22,9 +22,14 @@
         <main>
             <div class="container">
 
-                <a href="${pageContext.request.contextPath}/bbh/feed" class="back-link">
+                <a href="${pageContext.request.contextPath}/bbh/feed" 
+                   onclick="if (document.referrer) {
+               history.back();
+               return false;
+           }" 
+                   class="back-link">
                     <i class="fa-solid fa-arrow-left"></i> Voltar
-                </a>
+                </a> 
 
                 <c:if test="${not empty ponto}">
                     <div class="estabelecimento">
@@ -87,7 +92,7 @@
 
                 <jsp:include page="/avaliacao/listar" flush="true">
                     <jsp:param name="id" value="${ponto.id}" />
-                    <jsp:param name="categoria" value="Ponto" />
+                    <jsp:param name="categoria" value="PONTO_TURISTICO" />
                 </jsp:include>
             </div>
         </main>

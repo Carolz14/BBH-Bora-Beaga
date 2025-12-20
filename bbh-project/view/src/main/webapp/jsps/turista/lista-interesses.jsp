@@ -16,7 +16,12 @@
 
         <%@ include file="../header.jsp" %>
 
-        <a href="${pageContext.request.contextPath}/bbh/feed" class="back-link">
+        <a href="${pageContext.request.contextPath}/bbh/feed" 
+           onclick="if (document.referrer) {
+               history.back();
+               return false;
+           }" 
+           class="back-link">
             <i class="fa-solid fa-arrow-left"></i> Voltar
         </a>
 

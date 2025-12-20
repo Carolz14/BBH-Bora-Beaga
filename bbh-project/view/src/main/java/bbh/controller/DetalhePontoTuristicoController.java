@@ -21,7 +21,7 @@ public class DetalhePontoTuristicoController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idStr = request.getParameter("id");
-        String categoria = "Ponto"; 
+        String categoria = "PONTO_TURISTICO"; 
         
         if (idStr != null && !idStr.isEmpty()) {
             try {
