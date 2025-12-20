@@ -69,6 +69,7 @@
                     </div>
                     <jsp:include page="/avaliacao/listar" flush="true">
                         <jsp:param name="id" value="${estabelecimento.id}" />
+                        <jsp:param name="categoria" value="Estab" />
                     </jsp:include>
 
                 </div>

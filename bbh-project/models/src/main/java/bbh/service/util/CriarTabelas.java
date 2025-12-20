@@ -122,6 +122,7 @@ public class CriarTabelas {
                 id_estabelecimento BIGINT NOT NULL,
                 nota_avaliacao INT CHECK (nota_avaliacao BETWEEN 1 AND 5),
                 comentario TEXT,
+                categoria VARCHAR(50) NOT NULL,
                 data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
                 FOREIGN KEY (id_estabelecimento) REFERENCES usuarios(id) ON DELETE CASCADE

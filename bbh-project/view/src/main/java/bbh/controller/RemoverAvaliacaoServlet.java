@@ -34,8 +34,8 @@ public class RemoverAvaliacaoServlet extends BaseServlet {
 
         try {
             long idAvaliacao = Long.parseLong(req.getParameter("id_avaliacao"));
-            long idEstabelecimento = Long.parseLong(req.getParameter("id"));
-
+            long localId = Long.parseLong(req.getParameter("id"));
+            String categoria = req.getParameter("categoria");
             Avaliacao av = service.buscarPorId(idAvaliacao);
              if(av == null){
                 throw new ServletException("Erro: avaliação com esse id não foi encontrada");
@@ -49,7 +49,12 @@ public class RemoverAvaliacaoServlet extends BaseServlet {
 
             service.removerAvaliacao(idAvaliacao);
 
-            resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + idEstabelecimento);
+            if("Estabelecimento".equalsIgnoreCase(categoria) || "Estab".equalsIgnoreCase(categoria)){
+                resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + localId);
+            }
+            else{
+                resp.sendRedirect(req.getContextPath() + "/bbh/DetalhePontoTuristico?id=" + localId);
+            }
         } catch (NumberFormatException e) {
             throw new ServletException("Parâmetros numéricos inválidos.", e);
         } catch (PersistenciaException e) {

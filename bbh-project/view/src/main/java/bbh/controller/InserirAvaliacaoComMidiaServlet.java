@@ -30,7 +30,7 @@ public class InserirAvaliacaoComMidiaServlet extends BaseServlet {
         String idEstStr = req.getParameter("id");
         String notaStr = req.getParameter("nota");
         String coment = req.getParameter("comentario");
-
+        String categoria = req.getParameter("categoria");
         if (idEstStr == null || notaStr == null || coment == null) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parâmetros obrigatórios faltando.");
             return;
@@ -48,7 +48,7 @@ public class InserirAvaliacaoComMidiaServlet extends BaseServlet {
 
         try {
             long idUsuario = getIdUsuario(req);
-            Avaliacao av = new Avaliacao(idUsuario, idEstabelecimento, nota, coment);
+            Avaliacao av = new Avaliacao(idUsuario, idEstabelecimento, nota, coment, categoria);
             Avaliacao avSalva = avaliacaoService.inserirAvaliacao(av);
             long idAvaliacaoSalva = avSalva.getIdAvaliacao();
             Part filePart = req.getPart("file");
@@ -58,7 +58,13 @@ public class InserirAvaliacaoComMidiaServlet extends BaseServlet {
                     midiaService.salvarMidia(filePart, idAvaliacaoSalva);
                 }
             }
-            resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + idEstabelecimento);
+            String redirectUrl;
+            if ("Estabelecimento".equalsIgnoreCase(categoria) || "Estab".equalsIgnoreCase(categoria)) {
+                 redirectUrl = req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + idEstabelecimento;
+            } else {
+                 redirectUrl = req.getContextPath() + "/bbh/DetalhePontoTuristico?id=" + idEstabelecimento;
+            }
+            resp.sendRedirect(redirectUrl);
 
         } catch (PersistenciaException pe) {
             throw new ServletException("Erro ao salvar avaliação/mídia: " + pe.getMessage(), pe);

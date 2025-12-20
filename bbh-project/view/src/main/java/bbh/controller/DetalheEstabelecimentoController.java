@@ -24,7 +24,7 @@ public class DetalheEstabelecimentoController extends HttpServlet {
             throws ServletException, IOException {
 
         String idParam = request.getParameter("id");
-
+        String categoria = "Estab";
         if (idParam == null) {
             response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
             return;
@@ -34,13 +34,14 @@ public class DetalheEstabelecimentoController extends HttpServlet {
             Long id = Long.parseLong(idParam);
             GestaoUsuariosService service = new GestaoUsuariosService();
             Usuario estabelecimento = service.pesquisarPorId(id);
-            double media = avaliacaoService.calcularMedia(id);
-            List <Avaliacao> avaliacoes = avaliacaoService.buscarAvaliacoesPorEstabelecimento(id);
+            double media = avaliacaoService.calcularMedia(id, categoria);
+            List <Avaliacao> avaliacoes = avaliacaoService.buscarAvaliacoesPorEstabelecimento(id, categoria);
 
             if (estabelecimento != null) {
                 request.setAttribute("estabelecimento", estabelecimento);
                 request.setAttribute("media", media);
                 request.setAttribute("avaliacoes", avaliacoes);
+                request.setAttribute("categoria", categoria);
                 request.getRequestDispatcher("/jsps/turista/detalhe-estabelecimento.jsp").forward(request, response);
             } else {
                 response.sendRedirect(request.getContextPath() + "/jsps/turista/lista-estabelecimento.jsp");
