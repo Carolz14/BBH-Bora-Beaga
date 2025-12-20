@@ -21,7 +21,14 @@
         <main>
             <div class="container">
 
-                <a href="${pageContext.request.contextPath}/bbh/feed" class="back-link">Voltar</a>
+                <a href="${pageContext.request.contextPath}/bbh/feed" 
+                   onclick="if (document.referrer) {
+               history.back();
+               return false;
+           }" 
+                   class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar
+                </a>
 
                 <c:if test="${not empty estabelecimento}">
                     <div class="estabelecimento">

@@ -18,24 +18,41 @@
             <h2 style="margin-bottom:15px">Mais visitados na última semana</h2>
 
             <div class="ranking-list">
-                <c:choose>
-                    <c:when test="${not empty topVisitacoes}">
-                        <c:forEach var="r" items="${topVisitacoes}" varStatus="st">
-                            <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${r.idEstabelecimento}" class="ranking-item">
-                                <span class="rank-number"><c:out value="${st.index + 1}" /></span>
-                              <img src="/imagens-bbh/${r.imagemUrl}"
-                                     alt="Imagem de ${r.nomeEstabelecimento}">
-                                <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>
-                                <div class="rank-visitacoes">
-                                    <i class="fas fa-users"></i> <span><c:out value="${r.numeroDeVisitacoes}" /></span>
-                                </div>
-                            </a>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <p style="padding:20px; text-align:center;">Nenhuma visitação registrada neste período.</p>
-                    </c:otherwise>
-                </c:choose>
+                <c:forEach var="r" items="${topVisitacoes}" varStatus="st">
+
+                    <c:url var="linkDestino" value="">
+                        <c:choose>
+                            <c:when test="${r.tipo == 'ESTABELECIMENTO'}">
+                                <c:set var="baseUrl" value="/bbh/DetalheEstabelecimentoController" />
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="baseUrl" value="/bbh/DetalhePontoTuristico" />
+                            </c:otherwise>
+                        </c:choose>
+                        <c:set var="finalUrl" value="${baseUrl}" />
+                        <c:param name="id" value="${r.idEstabelecimento}"/>
+                    </c:url>
+                    <c:choose>
+                        <c:when test="${r.tipo == 'ESTABELECIMENTO'}">
+                            <c:url var="linkDestino" value="/bbh/DetalheEstabelecimentoController">
+                                <c:param name="id" value="${r.idEstabelecimento}"/>
+                            </c:url>
+                        </c:when>
+                        <c:otherwise>
+                            <c:url var="linkDestino" value="/bbh/DetalhePontoTuristico">
+                                <c:param name="id" value="${r.idEstabelecimento}"/>
+                            </c:url>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <a href="${linkDestino}" class="ranking-item">
+                        <span class="rank-number"><c:out value="${st.index + 1}" /></span>
+                        <img class ="rank-img" src="${pageContext.request.contextPath}/imagem?nome=${r.imagemUrl}"
+                             alt="Imagem de ${r.nomeEstabelecimento}">
+                        <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>
+
+                    </a>
+                </c:forEach>
             </div>
 
             <div style="text-align:center; margin-top:20px; display: flex; justify-content: center">
@@ -49,27 +66,52 @@
             <h2 style="margin-bottom:15px">Melhor avaliados</h2>
 
             <div class="ranking-list">
-                <c:choose>
-                    <c:when test="${not empty topMedias}">
-                        <c:forEach var="r" items="${topMedias}" varStatus="st">
-                            <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${r.idEstabelecimento}" class="ranking-item">
-                                <span class="rank-number"><c:out value="${st.index + 1}" /></span>
-                                <img src="/imagens-bbh/${r.imagemUrl}"
-                                     alt="Imagem de ${r.nomeEstabelecimento}">
-                                <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>
-                                <div class="rank-rating">
-                                    <i class="fas fa-star"></i> <span><c:out value="${r.notaMedia}" /></span>
-                                </div>
-                                <div class="rank-rating subtexto">
-                                    <span>(<c:out value="${r.numeroAvaliacoes}" /> avaliações)</span>
-                                </div>
-                            </a>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <p style="padding:20px; text-align:center;">Nenhuma avaliação registrada.</p>
-                    </c:otherwise>
-                </c:choose>
+                <c:forEach var="r" items="${topMedias}" varStatus="st">
+
+                    <c:url var="linkDestino" value="">
+                        <c:choose>
+                            <c:when test="${r.tipo == 'ESTABELECIMENTO'}">
+                                <c:set var="baseUrl" value="/bbh/DetalheEstabelecimentoController" />
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="baseUrl" value="/bbh/DetalhePontoTuristico" />
+                            </c:otherwise>
+                        </c:choose>
+                        <c:set var="finalUrl" value="${baseUrl}" /> 
+                        <c:param name="id" value="${r.idEstabelecimento}"/>
+                    </c:url>
+
+                    <c:choose>
+                        <c:when test="${r.tipo == 'ESTABELECIMENTO'}">
+                            <c:url var="linkDestino" value="/bbh/DetalheEstabelecimentoController">
+                                <c:param name="id" value="${r.idEstabelecimento}"/>
+                            </c:url>
+                        </c:when>
+                        <c:otherwise>
+                            <c:url var="linkDestino" value="/bbh/DetalhePontoTuristico">
+                                <c:param name="id" value="${r.idEstabelecimento}"/>
+                            </c:url>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <a href="${linkDestino}" class="ranking-item">
+
+                        <span class="rank-number"><c:out value="${st.index + 1}" /></span>
+
+                        <img class="rank-img" src="${pageContext.request.contextPath}/imagem?nome=${r.imagemUrl}"
+                             alt="Imagem de ${r.nomeEstabelecimento}">
+
+                        <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>
+
+                        <div class="rank-rating">
+                            <i class="fas fa-star"></i> <span><c:out value="${r.notaMedia}" /></span>
+                        </div>
+
+                        <div class="rank-rating subtexto">
+                            <span>(<c:out value="${r.numeroAvaliacoes}" /> avaliações)</span>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
 
             <div style="text-align:center; margin-top:20px; display: flex; justify-content: center">
