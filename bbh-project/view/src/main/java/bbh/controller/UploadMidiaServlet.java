@@ -61,6 +61,7 @@ public class UploadMidiaServlet extends BaseServlet {
         }
 
         String idParam = req.getParameter("id");
+        String categoria = req.getParameter("categoria");
         if (idParam == null) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parâmetro 'id' (id da avaliação) é obrigatório.");
             return;

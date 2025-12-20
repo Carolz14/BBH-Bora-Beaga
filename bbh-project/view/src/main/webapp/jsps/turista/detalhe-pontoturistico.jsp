@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="jakarta.tags.core" prefix="c" %>
+<%@taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -10,6 +11,7 @@
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/detalhe-estabelecimento.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacao.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     </head>
 
@@ -20,9 +22,14 @@
         <main>
             <div class="container">
 
-                <a href="${pageContext.request.contextPath}/bbh/feed" class="back-link">
+                <a href="${pageContext.request.contextPath}/bbh/feed" 
+                   onclick="if (document.referrer) {
+               history.back();
+               return false;
+           }" 
+                   class="back-link">
                     <i class="fa-solid fa-arrow-left"></i> Voltar
-                </a>
+                </a> 
 
                 <c:if test="${not empty ponto}">
                     <div class="estabelecimento">
@@ -59,17 +66,19 @@
                             <h1><c:out value="${ponto.nome}" /></h1>
 
                             <div class="rating">
-                                <span>
-                                    Ponto Turístico
-                                </span>
+                                <span class="nota-badge"><c:out value="${media}" /></span>
+                                <c:forEach var="i" begin="1" end="${media}">
+                                    <img src="<c:url value='/imagens/estrela-png.png' />"
+                                         alt="" aria-hidden="true" class="nota-star" />
+                                </c:forEach>
+                                <small>(baseada em <c:out value="${avaliacoes.size()}" /> avaliações)</small>
                             </div>
 
                             <div class="informacao">
                                 <p><strong><i class="fa-solid fa-align-left"></i> Descrição:</strong> <br> ${ponto.descricao}</p>
                                 <p><strong><i class="fa-solid fa-location-dot"></i> Endereço:</strong> <br> ${ponto.endereco}</p>
                             </div>
-                
-                            </a>
+
                         </div>
                     </div>
                 </c:if>
@@ -81,6 +90,10 @@
                     </div>
                 </c:if>
 
+                <jsp:include page="/avaliacao/listar" flush="true">
+                    <jsp:param name="id" value="${ponto.id}" />
+                    <jsp:param name="categoria" value="PONTO_TURISTICO" />
+                </jsp:include>
             </div>
         </main>
 

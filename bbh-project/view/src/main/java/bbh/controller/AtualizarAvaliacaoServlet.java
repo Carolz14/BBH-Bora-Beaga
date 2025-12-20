@@ -37,7 +37,8 @@ public class AtualizarAvaliacaoServlet extends BaseServlet {
         try {
 
             long idAvaliacao = Long.parseLong(req.getParameter("id_avaliacao"));
-            long estabelecimentoId = Long.parseLong(req.getParameter("id")); // PADRÃO: id
+            long localId = Long.parseLong(req.getParameter("id")); // PADRÃO: id
+            String categoria = req.getParameter("categoria");
             int nota = Integer.parseInt(req.getParameter("nota"));
             String comentario = req.getParameter("comentario");
 
@@ -56,10 +57,14 @@ public class AtualizarAvaliacaoServlet extends BaseServlet {
                 throw new ServletException("Nota inválida (1..5).");
             }
 
-            Avaliacao a = new Avaliacao(idAvaliacao, idUsuario, estabelecimentoId, nota, comentario, null);
+            Avaliacao a = new Avaliacao(idAvaliacao, idUsuario, localId, nota, comentario, null, categoria);
             service.atualizarAvaliacao(a);
-
-            resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + estabelecimentoId);
+            if("Estabelecimento".equalsIgnoreCase(categoria) || "Estab".equalsIgnoreCase(categoria)){
+                resp.sendRedirect(req.getContextPath() + "/bbh/DetalheEstabelecimentoController?id=" + localId);
+            }
+            else{
+                resp.sendRedirect(req.getContextPath() + "/bbh/DetalhePontoTuristico?id=" + localId);
+            }
 
         } catch (NumberFormatException e) {
             throw new ServletException("Parâmetros numéricos inválidos." + e.getMessage());

@@ -20,8 +20,8 @@ public class AvaliacaoDAO {
     public Avaliacao inserirAvaliacao(Avaliacao avaliacao) throws PersistenciaException {
         String sql = """
                 INSERT INTO avaliacao
-                (id_usuario, id_estabelecimento, nota_avaliacao, comentario)
-                VALUES (?, ?, ?, ?)
+                (id_usuario, id_estabelecimento, nota_avaliacao, comentario, categoria)
+                VALUES (?, ?, ?, ?, ?)
                 """;
 
         try (Connection conn = ConexaoBD.getConnection();
@@ -31,6 +31,7 @@ public class AvaliacaoDAO {
             ps.setLong(2, avaliacao.getIdEstabelecimento());
             ps.setInt(3, avaliacao.getNotaAvaliacao());
             ps.setString(4, avaliacao.getComentario());
+            ps.setString(5, avaliacao.getCategoria());
 
             int linhas = ps.executeUpdate();
             if (linhas == 0) {
@@ -40,7 +41,7 @@ public class AvaliacaoDAO {
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs != null && rs.next()) {
                     long idCriado = rs.getLong(1);
-                    avaliacao.setIdAvaliação(idCriado);
+                    avaliacao.setIdAvaliacao(idCriado);
                     return avaliacao;
                 } else {
                     throw new PersistenciaException("Inserção realizada mas não foi possível obter o id gerado.");
@@ -52,15 +53,16 @@ public class AvaliacaoDAO {
         }
     }
 
-    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(long idEstabelecimento) throws PersistenciaException {
+    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(long idLocal, String categoria) throws PersistenciaException {
         String sql = """
                 SELECT * FROM avaliacao
-                WHERE id_estabelecimento = ?
+                WHERE id_estabelecimento = ? AND categoria=?
                 ORDER BY data_avaliacao DESC
                 """;
         List<Avaliacao> lista = new ArrayList<>();
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, idEstabelecimento);
+            ps.setLong(1, idLocal);
+            ps.setString(2, categoria);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     lista.add(gerarObjetoAvaliacao(rs));
@@ -95,12 +97,13 @@ public class AvaliacaoDAO {
         String sql = """
                 UPDATE avaliacao
                 SET nota_avaliacao = ?, comentario = ?, data_avaliacao = CURRENT_TIMESTAMP
-                WHERE id_avaliacao = ?
+                WHERE id_avaliacao = ? AND categoria=?
                 """;
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, avaliacao.getNotaAvaliacao());
             ps.setString(2, avaliacao.getComentario());
             ps.setLong(3, avaliacao.getIdAvaliacao());
+            ps.setString(4, avaliacao.getCategoria());
             int linhasAfetadas = ps.executeUpdate();
             if (linhasAfetadas == 0) {
                 throw new PersistenciaException("Erro: tentou atualizar uma avaliação que não existe, id da avaliação:"
@@ -124,10 +127,11 @@ public class AvaliacaoDAO {
         }
     }
 
-    public double calcularNotaMedia(long idEstabelecimento) throws PersistenciaException {
-        String sql = "SELECT AVG(nota_avaliacao) AS media FROM avaliacao WHERE id_estabelecimento = ?";
+    public double calcularNotaMedia(long idLocal, String categoria) throws PersistenciaException {
+        String sql = "SELECT AVG(nota_avaliacao) AS media FROM avaliacao WHERE id_estabelecimento = ? AND categoria=?";
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, idEstabelecimento);
+            ps.setLong(1, idLocal);
+            ps.setString(2, categoria);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getDouble("media");
@@ -146,6 +150,7 @@ public class AvaliacaoDAO {
                 rs.getLong("id_estabelecimento"),
                 rs.getInt("nota_avaliacao"),
                 rs.getString("comentario"),
-                rs.getTimestamp("data_avaliacao"));
+                rs.getTimestamp("data_avaliacao"),
+                rs.getString("categoria"));
     }
 }
