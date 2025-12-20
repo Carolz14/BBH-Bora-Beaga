@@ -87,7 +87,7 @@
 
                 <jsp:include page="/avaliacao/listar" flush="true">
                     <jsp:param name="id" value="${ponto.id}" />
-                    <jsp:param name="categoria" value="Ponto" />
+                    <jsp:param name="categoria" value="PONTO_TURISTICO" />
                 </jsp:include>
             </div>
         </main>
