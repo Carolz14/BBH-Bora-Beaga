@@ -1,7 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="bbh.domain.Evento"%>
-<%@page import="bbh.domain.Usuario"%>
-<%@page import="bbh.domain.util.UsuarioTipo"%>
 <%@page import="java.util.List"%>
 
 <!DOCTYPE html>
@@ -9,10 +7,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventos</title>
+    <title>Eventos | Bora Beagá</title>
 
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/eventos.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style-geral.css">
+    <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
 </head>
 
 <body>
@@ -22,71 +21,75 @@
 <%
     List<Evento> proximos4 = (List<Evento>) request.getAttribute("proximos4");
     List<Evento> eventosFuturos = (List<Evento>) request.getAttribute("eventosFuturos");
-
     String msg = (String) request.getAttribute("msg");
     String erro = (String) request.getAttribute("erro");
 %>
 
 <main>
-    <% if (msg != null) { %>
-        <p class="msg-sucesso"><%= msg %></p>
-    <% } %>
+    <div class="conteudo-eventos-estab">
+        <% if (msg != null) { %>
+            <div class="msg-sucesso"><%= msg %></div>
+        <% } %>
 
-    <% if (erro != null) { %>
-        <p class="msg-erro"><%= erro %></p>
-    <% } %>
+        <% if (erro != null) { %>
+            <div class="msg-erro"><%= erro %></div>
+        <% } %>
 
-    <header class="eventos-header">
-        <h1>Eventos</h1>
-        <p class="subtitle">Fique por dentro das atrações e programação perto de você</p>
-    </header>
+        <header class="eventos-header">
+            <h1 class="eventos-titulo">Eventos</h1>
+            <p class="subtitle">Fique por dentro das atrações e programação perto de você</p>
+        </header>
 
-    <section class="proximos4-section">
-        <h2>Eventos próximos:</h2>
-        <div class="eventos-grid">
-            <% if (proximos4 != null && !proximos4.isEmpty()) {
-                for (Evento e : proximos4) { %>
+        <section class="proximos4-section">
+            <h2 class="eventos-titulo">Eventos próximos:</h2>
+            <div class="eventos-grid">
+                <% if (proximos4 != null && !proximos4.isEmpty()) {
+                    for (Evento e : proximos4) { %>
 
-                <a class="evento evento-card" href="<%= request.getContextPath() %>/evento?action=detalhe&id=<%= e.getId() %>">
-                    <div class="evento-img"></div>
-                    <div class="evento-info">
-                        <h3><%= e.getNome() %></h3>
-                        <p><%= e.getData() %> às <%= e.getHorario() %></p>
-                    </div>
-                </a>
+                    <a class="evento-card" href="<%= request.getContextPath() %>/evento?action=detalhe&id=<%= e.getId() %>">
+                        <div class="card-topo">
+                            <p class="evento-nome"><%= e.getNome() %></p>
+                            <p class="evento-desc"><%= e.getDescricao() %></p>
+                        </div>
+                        <p class="evento-data">
+                            <%= e.getData() %> às <%= e.getHorario() %>
+                        </p>
+                    </a>
 
-            <% }
-            } else { %>
-                <p>Nenhum evento próximo encontrado.</p>
-            <% } %>
+                <% }
+                } else { %>
+                    <p>Nenhum evento próximo encontrado.</p>
+                <% } %>
+            </div>
+        </section>
+
+        <div class="acoes-eventos">
+            <button id="btn-ver-todos" class="btn-ver-todos">Ver todos os eventos futuros</button>
         </div>
-    </section>
 
-    <div class="acoes-eventos">
-        <button id="btn-ver-todos" class="btn btn-ver-todos">Ver todos os eventos futuros</button>
+        <section id="todos-eventos-section" class="todos-eventos-section hidden">
+            <h2 class="eventos-titulo">Todos os eventos futuros:</h2>
+            <div class="eventos-grid">
+                <% if (eventosFuturos != null && !eventosFuturos.isEmpty()) {
+                   for (Evento e : eventosFuturos) { %>
+
+                    <a class="evento-card" href="<%= request.getContextPath() %>/evento?action=detalhe&id=<%= e.getId() %>">
+                        <div class="card-topo">
+                            <p class="evento-nome"><%= e.getNome() %></p>
+                            <p class="evento-desc"><%= e.getDescricao() %></p>
+                        </div>
+                        <p class="evento-data">
+                            <%= e.getData() %> às <%= e.getHorario() %>
+                        </p>
+                    </a>
+
+                <% }
+                    } else { %>
+                    <p>Nenhum evento futuro cadastrado.</p>
+                <% } %>
+            </div>
+        </section>
     </div>
-
-    <section id="todos-eventos-section" class="todos-eventos-section hidden">
-        <h2>Todos os eventos futuros</h2>
-        <div class="eventos-grid">
-            <% if (eventosFuturos != null && !eventosFuturos.isEmpty()) {
-               for (Evento e : eventosFuturos) { %>
-
-                <a class="evento evento-card" href="<%= request.getContextPath() %>/evento?action=detalhe&id=<%= e.getId() %>">
-                    <div class="evento-img"></div>
-                    <div class="evento-info">
-                        <h3><%= e.getNome() %></h3>
-                        <p><%= e.getData() %> às <%= e.getHorario() %></p>
-                    </div>
-                </a>
-
-            <% }
-               } else { %>
-                <p>Nenhum evento futuro cadastrado.</p>
-            <% } %>
-        </div>
-    </section>
-
 </main>
 
 <%@ include file="../footer.jsp" %>
