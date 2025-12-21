@@ -45,12 +45,12 @@
                         <h3>Nome do roteiro</h3>
                         <input type="text" name="nome" placeholder="Nome" required id="roteiroNome" class="caixas">
                         <h3>Descrição do roteiro</h3>
-                        <input type="text" name="descricao" placeholder="Descrição" required id="roteiroDescricao" class="caixas">
-                        
+                        <textarea name="descricao" placeholder="Descrição" required id="roteiroDescricao" class="caixas">
+                        </textarea>
                         <h3>Locais do Roteiro</h3>
                         <label for="paradasTexto"> Digite os locais (separados por vírgula): </label>
-                        <input type="text" name="paradasTexto" id="paradasTexto" rows="3" placeholder="Ex: Museu, Parque, Restaurante" class="caixas"></input>
-                        
+                        <textarea type="text" name="paradasTexto" id="paradasTexto" rows="3" placeholder="Ex: Museu, Parque, Restaurante" class="caixas">
+                         </textarea>
                         <button type="submit" class="btn">Criar Roteiro</button>
                     </div>
                 </form>

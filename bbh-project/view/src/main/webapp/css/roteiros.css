@@ -96,8 +96,7 @@ margin: 2px;
 }
 
 .roteiro-paradas h2 {
-    font-size: 1.5em;
-    font-weight: 700;
+ 
     margin-bottom: 15px;
 }
 
@@ -293,3 +292,11 @@ margin: 2px;
 }
 
 
+.roteiro-paradas ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.roteiro-paradas ul li{
+    font-family: var(--fonte-texto);
+}

@@ -1,94 +1,116 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@page import="bbh.domain.util.UsuarioTipo" %>
-        <%@taglib uri="jakarta.tags.core" prefix="c" %>
-            <%@taglib uri="jakarta.tags.functions" prefix="fn" %>
-
-            <%@ page import="bbh.service.GestaoRoteirosService" %>
-<%@ page import="bbh.domain.Roteiro" %>
- <%@ page import="bbh.service.GestaoUsuariosService" %>
-<%@ page import="bbh.domain.Usuario" %>
-<%
-    String idParam = request.getParameter("id");
-    if (idParam != null) {
-        bbh.service.GestaoRoteirosService service = new bbh.service.GestaoRoteirosService();
-        bbh.domain.Roteiro roteiro = service.pesquisarPorId(Long.parseLong(idParam));
-        bbh.service.GestaoUsuariosService serviceU = new bbh.service.GestaoUsuariosService();
-        bbh.domain.Usuario autor = serviceU.pesquisarPorId(roteiro.getUsuarioId());
-        request.setAttribute("roteiro", roteiro);
-        request.setAttribute("autor", autor);
-    }
-%>
-                <!DOCTYPE html>
-                <html lang="pt">
-
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Roteiros</title>
-                    <link rel="stylesheet" href="../../css/style-geral.css">
-                    <link rel="stylesheet" href="../../css/roteiros.css">
-                    <link rel="stylesheet"
-                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-                </head>
-
-                <body>
-
-                    <%@ include file="../header.jsp" %>
-
-                        <main>
-                            <div class="container">
-                                <a href="${pageContext.request.contextPath}/bbh/feed"" class="back-link">Voltar</a>
-
-                                <div class="roteiro">
+<%@page import="bbh.domain.util.UsuarioTipo" %>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
+<%@taglib uri="jakarta.tags.functions" prefix="fn" %>
 
 
-                                    <div class="roteiro-detalhes">
 
-                                        <h1>${roteiro.nome}<br></h1>
+<!DOCTYPE html>
+<html lang="pt">
 
-                                        <div class="rating">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiros</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/roteiros.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacao-roteiro.css">
+    <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
 
-                                        <div class="informacao">
-                                            <p>Por: ${autor.nome}</p>
-                                            <p>${roteiro.descricao}</p>
-                                        </div>
+<body>
 
+    <%@ include file="../header.jsp" %>
 
-                                        <div class="roteiro-paradas">
-                                            <h2>Paradas:</h2>
-                                            <c:if test="${not empty roteiro.paradas}">
-                                                <ul>
+        <main>
+            <div class="container">
+                <a href="${pageContext.request.contextPath}/bbh/ListarRoteiroController" class="back-link">Voltar</a>
 
-                                                    <c:forEach var="parada"
-                                                        items="${fn:split(roteiro.paradas, ',')}">
-                                                        ${fn:trim(parada)} <br> </li>
-                                                         </c:forEach>
-                                                </ul>
-                                            </c:if>
+                <div class="roteiro">
+                    <div class="roteiro-detalhes">
 
-                                            <c:if test="${empty roteiro.paradas}">
-                                                <p>Este roteiro não tem paradas cadastradas.</p>
-                                            </c:if>
-                                        </div>
+                        <h1>${roteiro.nome}<br></h1>
 
+                        <div class="rating">
+                            <span style="font-size: 1.2em; font-weight: bold; margin-right: 10px;">
+                                ${mediaNota}
+                            </span>
+                            <form
+                                action="${pageContext.request.contextPath}/bbh/AvaliarRoteiroController"
+                                method="POST" class="avaliacao-form">
+                                <input type="hidden" name="roteiroId" value="${roteiro.id}">
 
-                                    </div>
+                                <div class="estrelas">
+                                    <input type="radio" id="e5" name="nota" value="5"
+                                        onchange="this.form.submit()" ${minhaNota==5 ? 'checked' : '' }>
+                                    <label for="e5" title="5 estrelas"><i
+                                            class="fa-solid fa-star"></i></label>
+
+                                    <input type="radio" id="e4" name="nota" value="4"
+                                        onchange="this.form.submit()" ${minhaNota==4 ? 'checked' : '' }>
+                                    <label for="e4" title="4 estrelas"><i
+                                            class="fa-solid fa-star"></i></label>
+
+                                    <input type="radio" id="e3" name="nota" value="3"
+                                        onchange="this.form.submit()" ${minhaNota==3 ? 'checked' : '' }>
+                                    <label for="e3" title="3 estrelas"><i
+                                            class="fa-solid fa-star"></i></label>
+
+                                    <input type="radio" id="e2" name="nota" value="2"
+                                        onchange="this.form.submit()" ${minhaNota==2 ? 'checked' : '' }>
+                                    <label for="e2" title="2 estrelas"><i
+                                            class="fa-solid fa-star"></i></label>
+
+                                    <input type="radio" id="e1" name="nota" value="1"
+                                        onchange="this.form.submit()" ${minhaNota==1 ? 'checked' : '' }>
+                                    <label for="e1" title="1 estrela"><i
+                                            class="fa-solid fa-star"></i></label>
+                                    <input type="radio" id="t" name="nota" value="0"
+                                        onchange="this.form.submit()" ${minhaNota==0 ? 'checked' : '' }>
+                                    <label id="t" for="t" title="excluir"><i
+                                            class="fa-solid fa-trash"></i></label>
                                 </div>
 
 
+                            </form>
+                        </div>
 
-                            </div>
+                        <div class="informacao">
+                            <p>Por: ${autor.nome}</p>
+                            <p>${roteiro.descricao}</p>
+                        </div>
 
-                        </main>
 
-                        <%@ include file="../footer.jsp" %>
+                        <div class="roteiro-paradas">
+                            <h2>Paradas:</h2>
+                            <c:if test="${not empty roteiro.paradas}">
+                                <ul>
+                                    <c:forEach var="parada" items="${fn:split(roteiro.paradas, ',')}">
+                                        <li> ${fn:trim(parada)} </li>
+                                    </c:forEach>
+                                </ul>
+                            </c:if>
 
-                </body>
+                            <c:if test="${empty roteiro.paradas}">
+                                <p>Este roteiro não tem paradas cadastradas.</p>
+                            </c:if>
+                        </div>
 
-                </html>
+
+
+                    </div>
+                </div>
+
+
+                <%@ include file="forum.jsp" %>
+            </div>
+
+        </main>
+
+        <%@ include file="../footer.jsp" %>
+
+</body>
+
+</html>

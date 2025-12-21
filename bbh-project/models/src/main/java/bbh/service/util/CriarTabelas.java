@@ -10,6 +10,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import bbh.common.PersistenciaException;
+import bbh.domain.Tag;
+import bbh.service.TagService;
+
 public class CriarTabelas {
 
     public static void verificarCriarBanco() {
@@ -128,31 +132,71 @@ public class CriarTabelas {
                 FOREIGN KEY (id_estabelecimento) REFERENCES usuarios(id) ON DELETE CASCADE
             ) ENGINE=InnoDB;
         """;
-        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+    public static void criarTabelaAvaliacaoMidia() throws SQLException {
+        String sql = """
+                CREATE TABLE IF NOT EXISTS midia_avaliacao(
+                    id_midia BIGINT AUTO_INCREMENT PRIMARY KEY,
+                    id_avaliacao BIGINT NOT NULL,
+                    nome_original VARCHAR(255) NOT NULL,
+                    nome_armazenado VARCHAR(255) NOT NULL,
+                    caminho VARCHAR(1024) NOT NULL,
+                    mime VARCHAR(100),
+                    tamanho_bytes BIGINT,
+                    data_midia TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (id_avaliacao) REFERENCES avaliacao(id_avaliacao)
+                        ON DELETE CASCADE ON UPDATE CASCADE
+                ) ENGINE=InnoDB;
+                """;
+        try (Connection conn = ConexaoBD.getConnection(); Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(sql);
-            System.out.println("Tabela 'avaliacao' criada.");
+            System.out.println("Tabela midia_avaliacao criada (ou já existia)");
         }
     }
 
-    public static void criarTabelaAvaliacaoMidia() throws SQLException {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS midia_avaliacao (
-                id_midia BIGINT AUTO_INCREMENT PRIMARY KEY,
-                id_avaliacao BIGINT NOT NULL,
-                nome_original VARCHAR(255) NOT NULL,
-                nome_armazenado VARCHAR(255) NOT NULL,
-                caminho VARCHAR(1024) NOT NULL,
-                mime VARCHAR(100),
-                tamanho_bytes BIGINT,
-                data_midia TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (id_avaliacao) REFERENCES avaliacao(id_avaliacao) ON DELETE CASCADE
-            ) ENGINE=InnoDB;
-        """;
-        try (Connection conn = ConexaoBD.getConnection(); Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(sql);
-            System.out.println("Tabela midia_avaliacao criada.");
+    public static void criarTabelaComentariosRoteiros() throws SQLException {
+
+        String sqlComentariosRoteiros = """
+                CREATE TABLE IF NOT EXISTS comentarios_roteiros (
+                    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                    roteiro_id BIGINT NOT NULL,
+                    usuario_id BIGINT NOT NULL,
+                    texto TEXT NOT NULL,
+                    imagem_url VARCHAR(255),
+                    data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (roteiro_id) REFERENCES roteiros(id),
+                    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+                );
+                """;
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sqlComentariosRoteiros);
+            System.out.println("Tabela 'comentarios_roteiros' verificada/criada com sucesso.");
         }
+
     }
+
+    public static void criarTabelaAvaliacaoRoteiros() throws SQLException {
+
+        String sqlAvaliacaoRoteiros = """
+                CREATE TABLE IF NOT EXISTS avaliacao_roteiros (
+                    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                    roteiro_id BIGINT NOT NULL,
+                    usuario_id BIGINT NOT NULL,
+                    nota BIGINT NOT NULL,
+                    FOREIGN KEY (roteiro_id) REFERENCES roteiros(id),
+                    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+                    UNIQUE(roteiro_id, usuario_id )
+                );
+                """;
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sqlAvaliacaoRoteiros);
+            System.out.println("Tabela 'avaliacao_roteiros' verificada/criada com sucesso.");
+        }
+
+    }
+
+   
+
+ 
 
     public static void inserirTagsPadroes() throws PersistenciaException {
         String[][] stringTagsPadroes = {
@@ -309,5 +353,7 @@ public class CriarTabelas {
         criarTabelaSuporte();
         criarTabelaPontoTuristico();
         criarTabelaListaInteresse();
+        criarTabelaComentariosRoteiros();
+        criarTabelaAvaliacaoRoteiros();
     }
 }
