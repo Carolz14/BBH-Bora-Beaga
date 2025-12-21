@@ -48,16 +48,16 @@ public class AvaliacaoService {
         avaliacaoDAO.removerAvaliacao(idAvaliacao);
     }
 
-    public double calcularMedia(long idEstabelecimento) throws PersistenciaException {
-        return avaliacaoDAO.calcularNotaMedia(idEstabelecimento);
+    public double calcularMedia(long idEstabelecimento, String categoria) throws PersistenciaException {
+        return avaliacaoDAO.calcularNotaMedia(idEstabelecimento, categoria);
     }
 
-    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
-        return avaliacaoDAO.buscarAvaliacoesPorEstabelecimento(idEstabelecimento);
+    public List<Avaliacao> buscarAvaliacoesPorEstabelecimento(Long idEstabelecimento, String categoria) throws PersistenciaException {
+        return avaliacaoDAO.buscarAvaliacoesPorEstabelecimento(idEstabelecimento, categoria);
     }
 
-    public int getNumeroAvaliacoesPorEstabelecimento(Long idEstabelecimento) throws PersistenciaException {
-        List<Avaliacao> avaliacoes = buscarAvaliacoesPorEstabelecimento(idEstabelecimento);
+    public int getNumeroAvaliacoesPorEstabelecimento(Long idEstabelecimento, String categoria) throws PersistenciaException {
+        List<Avaliacao> avaliacoes = buscarAvaliacoesPorEstabelecimento(idEstabelecimento, categoria);
         int numeroAvaliacoes = avaliacoes.size();
         return numeroAvaliacoes;
     }

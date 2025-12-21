@@ -1,7 +1,7 @@
 package bbh.controller;
 
 import bbh.domain.PontoTuristico;
-import bbh.service.GestaoPontoTuristico;
+import bbh.service.GestaoPontoTuristicoService;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -37,7 +37,7 @@ public class CadastroPontoTuristico extends HttpServlet {
             String descricao = request.getParameter("descricao");
             String tag = request.getParameter("tag");
 
-            GestaoPontoTuristico service = new GestaoPontoTuristico();
+            GestaoPontoTuristicoService service = new GestaoPontoTuristicoService();
 
             if ("cadastrar".equals(acao)) {
 
@@ -91,7 +91,7 @@ public class CadastroPontoTuristico extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            GestaoPontoTuristico service = new GestaoPontoTuristico();
+            GestaoPontoTuristicoService service = new GestaoPontoTuristicoService();
             String acao = request.getParameter("acao");
             String idStr = request.getParameter("id");
             String busca = request.getParameter("busca");

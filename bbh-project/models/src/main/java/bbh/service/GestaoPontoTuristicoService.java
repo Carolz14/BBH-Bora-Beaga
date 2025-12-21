@@ -5,11 +5,11 @@ import bbh.domain.PontoTuristico;
 import bbh.common.PersistenciaException;
 import java.util.List;
 
-public class GestaoPontoTuristico {
+public class GestaoPontoTuristicoService {
 
     private final PontoTuristicoDAO dao;
 
-    public GestaoPontoTuristico() {
+    public GestaoPontoTuristicoService() {
         this.dao = PontoTuristicoDAO.getInstance();
     }
 

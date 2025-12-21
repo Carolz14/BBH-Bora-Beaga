@@ -1,66 +1,92 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
 <%@page import="bbh.domain.Usuario"%>
-<%@page import="bbh.domain.util.UsuarioTipo"%>
 
 <!DOCTYPE html>
 <html lang="pt">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bora Beagá</title>
-
-        <link rel="stylesheet" href="../../css/style-geral.css">
-        <link rel="stylesheet" href="../../css/lista-interesse.css">
+        <title>Minha Lista de Interesse - Bora Beagá</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-listas.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     </head>
     <body>
 
         <%@ include file="../header.jsp" %>
 
-        <main>
-            <div class="container">
-                <h1>Lista de Interesse</h1>
+        <a href="${pageContext.request.contextPath}/bbh/feed" 
+           onclick="if (document.referrer) {
+               history.back();
+               return false;
+           }" 
+           class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
 
-                <div class="grid-container">
+        <h1>Minha Lista de Interesse</h1>
 
-                    <div class="card-item">
-                        <img src="../imgs/mercado-central.jpeg" alt="Imagem Mercado Central">
-                        <h3>Mercado Central</h3>
-                        <a href="detalhe-estabelecimento.jsp" class="btn">Ver mais</a>
+        <main class="selecao">
+
+            <c:choose>
+                <c:when test="${not empty listaLocais}">
+                    <c:forEach var="local" items="${listaLocais}">
+
+                        <c:choose>
+                            <c:when test="${local.categoria == 'Estabelecimento'}">
+                                <c:url var="linkDetalhe" value="/bbh/DetalheEstabelecimentoController">
+                                    <c:param name="id" value="${local.id}"/>
+                                </c:url>
+                            </c:when>
+                            <c:otherwise>
+                                <c:url var="linkDetalhe" value="/bbh/DetalhePontoTuristico">
+                                    <c:param name="id" value="${local.id}"/>
+                                </c:url>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <a href="${linkDetalhe}" class="estabelecimentos">
+
+                            <c:choose>
+                                <c:when test="${not empty local.imagemUrl}">
+
+                                    <c:if test="${local.categoria == 'Ponto Turístico'}">
+                                        <img src="${pageContext.request.contextPath}/imagem?nome=${local.imagemUrl}" 
+                                             alt="${local.nome}" class="ilustracao">
+                                    </c:if>
+
+                                    <c:if test="${local.categoria == 'Estabelecimento'}">
+                                        <img src="/imagens-bbh/${local.imagemUrl}" 
+                                             alt="${local.nome}" class="ilustracao">
+                                    </c:if>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="sem-foto">
+                                        <i class="fa-solid fa-image"></i>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <h3>${local.nome}</h3>
+
+                            <span class="categoria-label">${local.categoria}</span>
+                        </a>
+
+                    </c:forEach>
+                </c:when>
+
+                <c:otherwise>
+                    <div class="mensagem-vazio">
+                        <i class="fa-regular fa-heart" style="font-size: 50px; color: #ccc; margin-bottom: 20px; display: block;"></i>
+                        <p>Você ainda não salvou nenhum local na sua lista de interesse.</p>
+                        <a href="${pageContext.request.contextPath}/bbh/feed" style="color: var(--cor-secundaria); font-weight: bold; margin-top: 10px; display: inline-block;">
+                            Explorar locais
+                        </a>
                     </div>
+                </c:otherwise>
+            </c:choose>
 
-                    <div class="card-item">
-                        <img src="../imgs/ccbb.jpeg" alt="Imagem CCBB">
-                        <h3>Centro Cultural Banco do Brasil</h3>
-                        <a href="detalhe-estabelecimento.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/lagoa-pampulha.jpeg" alt="Imagem Lagoa da Pampulha">
-                        <h3>Lagoa da Pampulha</h3>
-                        <a href="detalhe-estabelecimento.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/parque-mangabeiras.jpeg" alt="Imagem Parque das Mangabeiras">
-                        <h3>Parque Municipal das Mangabeiras</h3>
-                        <a href="detalhe-estabelecimento.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/restaurante.jpeg" alt="Imagem estabelecimento">
-                        <h3>Nome do estabelecimento</h3>
-                        <a href="detalhe-estabelecimento.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                    <div class="card-item">
-                        <img src="../imgs/restaurante.jpeg" alt="Imagem estabelecimento">
-                        <h3>Nome do estabelecimento</h3>
-                        <a href="detalhe-estabelecimento.jsp" class="btn">Ver mais</a>
-                    </div>
-
-                </div>
-            </div>
         </main>
 
         <%@ include file="../footer.jsp" %>

@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <head>
     <title>Avaliações</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacao.css" />
 </head>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacoes.css" />
 
 <section class="avaliacoes">
     <h1 style="margin-bottom:15px; margin-left:5px">Avaliações</h1>
@@ -69,11 +69,13 @@
                                 <!-- forms escondidos usados pelo JS -->
                                 <form class="midia-update-form hidden-form" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/atualizar">
                                     <input type="hidden" name="id" value="${m.idMidia}" />
+                                    <input type="hidden" name="categoria" value="${categoria}" />
                                     <input class="file-input-hidden" type="file" name="file" accept="image/*" />
                                 </form>
 
                                 <form class="midia-delete-form hidden-form" method="post" action="${pageContext.request.contextPath}/midia/deletar">
                                     <input type="hidden" name="id" value="${m.idMidia}" />
+                                    <input type="hidden" name="categoria" value="${categoria}" />
                                 </form>
                             </c:if>
                         </div>
@@ -103,6 +105,7 @@
                     <form method="post" action="${pageContext.request.contextPath}/avaliacao/deletar" class="inline-form">
                         <input type="hidden" name="id_avaliacao" value="${av.idAvaliacao}" />
                         <input type="hidden" name="id" value="${estabelecimentoId}" />
+                        <input type="hidden" name="categoria" value="${categoria}" />
                         <button class="btn-simple-remove" type="submit">Excluir avaliação</button>
                     </form>
                 </div>
@@ -117,7 +120,7 @@
         <form id="avaliacaoComMidiaForm" method="post" enctype="multipart/form-data"
               action="${pageContext.request.contextPath}/avaliacao/inserir-com-midia">
             <input type="hidden" name="id" value="${estabelecimentoId}" />
-
+            <input type="hidden" name="categoria" value="${categoria}" />
             <div class="avaliacao-grid">
                 <div class="avaliacao-main">
                     <label class="label-block">Nota :</label>
@@ -132,7 +135,7 @@
 
                     <!-- controles de arquivo -->
                     <div class="file-controls">
-                        <button type="button" class="btn-file-trigger btn-simple">📷 Inserir mídia</button>
+                        <button type="button" class="btn-file-trigger btn-simple">Inserir mídia</button>
                         <button type="button" id="btn-clear-file" class="btn-clear-file btn-simple-remove">Remover</button>
                     </div>
 
@@ -162,6 +165,7 @@
             <form id="editForm" method="post" action="${pageContext.request.contextPath}/avaliacao/atualizar">
                 <input type="hidden" name="id_avaliacao" id="modal-id-avaliacao" value="" />
                 <input type="hidden" name="id" value="${estabelecimentoId}" />
+                <input type="hidden" name="categoria" value="${categoria}" />
                 <div>
                     <label>Nota :
                         <input type="number" class="nota-input" name="nota" id="modal-nota" min="1" max="5" required />

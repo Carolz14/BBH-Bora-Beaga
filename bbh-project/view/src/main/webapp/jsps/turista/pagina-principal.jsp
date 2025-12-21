@@ -4,16 +4,13 @@
 
 <!DOCTYPE html>
 <html lang="pt">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Bora Beagá</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-principal.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
-
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-estab.css">
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
               integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -33,7 +30,8 @@
 
                 <div class="search-bar">
                     <form action="${pageContext.request.contextPath}/pesquisarLocais" method="get">
-                        <input type="text" name="nome" placeholder= "Pesquise locais de toda a grande BH!" value="${param.nome != null ? param.nome : ''}">
+                        <input type="text" name="nome" placeholder="Pesquise locais de toda a grande BH!"
+                               value="${param.nome != null ? param.nome : ''}">
                     </form>
                 </div>
 
@@ -44,7 +42,7 @@
                     </c:if>
 
                     <c:if test="${not empty sessionScope.resultados}">
-                        <h2 class="resultados-titulo">Resultados da pesquisa</h2> 
+                        <h2 class="resultados-titulo">Resultados da pesquisa</h2>
                         <div class="resultados-grid">
                             <c:forEach var="local" items="${sessionScope.resultados}">
 
@@ -114,66 +112,32 @@
 
                                 <div class="promocao-card">
                                     <div class="card-topo">
-                                        <p class="promocao-nome">${p.nome}</p>
-                                        <p class="promocao-descricao">${p.descricao}</p>
+                                        <p class="promocao-nome"><c:out value="${p.nome}"/></p>
+                                        <p class="promocao-descricao"><c:out value="${p.descricao}"/></p>
                                     </div>
 
-                                    <p class="promocao-data">Válido até: ${p.data}</p>
+                                    <p class="promocao-data">Válido até: <c:out value="${p.data}"/></p>
 
-                                    <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${p.idEstabelecimento}" 
+                                    <a href="${pageContext.request.contextPath}/bbh/DetalheEstabelecimentoController?id=${p.idEstabelecimento}"
                                        class="botao-submit">
                                         Ver Local
                                     </a>
                                 </div>
-
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
                             <div id="nenhumaPromocao">
-                                <p id ="textoPromocao">Nenhuma promoção rolando hoje :(</p>
+                                <p id="textoPromocao">Nenhuma promoção rolando hoje :(</p>
                             </div>
                         </c:otherwise>
                     </c:choose>
                 </div>
             </section>
-
-
-
-            <section class="ranking">
-                <h1>Locais do momento</h1>
-                <div class="ranking-list">
-                    <a href="detalhe-estabelecimento.jsp" class="ranking-item">
-                        <span class="rank-number">1</span>
-                        <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 1" class="rank-img">
-                        <p class="rank-name">Nome do Estabelecimento 1</p>
-                        <div class="rank-rating">
-                            <i class="fas fa-star"></i>
-                            <span>4.9</span>
-                        </div>
-                    </a>
-                    <a href="detalhe-estabelecimento.jsp" class="ranking-item">
-                        <span class="rank-number">2</span>
-                        <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 2" class="rank-img">
-                        <p class="rank-name">Nome do Estabelecimento 2</p>
-                        <div class="rank-rating">
-                            <i class="fas fa-star"></i>
-                            <span>4.8</span>
-                        </div>
-                    </a>
-                    <a href="detalhe-estabelecimento.jsp" class="ranking-item">
-                        <span class="rank-number">3</span>
-                        <img src="../../imagens/restaurante.jpeg" alt="Imagem do local 3" class="rank-img">
-                        <p class="rank-name">Nome do Estabelecimento 3</p>
-                        <div class="rank-rating">
-                            <i class="fas fa-star"></i>
-                            <span>4.7</span>
-                        </div>
-                    </a>
-                </div>
-            </section>
+            <h1>Locais do momento</h1>
+            <jsp:include page="/rankingHome/listar" flush="true" />
         </main>
-
+        
         <%@ include file="../footer.jsp" %>
-
+      
     </body>
 </html>

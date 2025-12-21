@@ -1,0 +1,74 @@
+.main-detalhe-evento {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card-detalhe-evento {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+    .card-detalhe-evento {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+}
+
+.imagem-evento {
+    width: 280px;
+    height: 260px;
+    background-color: #d6e9c6;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.conteudo-detalhe {
+    flex: 1;
+}
+
+.titulo-evento {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+.linha-info {
+    font-size: 1.05rem;
+    margin: 6px 0;
+    color: #444;
+}
+
+.descricao-evento {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #555;
+}
+
+.botao-voltar {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 10px 20px;
+    background: #8ecf6f;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.botao-voltar:hover {
+    background: #7ac25c;
+    transform: translateY(-2px);
+}

@@ -31,21 +31,21 @@ public class EventoController extends HttpServlet {
 
         try {
 
-            if (usuario != null && 
+            // estabelecimento sendo redirecionado para gerenciar
+            if (usuario != null &&
                 UsuarioTipo.ESTABELECIMENTO.equals(usuario.getUsuarioTipo()) &&
-                (action == null || action.isEmpty())) 
-            {
+                (action == null || action.isEmpty())) {
 
                 resp.sendRedirect(req.getContextPath() + "/evento?action=gerenciar");
                 return;
             }
 
+            // detalhe evento — turista
             if ("detalhe".equals(action)) {
 
                 Long id = parseLong(req.getParameter("id"));
                 if (id == null) {
-                    req.setAttribute("erro", "Id do evento inválido.");
-                    req.getRequestDispatcher("/jsps/turista/eventos.jsp").forward(req, resp);
+                    resp.sendRedirect(req.getContextPath() + "/evento");
                     return;
                 }
 
@@ -55,6 +55,7 @@ public class EventoController extends HttpServlet {
                 return;
             }
 
+            // gerenciar — estabelecimento
             if ("gerenciar".equals(action)) {
 
                 if (!UsuarioTipo.ESTABELECIMENTO.equals(usuario.getUsuarioTipo())) {
@@ -69,6 +70,7 @@ public class EventoController extends HttpServlet {
                 return;
             }
 
+            // tela do turista
             req.setAttribute("proximos4", service.buscarProximos4());
             req.setAttribute("eventosFuturos", service.listarEventosFuturos());
             req.getRequestDispatcher("/jsps/turista/eventos.jsp").forward(req, resp);
@@ -78,6 +80,7 @@ public class EventoController extends HttpServlet {
             req.getRequestDispatcher("/jsps/turista/eventos.jsp").forward(req, resp);
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -89,6 +92,7 @@ public class EventoController extends HttpServlet {
 
         try {
 
+            // criar evento
             if ("add".equals(action)) {
 
                 if (!UsuarioTipo.ESTABELECIMENTO.equals(usuario.getUsuarioTipo())) {
@@ -99,16 +103,26 @@ public class EventoController extends HttpServlet {
                 Evento evento = new Evento();
                 evento.setNome(req.getParameter("nome"));
                 evento.setDescricao(req.getParameter("descricao"));
-                evento.setData(LocalDate.parse(req.getParameter("dataEvento")));
-                evento.setHorario(LocalTime.parse(req.getParameter("horarioEvento")));
+
+                // prevenção de erros
+                String dataStr = req.getParameter("dataEvento");
+                String horaStr = req.getParameter("horarioEvento");
+
+                if (dataStr == null || horaStr == null) {
+                    throw new PersistenciaException("Data e horário são obrigatórios");
+                }
+
+                evento.setData(LocalDate.parse(dataStr));
+                evento.setHorario(LocalTime.parse(horaStr));
                 evento.setEstabelecimentoId(usuario.getId());
 
                 service.criarEvento(evento);
 
-                resp.sendRedirect("evento?action=gerenciar");
+                resp.sendRedirect(req.getContextPath() + "/evento?action=gerenciar");
                 return;
             }
 
+            // atualizar
             if ("update".equals(action)) {
 
                 if (!UsuarioTipo.ESTABELECIMENTO.equals(usuario.getUsuarioTipo())) {
@@ -118,7 +132,7 @@ public class EventoController extends HttpServlet {
 
                 Long id = parseLong(req.getParameter("id"));
                 if (id == null) {
-                    req.setAttribute("erro", "Id inválido.");
+                    req.setAttribute("erro", "ID inválido.");
                     req.getRequestDispatcher("/jsps/estabelecimento/eventos.jsp").forward(req, resp);
                     return;
                 }
@@ -127,16 +141,25 @@ public class EventoController extends HttpServlet {
                 evento.setId(id);
                 evento.setNome(req.getParameter("nome"));
                 evento.setDescricao(req.getParameter("descricao"));
-                evento.setData(LocalDate.parse(req.getParameter("dataEvento")));
-                evento.setHorario(LocalTime.parse(req.getParameter("horarioEvento")));
+
+                String dataStr = req.getParameter("dataEvento");
+                String horaStr = req.getParameter("horarioEvento");
+
+                if (dataStr == null || horaStr == null) {
+                    throw new PersistenciaException("Data e horário são obrigatórios");
+                }
+
+                evento.setData(LocalDate.parse(dataStr));
+                evento.setHorario(LocalTime.parse(horaStr));
                 evento.setEstabelecimentoId(usuario.getId());
 
                 service.atualizarEvento(evento);
 
-                resp.sendRedirect("evento?action=gerenciar");
+                resp.sendRedirect(req.getContextPath() + "/evento?action=gerenciar");
                 return;
             }
 
+            // excluir
             if ("delete".equals(action)) {
 
                 if (!UsuarioTipo.ESTABELECIMENTO.equals(usuario.getUsuarioTipo())) {
@@ -146,7 +169,9 @@ public class EventoController extends HttpServlet {
 
                 Long id = parseLong(req.getParameter("id"));
                 service.excluirEvento(id, usuario.getId());
-                resp.sendRedirect("evento?action=gerenciar");
+
+                // CORREÇÃO DO REDIRECT
+                resp.sendRedirect(req.getContextPath() + "/evento?action=gerenciar");
             }
 
         } catch (PersistenciaException e) {
@@ -154,7 +179,6 @@ public class EventoController extends HttpServlet {
             req.getRequestDispatcher("/jsps/estabelecimento/eventos.jsp").forward(req, resp);
         }
     }
-
 
     private Long parseLong(String val) {
         try {
