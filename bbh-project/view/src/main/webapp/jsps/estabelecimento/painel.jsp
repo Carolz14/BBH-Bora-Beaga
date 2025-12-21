@@ -26,53 +26,46 @@
 <main>
     <div class="container">
 
-        <h1 class="pagina-titulo">Painel do Estabelecimento</h1>
+        <h1 class="pagina-titulo">
+            Bem-vindo(a), <c:out value="${sessionScope.usuario.nome}" />
+        </h1>
 
-        <c:if test="${not empty sessionScope.usuario}">
-            <div class="painel-grid">
+        <div class="desempenho-box">
 
-                <div class="painel-card card-profile">
-                    <h2>Informações Gerais</h2>
+            <h2>Desempenho</h2>
 
-                    <p><strong>Nome</strong><span><c:out value="${sessionScope.usuario.nome}" /></span></p>
-                    <p><strong>Email</strong><span><c:out value="${sessionScope.usuario.email}" /></span></p>
-                    <p><strong>Endereço</strong><span><c:out value="${sessionScope.usuario.endereco}" /></span></p>
-                    <p><strong>Contato</strong><span><c:out value="${sessionScope.usuario.contato}" /></span></p>
-                </div>
+            <div class="desempenho-grid">
 
-                <div class="painel-card card-warning">
-                    <h2>Visitas Mensais</h2>
-                    <p class="painel-numero">
+                <div class="metric-card metric-warning">
+                    <h3>Visitas do mês</h3>
+                    <div class="metric-numero">
                         <c:out value="${empty totalVisitas ? 0 : totalVisitas}" />
-                    </p>
-                    <span>Acessos ao seu perfil neste mês</span>
+                    </div>
+                    <div class="metric-desc">Acessos ao perfil</div>
                 </div>
 
-                <div class="painel-card card-success">
-                    <h2>Média de Avaliações</h2>
-                    <p class="painel-numero">
+                <div class="metric-card metric-success">
+                    <h3>Média de avaliações</h3>
+                    <div class="metric-numero">
                         <c:out value="${empty mediaAvaliacoes ? 0 : mediaAvaliacoes}" />
-                    </p>
-                    <span>Percepção dos turistas</span>
+                    </div>
+                    <div class="metric-desc">Nota dos turistas</div>
                 </div>
 
-                <div class="painel-card card-info">
-                    <h2>Total de Avaliações</h2>
-                    <p class="painel-numero">
+                <div class="metric-card metric-info">
+                    <h3>Total de avaliações</h3>
+                    <div class="metric-numero">
                         <c:out value="${empty totalAvaliacoes ? 0 : totalAvaliacoes}" />
-                    </p>
-                    <span>Avaliações registradas</span>
+                    </div>
+                    <div class="metric-desc">Avaliações recebidas</div>
                 </div>
 
             </div>
-        </c:if>
-
-        <c:if test="${empty sessionScope.usuario}">
-            <p>Usuário não autenticado.</p>
-        </c:if>
+        </div>
 
     </div>
 </main>
+
 
 <%@ include file="../footer.jsp" %>
 
