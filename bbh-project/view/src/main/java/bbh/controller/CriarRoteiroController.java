@@ -20,7 +20,7 @@ public class CriarRoteiroController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+request.setCharacterEncoding("UTF-8");
         String nome = request.getParameter("nome");
         String descricao = request.getParameter("descricao");
         String paradasTexto = request.getParameter("paradasTexto");
