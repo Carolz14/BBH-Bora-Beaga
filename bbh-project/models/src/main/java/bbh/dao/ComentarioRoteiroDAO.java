@@ -2,13 +2,14 @@ package bbh.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import bbh.common.PersistenciaException;
 import bbh.domain.Comentario;
 import bbh.service.util.ConexaoBD;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ComentarioRoteiroDAO {
 
@@ -27,7 +28,7 @@ public class ComentarioRoteiroDAO {
         return comentarioDAO;
     }
     public void inserir(Comentario comentario) throws PersistenciaException {
-        String sql = "INSERT INTO comentarios_roteiro (roteiro_id, usuario_id, texto, arquivo_url) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO comentarios_roteiros (roteiro_id, usuario_id, texto, imagem_url) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -43,7 +44,7 @@ public class ComentarioRoteiroDAO {
     }
 
     public void excluir(Long comentarioId, Long usuarioId) throws PersistenciaException {
-        String sql = "DELETE FROM comentarios_roteiro WHERE id = ? AND usuario_id = ?";
+        String sql = "DELETE FROM comentarios_roteiros WHERE id = ? AND usuario_id = ?";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -57,7 +58,7 @@ public class ComentarioRoteiroDAO {
     }
 
     public Comentario pesquisar(Long id) throws PersistenciaException {
-        String sql = "SELECT * FROM comentarios_roteiro WHERE id = ?";
+        String sql = "SELECT * FROM comentarios_roteiros WHERE id = ?";
 
         Comentario comentario = null;
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -75,7 +76,7 @@ public class ComentarioRoteiroDAO {
                 }
             }
 
-            ps.executeUpdate();
+        
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao pesquisar comentário: " + e.getMessage(), e);
         }
@@ -85,8 +86,8 @@ public class ComentarioRoteiroDAO {
     public List<Comentario> listarComentarios(Long roteiroId) throws PersistenciaException {
 
         List<Comentario> lista = new ArrayList<>();
-        String sql = "SELECT c.*, u.nome as nome_usuario" + "FROM comentarios_roteiro c"
-                + "JOIN usuarios u ON c.usuario_id = u.id" + "WHERE c.roteiro_id = ?" + "ORDER BY c. data DESC";
+        String sql = "SELECT c.*, u.nome as nome_usuario " + "FROM comentarios_roteiros c "
+                + "JOIN usuarios u ON c.usuario_id = u.id " + "WHERE c.roteiro_id = ? " + "ORDER BY c.data ASC ";
 
         try (Connection conn = ConexaoBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -106,7 +107,7 @@ public class ComentarioRoteiroDAO {
                 }
             }
 
-            ps.executeUpdate();
+           
         } catch (SQLException e) {
             throw new PersistenciaException("Erro ao listar comentários: " + e.getMessage(), e);
         }

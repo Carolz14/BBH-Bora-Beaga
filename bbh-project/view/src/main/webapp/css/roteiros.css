@@ -96,8 +96,7 @@ margin: 2px;
 }
 
 .roteiro-paradas h2 {
-    font-size: 1.5em;
-    font-weight: 700;
+ 
     margin-bottom: 15px;
 }
 
@@ -293,35 +292,11 @@ margin: 2px;
 }
 
 
-li{
-    font-style: var(--fonte-texto);
-}
-
-.avaliacao-form {
-    display: inline-block;
-}
-
-.estrelas {
+.roteiro-paradas ul {
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
+    flex-direction: column;
 }
 
-.estrelas input {
-    display: none; 
+.roteiro-paradas ul li{
+    font-family: var(--fonte-texto);
 }
-
-.estrelas label {
-    font-size: 1.5em;
-    color: #ccc; 
-    cursor: pointer;
-    transition: color 0.2s;
-    padding: 0 2px;
-}
-
-.estrelas label:hover,
-.estrelas label:hover ~ label,
-.estrelas input:checked ~ label {
-    color: #ffc107; 
-}
-

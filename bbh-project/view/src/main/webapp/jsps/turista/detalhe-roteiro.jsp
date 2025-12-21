@@ -14,6 +14,8 @@
     <title>Roteiros</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/roteiros.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacao-roteiro.css">
+    <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
@@ -24,12 +26,9 @@
 
         <main>
             <div class="container">
-                <a href="${pageContext.request.contextPath}/bbh/ListarRoteiroController" class="
-        back-link">Voltar</a>
+                <a href="${pageContext.request.contextPath}/bbh/ListarRoteiroController" class="back-link">Voltar</a>
 
                 <div class="roteiro">
-
-
                     <div class="roteiro-detalhes">
 
                         <h1>${roteiro.nome}<br></h1>
@@ -68,13 +67,13 @@
                                         onchange="this.form.submit()" ${minhaNota==1 ? 'checked' : '' }>
                                     <label for="e1" title="1 estrela"><i
                                             class="fa-solid fa-star"></i></label>
-                                     <input type="radio" id="t" name="nota" value="0"
+                                    <input type="radio" id="t" name="nota" value="0"
                                         onchange="this.form.submit()" ${minhaNota==0 ? 'checked' : '' }>
                                     <label id="t" for="t" title="excluir"><i
                                             class="fa-solid fa-trash"></i></label>
                                 </div>
 
-                            
+
                             </form>
                         </div>
 
@@ -88,9 +87,8 @@
                             <h2>Paradas:</h2>
                             <c:if test="${not empty roteiro.paradas}">
                                 <ul>
-
                                     <c:forEach var="parada" items="${fn:split(roteiro.paradas, ',')}">
-                                        ${fn:trim(parada)} <br> </li>
+                                        <li> ${fn:trim(parada)} </li>
                                     </c:forEach>
                                 </ul>
                             </c:if>
@@ -101,11 +99,12 @@
                         </div>
 
 
+
                     </div>
                 </div>
 
 
-
+                <%@ include file="forum.jsp" %>
             </div>
 
         </main>

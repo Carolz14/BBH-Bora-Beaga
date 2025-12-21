@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+:root {
+    --fonte-logo: "Fraunces", serif;
+    --fonte-texto: "Roboto Slab", serif;
+    --fonte-cursiva: "Parisienne", cursive;
+    --cor-fundo: #f3f3f3;
+    --cor-primaria: #f9e470;
+    --cor-primaria-hover: rgb(224, 198, 55);
+    --cor-secundaria: #93c665;
+    --cor-secundaria-hover: #7eb450
+    --cor-borda: #6c757d;
+}
+
+
+.avaliacao-form {
+    display: inline-block;
+}
+
+.estrelas {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.estrelas input {
+    display: none; 
+}
+
+.estrelas label {
+    font-size: 1.5em;
+    color: #ccc; 
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 2px;
+}
+
+.estrelas label:hover,
+.estrelas label:hover ~ label,
+.estrelas input:checked ~ label {
+    color: #ffc107; 
+}
+
+.estrelas label[for="t"] {
+    margin-right: 15px; 
+    padding-top: 5px;   
+}
+
+
+.estrelas label[for="t"]:hover {
+    color: #ff4d4d !important; 
+}
+
+
+#t:checked ~ label[for="t"] {
+    color: #ff4d4d !important;
+}
+
+
+.forum-container {
+    padding: 30px;
+    background-color: #ffffff;
+   
+}
+
+.forum-container h2 {
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+
+.comentario-item {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.comentario-header {
+    display: flex;
+    justify-content: space-between; /* Separa Autor da Lixeira */
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+
+
+.data-comentario {
+    color: #999;
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+.comentario-texto {
+    color: #555;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    font-size: 1em;
+}
+
+/* Imagens */
+.img-anexo {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    margin-top: 12px;
+    border: 1px solid #ddd;
+    transition: transform 0.2s;
+    cursor: zoom-in;
+}
+
+.img-anexo:hover {
+    transform: scale(1.02);
+}
+
+
+.btn-excluir-comentario {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 1.1em;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.btn-excluir-comentario:hover {
+    color: #e74c3c; 
+}
+
+
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-anexo {
+    cursor: pointer;
+    color: #666;
+    font-size: 0.95em;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px dashed #ccc;
+    background: #fff;
+    transition: all 0.2s;
+}
+
+
+
+.btn-comentar {
+ background-color: var(--cor-primaria);
+    color: white;
+    padding: 10px 22px;
+    font-family: var(--fonte-texto);
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 8px;
+    border: none;
+    margin: 5px;
+}
+
+.btn-comentar:hover {
+    background-color: var(--cor-primaria-hover);
+    transform: translateY(-1px);
+}
+
+.divisor-comentario {
+    display: none; /* Oculta o HR pois usamos cards agora */
+}
+strong{
+    font-family: var(--fonte-texto);
+}

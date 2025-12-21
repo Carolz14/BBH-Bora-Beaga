@@ -1,7 +1,7 @@
 package bbh.domain;
 
 import java.time.LocalDateTime;
-
+import java.time.format.DateTimeFormatter;
 public class Comentario {
 
     private Long id;
@@ -75,5 +75,12 @@ public class Comentario {
 
     public void setData(LocalDateTime data) {
         this.data = data;
+    }
+
+        public String getDataFormatada() {
+            DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+
+
+        return this.data.format(formatar);
     }
 }
