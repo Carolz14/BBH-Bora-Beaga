@@ -1,8 +1,5 @@
 package bbh.service.util;
 
-import bbh.common.PersistenciaException;
-import bbh.domain.Tag;
-import bbh.service.TagService;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -118,7 +115,7 @@ public class CriarTabelas {
         }
     }
 
-    public static void criarTabelaAvaliacao() throws SQLException {
+     public static void criarTabelaAvaliacao() throws SQLException {
         String sql = """
             CREATE TABLE IF NOT EXISTS avaliacao (
                 id_avaliacao BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -132,6 +129,12 @@ public class CriarTabelas {
                 FOREIGN KEY (id_estabelecimento) REFERENCES usuarios(id) ON DELETE CASCADE
             ) ENGINE=InnoDB;
         """;
+        try (Connection con = ConexaoBD.getConnection(); Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sql);
+            System.out.println("Tabela 'avaliacao' criada.");
+        }
+    }
+        
     public static void criarTabelaAvaliacaoMidia() throws SQLException {
         String sql = """
                 CREATE TABLE IF NOT EXISTS midia_avaliacao(
