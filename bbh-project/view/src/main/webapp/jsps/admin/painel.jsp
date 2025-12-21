@@ -9,7 +9,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Painel Administrativo - Bora Beagá</title>
-
+ <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/painel.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pontoturistico.css">

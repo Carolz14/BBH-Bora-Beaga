@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Evento</title>
 
-    <!-- CSS correto -->
+   <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-detalhe-evento.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
 </head>

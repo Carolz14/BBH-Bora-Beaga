@@ -1,47 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@100..900&display=swap');
 :root {
     --fonte-logo: "Fraunces", serif;
     --fonte-texto: "Roboto Slab", serif;
+    --fonte-cursiva: "Parisienne", cursive;
     --cor-fundo: #f3f3f3;
     --cor-primaria: #f9e470;
+    --cor-primaria-hover: rgb(224, 198, 55);
     --cor-secundaria: #93c665;
-    --cor-secundaria-hover: #7eb450;
+    --cor-secundaria-hover: #7eb450
+    --cor-borda: #6c757d;
 }
 
-main {
-    background-color: var(--cor-fundo);
-    min-height: 100vh;
-    padding: 40px 0;
+
+main{
+    margin: 2% 5%;
 }
 
 .conteudo-eventos-estab {
     width: 90%;
     max-width: 1100px;
-    margin: 0 auto;
+
     display: flex;
     flex-direction: column;
-    gap: 40px;
+
 }
 
 .eventos-header {
-    margin-bottom: 20px;
+   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2% 5%;
+
+
 }
 
 .eventos-titulo {
-    font-family: var(--fonte-logo);
+    font-family: var(--fonte-texto);
+      font-weight: normal;
     font-weight: 800;
     color: #333;
-    margin-bottom: 15px;
+   
+    margin: 0px;
 }
 
 h1.eventos-titulo {
     font-size: 36px;
+    font-family: var(--fonte-texto);
+      font-weight: normal;
     border-bottom: 1px solid #ddd;
     padding-bottom: 15px;
 }
 
 h2.eventos-titulo {
+     font-family: var(--fonte-texto);
+     font-weight: normal;
     font-size: 26px;
     border-bottom: 3px solid var(--cor-primaria);
     width: fit-content;
@@ -49,6 +66,7 @@ h2.eventos-titulo {
 }
 
 .subtitle {
+      font-weight: normal;
     font-family: var(--fonte-texto);
     font-size: 18px;
     color: #666;

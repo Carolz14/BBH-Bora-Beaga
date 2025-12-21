@@ -26,8 +26,15 @@
 
         <main>
             <div class="container">
-                <a href="${pageContext.request.contextPath}/bbh/ListarRoteiroController" class="back-link">Voltar</a>
-
+                
+  <a href="${pageContext.request.contextPath}/bbh/ListarRoteiroController"
+                   onclick="if (document.referrer) {
+               history.back();
+               return false;
+           }" 
+                   class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar
+                </a>
                 <div class="roteiro">
                     <div class="roteiro-detalhes">
 

@@ -7,11 +7,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventos | Bora Beagá</title>
+    <title>Eventos</title>
 
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/eventos.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style-geral.css">
-    <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
+ <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
 </head>
 
 <body>
@@ -24,7 +24,10 @@
     String msg = (String) request.getAttribute("msg");
     String erro = (String) request.getAttribute("erro");
 %>
-
+<div class="eventos-header">
+            <h1 class="eventos-titulo">Eventos</h1>
+            <p class="subtitle">Fique por dentro das atrações e programação perto de você</p>
+        </div>
 <main>
     <div class="conteudo-eventos-estab">
         <% if (msg != null) { %>
@@ -35,10 +38,7 @@
             <div class="msg-erro"><%= erro %></div>
         <% } %>
 
-        <header class="eventos-header">
-            <h1 class="eventos-titulo">Eventos</h1>
-            <p class="subtitle">Fique por dentro das atrações e programação perto de você</p>
-        </header>
+        
 
         <section class="proximos4-section">
             <h2 class="eventos-titulo">Eventos próximos:</h2>

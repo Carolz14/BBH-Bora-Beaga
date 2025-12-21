@@ -15,6 +15,7 @@ h3{
     text-decoration: none;
     color: inherit;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    max-height: 105px;
 }
 
 .estabelecimentos:hover {
@@ -45,6 +46,7 @@ h3{
     justify-content: center;
     overflow: auto;
     gap: 50px;
+ 
 }
 
 
@@ -94,9 +96,6 @@ h3{
     margin-top: auto; 
 }
 
-.back-link:hover {
-    color: var(--cor-primaria);
-}
 
 /* Mensagem de "Nenhum local encontrado" */
 .mensagem-vazio {

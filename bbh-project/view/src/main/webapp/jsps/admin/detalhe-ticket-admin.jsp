@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ticket #${ticket.id}</title>
-
+ <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/suporte.css">
 </head>

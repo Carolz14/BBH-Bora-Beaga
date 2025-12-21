@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Suporte - Administração</title>
-
+ <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/suporte.css">
 </head>
@@ -18,9 +18,15 @@
 
 <%@ include file="../header.jsp" %>
 
+<div class="cabecalho-pagina">
+     <h1 class="titulo">Suporte - Tickets</h1>
+    
+  
+    </div>
+
 <main class="container-suporte">
 
-    <h1 class="titulo">Suporte - Tickets</h1>
+    
     <p class="descricao">Clique em um ticket para visualizar a conversa.</p>
 
     <c:choose>

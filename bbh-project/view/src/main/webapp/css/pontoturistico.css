@@ -3,15 +3,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+
 :root {
     --fonte-logo: "Fraunces", serif;
     --fonte-texto: "Roboto Slab", serif;
     --fonte-cursiva: "Parisienne", cursive;
-    --cor-fundo: #ffffff;
+    --cor-fundo: #f3f3f3;
     --cor-primaria: #f9e470;
+    --cor-primaria-hover: rgb(224, 198, 55);
     --cor-secundaria: #93c665;
+    --cor-secundaria-hover: #7eb450;
     --cor-borda: #6c757d;
 }
+
+
+
+
+
 
 .grid-pontos {
     display: flex;

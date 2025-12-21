@@ -11,6 +11,7 @@
               integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ranking.css">
+        <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
 
     </head>
     <body>

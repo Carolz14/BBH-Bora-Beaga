@@ -13,18 +13,22 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/suporte.css">
+     <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
 </head>
 
 <body>
 
 <%@ include file="../header.jsp" %>
-
+ <div class="cabecalho-pagina">
+       <h1 class="titulo">Suporte</h1>
+    
+  
+    </div>
 <main class="container-suporte">
 
-    <h1 class="titulo">Suporte</h1>
-    <p class="descricao">Envie dúvidas, problemas ou sugestões ao administrador.</p>
-
+   
     <section class="abrir-ticket">
+        <p class="descricao">Envie dúvidas, problemas ou sugestões ao administrador.</p>
         <h2>Abrir novo ticket</h2>
 
         <form method="POST" action="${pageContext.request.contextPath}/bbh/suporte">

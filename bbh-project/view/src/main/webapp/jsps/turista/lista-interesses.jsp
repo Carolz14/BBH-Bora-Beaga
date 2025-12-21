@@ -11,19 +11,13 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-listas.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
     </head>
     <body>
 
         <%@ include file="../header.jsp" %>
 
-        <a href="${pageContext.request.contextPath}/bbh/feed" 
-           onclick="if (document.referrer) {
-               history.back();
-               return false;
-           }" 
-           class="back-link">
-            <i class="fa-solid fa-arrow-left"></i> Voltar
-        </a>
+
 
         <h1>Minha Lista de Interesse</h1>
 
