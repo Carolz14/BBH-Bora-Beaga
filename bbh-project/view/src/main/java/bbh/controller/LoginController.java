@@ -47,7 +47,7 @@ public class LoginController extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/bbh/feed");
                         break;
                     case ESTABELECIMENTO:
-                        response.sendRedirect(request.getContextPath() + "/jsps/estabelecimento/painel.jsp");
+                        response.sendRedirect(request.getContextPath() + "/bbh/painel");
                         break;
                     default:
                         response.sendRedirect(request.getContextPath() + "/index.jsp?erro=usuarioSemAcesso");

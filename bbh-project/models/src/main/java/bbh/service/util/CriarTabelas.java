@@ -339,6 +339,25 @@ public class CriarTabelas {
             System.out.println("Tabela 'lista_interesse' criada.");
         }
     }
+    
+    public static void criarTabelaVisitas() throws SQLException {
+        String sql = """
+            CREATE TABLE IF NOT EXISTS visitas (
+                id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                id_estabelecimento BIGINT NOT NULL,
+                data_visita TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (id_estabelecimento) REFERENCES usuarios(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB;
+        """;
+
+        try (Connection con = ConexaoBD.getConnection();
+             Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(sql);
+            System.out.println("Tabela 'visitas' criada.");
+        }
+    }
+
+
 
     public static void criarTodasAsTabelas() throws PersistenciaException, SQLException {
         verificarCriarBanco();
@@ -358,5 +377,6 @@ public class CriarTabelas {
         criarTabelaListaInteresse();
         criarTabelaComentariosRoteiros();
         criarTabelaAvaliacaoRoteiros();
+        criarTabelaVisitas();
     }
 }
