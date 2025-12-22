@@ -129,8 +129,21 @@
 
                                     <a href="${linkDestino}" class="ranking-item">
                                         <span class="rank-number"><c:out value="${st.index + 1}" /></span>
+
+                                              <c:choose>
+                                         <c:when test="${r.tipo == 'ESTABELECIMENTO'}">
+                                            
+                                        <img class ="rank-img" src="/imagens-bbh/${r.imagemUrl}"
+                                             alt="Imagem de ${r.nomeEstabelecimento}">
+                                        </c:when>
+                                        <c:otherwise>
+                                           
+                                               
                                         <img class ="rank-img" src="${pageContext.request.contextPath}/imagem?nome=${r.imagemUrl}"
                                              alt="Imagem de ${r.nomeEstabelecimento}">
+                                        
+                                        </c:otherwise>
+                                    </c:choose>
                                         <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>       
                                         <div class="rank-visitacoes">
                                             <i class="fas fa-users"></i>

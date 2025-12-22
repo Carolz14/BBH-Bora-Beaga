@@ -11,7 +11,8 @@
               integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ranking.css">
-        <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
+          <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
+        
     </head>
     <body>
         <%@ include file="../header.jsp" %>
@@ -114,8 +115,25 @@
 
                                     <a href="${linkDestino}" class="ranking-item">
                                         <span class="rank-number"><c:out value="${st.index + 1}" /></span>
+<c:choose>
+                                        <c:when test="${r.tipo == 'ESTABELECIMENTO'}">
+                                            
+                                        <img class ="rank-img" src="/imagens-bbh/${r.imagemUrl}"
+                                             alt="Imagem de ${r.nomeEstabelecimento}">
+                                        </c:when>
+                                        <c:otherwise>
+                                           
+                                               
                                         <img class ="rank-img" src="${pageContext.request.contextPath}/imagem?nome=${r.imagemUrl}"
                                              alt="Imagem de ${r.nomeEstabelecimento}">
+                                        
+                                        </c:otherwise>
+                                    </c:choose>
+
+
+
+
+
                                         <p class="rank-name"><c:out value="${r.nomeEstabelecimento}" /></p>  
                                         <div class="rank-rating">
                                             <i class="fas fa-star"></i>
