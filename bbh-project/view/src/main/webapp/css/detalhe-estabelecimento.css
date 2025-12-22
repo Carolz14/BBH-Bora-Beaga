@@ -198,3 +198,50 @@ h1 {
     padding: 0 14px;
   }
 }
+/* =========================
+   Tags minimalistas — detalhe do estabelecimento
+   ========================= */
+
+/* container das tags */
+.tags-list {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* estilo base da "chip" (funciona para <span>, <a> ou <button>) */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--cor-primaria);                      /* visual clean */
+  border: 1px solid rgba(0, 0, 0, 0.06);       /* borda suave */
+  color: var(--tag-ink, #222);
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 16rem;                             /* evita estourar layout */
+  box-shadow: none;
+  transition: background-color .12s ease, transform .08s ease, border-color .12s ease;
+}
+
+/* efeito hover leve — não agressivo */
+.tag-chip:hover {
+  background: var(--cor-primaria);
+  border-color: rgba(15, 23, 42, 0.09);
+  transform: translateY(-1px);
+}
+
+/* se for clicável (troque <span> por <a> ou adicione a classe "clickable") */
+
+
+
+
+

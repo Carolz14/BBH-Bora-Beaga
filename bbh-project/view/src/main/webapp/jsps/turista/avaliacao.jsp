@@ -90,7 +90,7 @@
                         <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/midia/upload" class="midia-insert-form">
                             <input type="hidden" name="id" value="${av.idAvaliacao}" />
                             <input class="file-input-hidden" type="file" name="file" accept="image/*" onchange="this.form.submit()" style="display:none" />
-                            <button type="button" class="btn-file-trigger btn-simple" title="Inserir imagem">Inserir mídia</button>
+                            <button type="button" class="btn-file-trigger btn-simple" style="background-color: var(--cor-secundaria)" title="Inserir imagem">Inserir mídia</button>
                         </form>
 
                         <!-- Caso queira mostrar o input visível como fallback, descomente abaixo -->
@@ -101,7 +101,7 @@
 
             <c:if test="${ehAdmin or (idUsuario == av.idUsuario)}">
                 <div class="avaliacao-actions">
-                    <button type="button" class="btn-edit btn-simple">Editar avaliação</button>
+                    <button type="button" class="btn-edit btn-simple" style="background-color: var(--cor-secundaria)">Editar avaliação</button>
                     <form method="post" action="${pageContext.request.contextPath}/avaliacao/deletar" class="inline-form">
                         <input type="hidden" name="id_avaliacao" value="${av.idAvaliacao}" />
                         <input type="hidden" name="id" value="${estabelecimentoId}" />
@@ -135,7 +135,7 @@
 
                     <!-- controles de arquivo -->
                     <div class="file-controls">
-                        <button type="button" class="btn-file-trigger btn-simple">Inserir mídia</button>
+                        <button type="button" class="btn-file-trigger btn-simple" style="background-color: var(--cor-secundaria)">Inserir mídia</button>
                         <button type="button" id="btn-clear-file" class="btn-clear-file btn-simple-remove">Remover</button>
                     </div>
 
@@ -150,7 +150,7 @@
             </div>
 
             <div class="form-actions">
-                <button id="btnSubmitAvaliacao" class="btn-edit btn-simple" type="submit">Enviar avaliação</button>
+                <button id="btnSubmitAvaliacao" class="btn-edit btn-simple" style="background-color: var(--cor-secundaria)" type="submit">Enviar avaliação</button>
                 <span id="formStatus"></span>
             </div>
         </form>
@@ -177,8 +177,8 @@
                     </label>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-edit btn-simple" onclick="closeEditModal()">Cancelar</button>
-                    <button type="submit" class="btn-edit btn-simple">Salvar</button>
+                    <button type="button" class="btn-edit btn-simple"  style="background-color: var(--cor-secundaria)" onclick="closeEditModal()">Cancelar</button>
+                    <button type="submit" class="btn-edit btn-simple"  style="background-color: var(--cor-secundaria)">Salvar</button>
                 </div>
             </form>
         </div>
@@ -195,7 +195,7 @@
             </div>
 
             <div class="modal-footer" style="gap:8px; display:flex; justify-content:flex-end; padding-top:8px;">
-                <button type="button" id="confirmCancelBtn" class="btn-simple" aria-label="Cancelar">Cancelar</button>
+                <button type="button" id="confirmCancelBtn" class="btn-simple"  style="background-color: var(--cor-secundaria)" aria-label="Cancelar">Cancelar</button>
                 <button type="button" id="confirmDeleteBtn" class="btn-simple-remove" aria-label="Confirmar exclusão">Excluir</button>
             </div>
         </div>

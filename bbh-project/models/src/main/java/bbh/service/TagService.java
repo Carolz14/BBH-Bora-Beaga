@@ -27,7 +27,7 @@ public class TagService {
         return new TagService();
     }
     
-    public List<Tag> listarTagsDoUsuario(Long idUsuario) throws PersistenciaException {
+    public List<Tag> listarTagsDoEstabelecimento(Long idUsuario) throws PersistenciaException {
         if (idUsuario == null) {
             throw new PersistenciaException("Erro na inserção do id do usuário");
         }

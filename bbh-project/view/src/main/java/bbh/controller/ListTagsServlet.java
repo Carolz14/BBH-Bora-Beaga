@@ -26,7 +26,7 @@ public class ListTagsServlet extends BaseServlet {
 
             try {
                 Long idUsuario = getIdUsuario(request);
-                List<Tag> selecionadas = tagService.listarTagsDoUsuario(idUsuario);
+                List<Tag> selecionadas = tagService.listarTagsDoEstabelecimento(idUsuario);
                 request.setAttribute("tagsSelecionadas", selecionadas);
             } catch (Exception e) {
             }
