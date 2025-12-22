@@ -8,7 +8,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><c:out value="${ponto.nome}" /> - Bora Beagá</title>
-<link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
+        <link rel="icon" href="${pageContext.request.contextPath}/imagens/icon-page.png">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style-geral.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/detalhe-estabelecimento.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/avaliacao.css">
@@ -24,9 +24,9 @@
 
                 <a href="${pageContext.request.contextPath}/bbh/feed" 
                    onclick="if (document.referrer) {
-               history.back();
-               return false;
-           }" 
+                               history.back();
+                               return false;
+                           }" 
                    class="back-link">
                     <i class="fa-solid fa-arrow-left"></i> Voltar
                 </a> 
@@ -78,6 +78,12 @@
                                 <p><strong><i class="fa-solid fa-align-left"></i> Descrição:</strong> <br> ${ponto.descricao}</p>
                                 <p><strong><i class="fa-solid fa-location-dot"></i> Endereço:</strong> <br> ${ponto.endereco}</p>
                             </div>
+                            <div class="tag-list">
+                                <span class="tag-chip" title="<c:out value='${ponto.tag}'/>">
+                                    <c:out value="${ponto.tag}" />
+                                </span>
+                            </div>
+
 
                         </div>
                     </div>

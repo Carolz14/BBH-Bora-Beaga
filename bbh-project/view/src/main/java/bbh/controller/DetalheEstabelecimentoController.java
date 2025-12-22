@@ -5,8 +5,10 @@ import java.util.List;
 
 import bbh.common.PersistenciaException;
 import bbh.domain.Avaliacao;
+import bbh.domain.Tag;
 import bbh.domain.Usuario;
 import bbh.service.AvaliacaoService;
+import bbh.service.TagService;
 import bbh.service.GestaoUsuariosService;
 import bbh.service.VisitaService;
 import jakarta.servlet.ServletException;
@@ -20,6 +22,7 @@ public class DetalheEstabelecimentoController extends HttpServlet {
     private final AvaliacaoService avaliacaoService = new AvaliacaoService();
     private final VisitaService visitaService = new VisitaService();
     private final GestaoUsuariosService gestaoUsuariosService = new GestaoUsuariosService();
+    private final TagService tagService = new TagService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -47,10 +50,12 @@ public class DetalheEstabelecimentoController extends HttpServlet {
             } catch (PersistenciaException e) {
                 System.err.println("Erro ao registrar visita para estabelecimento " + id + " : " + e.getMessage());
             }
-
+            List<Tag> tagsDoEstabelecimento = tagService.listarTagsDoEstabelecimento(id);
+            
             double media = avaliacaoService.calcularMedia(id, categoria);
             List<Avaliacao> avaliacoes = avaliacaoService.buscarAvaliacoesPorEstabelecimento(id, categoria);
 
+            request.setAttribute("tagsDoEstabelecimento", tagsDoEstabelecimento);
             request.setAttribute("estabelecimento", estabelecimento);
             request.setAttribute("media", media);
             request.setAttribute("avaliacoes", avaliacoes);

@@ -24,9 +24,9 @@
 
                 <a href="${pageContext.request.contextPath}/bbh/feed" 
                    onclick="if (document.referrer) {
-               history.back();
-               return false;
-           }" 
+                               history.back();
+                               return false;
+                           }" 
                    class="back-link">
                     <i class="fa-solid fa-arrow-left"></i> Voltar
                 </a>
@@ -69,6 +69,17 @@
                                 <p><strong>Descrição:</strong> ${estabelecimento.descricao}</p>
                                 <p><strong>Contato:</strong> ${estabelecimento.contato}</p>
                                 <p><strong>Endereço:</strong> ${estabelecimento.endereco}</p>
+                            </div>
+                            <div class="tags-list" aria-label="Tags do estabelecimento">
+                                <c:if test="${empty tagsDoEstabelecimento}">
+                                    <p class="tags-empty"></p>
+                                </c:if>
+
+                                <c:forEach var="tag" items="${tagsDoEstabelecimento}">
+                                    <span class="tag-chip" title="<c:out value='${tag.nome}'/>">
+                                        <c:out value="${tag.nome}" />
+                                    </span>
+                                </c:forEach>
                             </div>
                         </div>
 
