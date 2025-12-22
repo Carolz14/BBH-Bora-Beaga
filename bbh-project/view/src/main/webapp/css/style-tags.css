@@ -1,136 +1,196 @@
+/* =========================
+   Fontes
+   ========================= */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
-
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+
 
 :root {
     --fonte-logo: "Fraunces", serif;
     --fonte-texto: "Roboto Slab", serif;
     --fonte-cursiva: "Parisienne", cursive;
-    --cor-fundo: #f3f3f3;
+    --cor-fundo: white;
     --cor-primaria: #f9e470;
     --cor-primaria-hover: rgb(224, 198, 55);
     --cor-secundaria: #93c665;
     --cor-secundaria-hover: #7eb450;
     --cor-borda: #6c757d;
+
+    --tag-border: rgba(30,30,30,0.06);
+    --tag-ink: #222;
+    --tag-accent: var(--cor-secundaria);
+    --tag-remove: #e55353;
+    --tag-padding-y: 8px;
+    --tag-padding-x: 14px;
+    --tag-gap: 8px;
+
+    --radius-lg: 10px;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-}
+
+/* =========================
+   Reset / Base
+   ========================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: var(--fonte-texto);
-  background: var(--cor-fundo);
-  overflow-x: hidden;
-  color: #222;
-  margin: 0;
-  padding: 20px;
+    font-family: var(--fonte-texto);
+    background: var(--cor-fundo);
+    color: #222;
+    overflow-x: hidden;
+    margin: 0;
 }
 
 h2 {
-  color: #333;
-  margin-bottom: 12px;
-  font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 1.4rem;
 }
 
+
+/* =========================
+   Containers
+   ========================= */
 .tags-container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 18px;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(30, 40, 60, 0.06);
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 18px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(30, 40, 60, 0.06);
 }
+
+.pagecontainer {
+    background-color: #fff;
+    width: 95%;
+    max-width: 1400px;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px 40px;
+    border-radius: 8px;
+    display: block;
+}
+
+/* layout do editor de tags */
+.tag-editor {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 0;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: 5px 5px 25px rgba(10, 10, 30, 0.12);
+    overflow: hidden;
+    align-items: stretch;
+    min-height: 280px;
+    max-width: 70%;
+    margin: 10px;
+    margin: 40px auto;
+    align-items: center;
+}
+
+/* área que contém as tags */
+.estabelecimento-tags {
+    min-height: 400px;
+    max-height: 520px;
+    overflow: auto;          /* permite rolar quando houver muitas tags */
+    background: white;
+    padding: 16px;
+    padding-block:24px;
+}
+
+
+
 
 .tag {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* adiciona esta linha */
-  gap: 12px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  background: linear-gradient(180deg, #fff 0%, #fbfbff 100%);
-  border: 1px solid #ececf6;
-}
-
-.tag span.associated {
-  color: #6b6b6b;
-  font-weight: 500;
-  font-size: 0.95rem;
-  margin-left: auto; /* garante alinhamento no final */
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tag-gap);
+    padding: var(--tag-padding-y) var(--tag-padding-x);
+    margin: 6px 8px 6px 0;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid var(--tag-border);
+    box-shadow: none;
+    color: var(--tag-ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    vertical-align: middle;
+    transition: background-color .12s ease, transform .08s ease, border-color .12s ease;
 }
 
 .tag > span {
-  flex: 1;
-  font-weight: 600;
-  color: #2b2b2b;
-}
-
-.tag form {
-  margin: 0;
-}
-
-.tag button {
-  background: var(--cor-secundaria);
-  color: #fff;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  line-height: 1;
-  transition: transform .08s ease, background-color .12s ease;
-}
-
-.tag button[title^="Remover"] {
-  background: #e55353;
-}
-
-.tag button:hover {
-  transform: translateY(-1px);
-  filter: brightness(.96);
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 12rem;
 }
 
 
-hr {
-  border: none;
-  border-top: 1px solid #efeff5;
-  margin: 18px 0;
+.tag:hover {
+    background: rgba(15, 23, 42, 0.03);
+    border-color: rgba(15, 23, 42, 0.09);
+    transform: translateY(-1px);
+}
+
+.estabelecimento-tags .tag button {
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: transparent;
+    padding: 4px;
+    height: 28px;
+    min-width: 28px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color .12s ease, transform .08s ease;
+    color: var(--tag-accent);
+}
+
+/* remover: cor perceptível, mas sem preencher o fundo */
+.estabelecimento-tags .tag button[title^="Remover"] {
+    color: var(--tag-remove);
+}
+
+/* hover dos botões */
+.estabelecimento-tags .tag button:hover {
+    background: rgba(0,0,0,0.04);
+    transform: translateY(-1px);
+}
+
+/* foco acessível do botão */
+.estabelecimento-tags .tag button:focus {
+    outline: 2px solid rgba(0,0,0,0.06);
+    outline-offset: 2px;
 }
 
 
-@media (max-width: 600px) {
-  .tags-container {
-    padding: 12px;
-  }
-  .tag {
-    gap: 8px;
-    padding: 8px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .tag button {
-    width: 48px;
-    align-self: flex-end;
-  }
-}
-
+/* =========================
+   Botão voltar (mantido)
+   ========================= */
 .botao-voltar-perfil {
     display: inline-block;
     text-decoration: none;
     text-align: center;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
+    background-color: white;
+    color: black;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
     padding: 10px 18px;
     border-radius: 8px;
     font-size: 15px;
     cursor: pointer;
     transition: background-color 0.18s ease;
+    margin-left: 15%;
+    
 }
 
 .botao-voltar-perfil:hover,
@@ -139,15 +199,59 @@ hr {
     color: #fff;
     outline: none;
 }
-.pagecontainer{
-  background-color: #fff; /* fundo branco */
-  width: 95%;
-  max-width: 1400px;
-  margin-top: 40px;
-  margin-left: auto;
-  margin-right: auto; /* centraliza horizontalmente */
-  padding: 30px 40px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  display: block; /* garante comportamento padrão */
+
+
+/* =========================
+   Regras responsivas
+   ========================= */
+@media (max-width: 600px) {
+    .tags-container { padding: 12px; }
+
+    /* em telas pequenas as tags ficam menores e continuam quebrando linha naturalmente */
+    .estabelecimento-tags .tag {
+        margin: 6px 6px 6px 0;
+        padding: 6px 10px;
+        font-size: 0.92rem;
+    }
+    .estabelecimento-tags .tag button {
+        height: 26px;
+        min-width: 26px;
+        font-size: 0.85rem;
+    }
+
+    /* para o layout do editor: empilha as colunas em telas bem pequenas */
+    @media (max-width: 420px) {
+        .tag-editor {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.tag-editor {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr; /* primeira linha: título, segunda: conteúdo */
+    gap: 0;
+    max-width: 70%;
+    margin: 40px auto;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: 5px 5px 25px rgba(10,10,30,0.12);
+    overflow: hidden;
+}
+
+/* O título ocupa as duas colunas */
+.tag-editor > .pagina-titulo {
+    grid-column: 1 / -1;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Conteúdo nas linhas abaixo já será as duas colunas normais */
+.tag-editor > .estabelecimento-detalhes {
+    padding: 18px;
+}
+
+.tag-editor > .estabelecimento-tags {
+    padding: 16px;
 }
